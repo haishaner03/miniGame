@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ZombieShooterDemo/Scenes/MainMenuScene.unity
+    guid: 838270ce65cf7994fbc56cadf0ad0215
+  - enabled: 1
+    path: Assets/ZombieShooterDemo/Scenes/TrainingGameScene.unity
+    guid: c9c4a311649c5f340b64a5bb287a4b22
+  - enabled: 1
+    path: Assets/ZombieShooterDemo/Scenes/SurvivalGameScene.unity
+    guid: 383d27a3540439f45b7852cebfec14c7
+  - enabled: 1
+    path: Assets/ZombieShooterDemo/Scenes/DeathGameScene.unity
+    guid: dff939b0ca2069f4cb756ae3b3488c5b
   m_configObjects: {}
