@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameMain.Procedures
 {
-    public sealed class ProcedureBattle : ProcedureBase
+    public sealed class ProcedureResult : ProcedureBase
     {
         private float m_ElapsedTime;
 
@@ -13,7 +13,7 @@ namespace GameMain.Procedures
             base.OnEnter(procedureOwner);
 
             m_ElapsedTime = 0f;
-            Debug.Log("[UGF] Enter Battle procedure. This is where gameplay will be connected next.");
+            Debug.Log("[UGF] Enter Result procedure.");
         }
 
         protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -23,13 +23,13 @@ namespace GameMain.Procedures
             m_ElapsedTime += elapseSeconds;
             if (m_ElapsedTime >= 2f)
             {
-                ChangeState<ProcedureResult>(procedureOwner);
+                ChangeState<ProcedureMenu>(procedureOwner);
             }
         }
 
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
         {
-            Debug.Log("[UGF] Leave Battle procedure.");
+            Debug.Log("[UGF] Leave Result procedure.");
             base.OnLeave(procedureOwner, isShutdown);
         }
     }
