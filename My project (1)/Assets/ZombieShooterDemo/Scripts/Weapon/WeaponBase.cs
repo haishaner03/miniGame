@@ -394,7 +394,7 @@ public class WeaponBase : MonoBehaviour {
 	void OnCaseOut() {
 		GameObject ejectedCase = Instantiate(emptyCase, caseSpawnPoint.position, caseSpawnPoint.rotation);
 		Rigidbody caseRigidbody = ejectedCase.GetComponent<Rigidbody>();
-		caseRigidbody.velocity = caseSpawnPoint.TransformDirection(-Vector3.left * bulletEjectingSpeed);
+		caseRigidbody.linearVelocity = caseSpawnPoint.TransformDirection(-Vector3.left * bulletEjectingSpeed);
 		caseRigidbody.AddTorque(Random.Range(-0.2f, 0.2f), Random.Range(0.1f, 0.2f), Random.Range(-0.2f, 0.2f));
 		caseRigidbody.AddForce(0, Random.Range(2.0f, 4.0f), 0, ForceMode.Impulse);
 
