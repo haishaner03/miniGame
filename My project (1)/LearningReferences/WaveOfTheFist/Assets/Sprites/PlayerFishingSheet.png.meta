@@ -1,0 +1,897 @@
+fileFormatVersion: 2
+guid: 0e4eb603685c7fa41aa8249e807646ee
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2028502857375201556
+    second: PlayerFishingSheet_0
+  - first:
+      213: -7298375785641582494
+    second: PlayerFishingSheet_1
+  - first:
+      213: 5771306109844566989
+    second: PlayerFishingSheet_2
+  - first:
+      213: -8084995951528197475
+    second: PlayerFishingSheet_3
+  - first:
+      213: 627915416102234428
+    second: PlayerFishingSheet_4
+  - first:
+      213: 8229100419349638862
+    second: PlayerFishingSheet_5
+  - first:
+      213: -5853186485739961035
+    second: PlayerFishingSheet_6
+  - first:
+      213: 6532057739963475257
+    second: PlayerFishingSheet_7
+  - first:
+      213: -6357784402646691782
+    second: PlayerFishingSheet_8
+  - first:
+      213: -4958850896745885480
+    second: PlayerFishingSheet_9
+  - first:
+      213: -1047584642944391641
+    second: PlayerFishingSheet_10
+  - first:
+      213: 2149867441567734382
+    second: PlayerFishingSheet_11
+  - first:
+      213: -3612122875097511470
+    second: PlayerFishingSheet_12
+  - first:
+      213: 6786471531244691316
+    second: PlayerFishingSheet_13
+  - first:
+      213: -1339586038664998285
+    second: PlayerFishingSheet_14
+  - first:
+      213: 8991350197785189384
+    second: PlayerFishingSheet_15
+  - first:
+      213: -7842904617541010996
+    second: PlayerFishingSheet_16
+  - first:
+      213: -9082995282098825614
+    second: PlayerFishingSheet_17
+  - first:
+      213: -2870259523798560679
+    second: PlayerFishingSheet_18
+  - first:
+      213: 2148414051540610286
+    second: PlayerFishingSheet_19
+  - first:
+      213: -400032374193558931
+    second: PlayerFishingSheet_20
+  - first:
+      213: -3416916754677034095
+    second: PlayerFishingSheet_21
+  - first:
+      213: -2519234262578498699
+    second: PlayerFishingSheet_22
+  - first:
+      213: 7726351646763004639
+    second: PlayerFishingSheet_23
+  - first:
+      213: -2069684957532509987
+    second: PlayerFishingSheet_24
+  - first:
+      213: -7177484984027427571
+    second: PlayerFishingSheet_25
+  - first:
+      213: -2012895609439123997
+    second: PlayerFishingSheet_26
+  - first:
+      213: 8135556680485458878
+    second: PlayerFishingSheet_27
+  - first:
+      213: -7137068346601900808
+    second: PlayerFishingSheet_28
+  - first:
+      213: 6466450892831156331
+    second: PlayerFishingSheet_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlayerFishingSheet_0
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 623
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce64940166f49d3e0800000000000000
+      internalID: -2028502857375201556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_1
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 623
+        width: 106
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 260658334e5f6ba90800000000000000
+      internalID: -7298375785641582494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 623
+        width: 66
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc3b357445cc71050800000000000000
+      internalID: 5771306109844566989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_3
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 519
+        width: 54
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d92c0baa4035ccf80800000000000000
+      internalID: -8084995951528197475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_4
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 519
+        width: 54
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c39e3cd7ebdc6b800800000000000000
+      internalID: 627915416102234428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_5
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 415
+        width: 77
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ece6a545b33a33270800000000000000
+      internalID: 8229100419349638862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_6
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 415
+        width: 95
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5354a5917ed45cea0800000000000000
+      internalID: -5853186485739961035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_7
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 415
+        width: 75
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9352ddaf7e786aa50800000000000000
+      internalID: 6532057739963475257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_8
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 415
+        width: 61
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3099b155cc94c7a0800000000000000
+      internalID: -6357784402646691782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_9
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 311
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d0955de16f9e2bb0800000000000000
+      internalID: -4958850896745885480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_10
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 311
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 726252d415b3671f0800000000000000
+      internalID: -1047584642944391641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_11
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 311
+        width: 53
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a92d03c0dd5dd10800000000000000
+      internalID: 2149867441567734382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_12
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 311
+        width: 53
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d900c802692fddc0800000000000000
+      internalID: -3612122875097511470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_13
+      rect:
+        serializedVersion: 2
+        x: 630
+        y: 311
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47f1422c6e36e2e50800000000000000
+      internalID: 6786471531244691316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_14
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 311
+        width: 53
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 372dc436895d86de0800000000000000
+      internalID: -1339586038664998285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_15
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 311
+        width: 53
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80cdf1edd51b7cc70800000000000000
+      internalID: 8991350197785189384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_16
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 207
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc97238cdc7682390800000000000000
+      internalID: -7842904617541010996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_17
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 207
+        width: 53
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27653f92ae7b2f180800000000000000
+      internalID: -9082995282098825614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_18
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 207
+        width: 52
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9501ece9b2aca28d0800000000000000
+      internalID: -2870259523798560679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_19
+      rect:
+        serializedVersion: 2
+        x: 487
+        y: 207
+        width: 53
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eec29847233b0dd10800000000000000
+      internalID: 2148414051540610286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_20
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 103
+        width: 58
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6a6985dcacc27af0800000000000000
+      internalID: -400032374193558931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_21
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 103
+        width: 57
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1931562b05ca490d0800000000000000
+      internalID: -3416916754677034095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_22
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 103
+        width: 57
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 573f30129c1e90dd0800000000000000
+      internalID: -2519234262578498699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_23
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 0
+        width: 17
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd2301303e3893b60800000000000000
+      internalID: 7726351646763004639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_24
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 0
+        width: 51
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd82e4d2f700743e0800000000000000
+      internalID: -2069684957532509987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_25
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 0
+        width: 66
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0d485a5f63746c90800000000000000
+      internalID: -7177484984027427571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_26
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 0
+        width: 32
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e50075ab12c014e0800000000000000
+      internalID: -2012895609439123997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_27
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 0
+        width: 23
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb3546662bd47e070800000000000000
+      internalID: 8135556680485458878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_28
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 0
+        width: 65
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f4fb1f072a04fc90800000000000000
+      internalID: -7137068346601900808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlayerFishingSheet_29
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 0
+        width: 53
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6865b883d27db950800000000000000
+      internalID: 6466450892831156331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PlayerFishingSheet_0: -2028502857375201556
+      PlayerFishingSheet_1: -7298375785641582494
+      PlayerFishingSheet_10: -1047584642944391641
+      PlayerFishingSheet_11: 2149867441567734382
+      PlayerFishingSheet_12: -3612122875097511470
+      PlayerFishingSheet_13: 6786471531244691316
+      PlayerFishingSheet_14: -1339586038664998285
+      PlayerFishingSheet_15: 8991350197785189384
+      PlayerFishingSheet_16: -7842904617541010996
+      PlayerFishingSheet_17: -9082995282098825614
+      PlayerFishingSheet_18: -2870259523798560679
+      PlayerFishingSheet_19: 2148414051540610286
+      PlayerFishingSheet_2: 5771306109844566989
+      PlayerFishingSheet_20: -400032374193558931
+      PlayerFishingSheet_21: -3416916754677034095
+      PlayerFishingSheet_22: -2519234262578498699
+      PlayerFishingSheet_23: 7726351646763004639
+      PlayerFishingSheet_24: -2069684957532509987
+      PlayerFishingSheet_25: -7177484984027427571
+      PlayerFishingSheet_26: -2012895609439123997
+      PlayerFishingSheet_27: 8135556680485458878
+      PlayerFishingSheet_28: -7137068346601900808
+      PlayerFishingSheet_29: 6466450892831156331
+      PlayerFishingSheet_3: -8084995951528197475
+      PlayerFishingSheet_4: 627915416102234428
+      PlayerFishingSheet_5: 8229100419349638862
+      PlayerFishingSheet_6: -5853186485739961035
+      PlayerFishingSheet_7: 6532057739963475257
+      PlayerFishingSheet_8: -6357784402646691782
+      PlayerFishingSheet_9: -4958850896745885480
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

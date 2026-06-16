@@ -4,12 +4,16 @@
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.cysharp.unitask"
+        "com.cysharp.unitask",
+        "com.jiangyin.gameframework.latest"
       ]
     }
   ],
   "dependencies": {
     "com.cysharp.unitask": "2.5.11",
+    "com.jiangyin.gameframework.latest": "2022.1.1",
+    "com.unity.inputsystem": "1.11.2",
+    "com.unity.render-pipelines.universal": "17.0.3",
     "com.unity.collab-proxy": "2.12.4",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.7",
