@@ -1,23 +1,31 @@
 using GameFramework.Fsm;
+using GameFramework.Event;
 using GameFramework.Procedure;
+using GameMain.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityGameFramework.Runtime;
 
 namespace GameMain.Procedures
 {
     public sealed class ProcedureMenu : ProcedureBase
     {
-        private const string MenuRootName = "MainMenu";
+        private const string MenuPrefabPath = "Assets/GameMain/Prefabs/UI/MainMenu.prefab";
+        private const string MenuUIGroupName = "Default";
 
-        private GameObject m_MenuRoot;
+        private EventComponent m_EventComponent;
+        private UIComponent m_UIComponent;
+        private MainMenuView m_MenuView;
+        private IFsm<IProcedureManager> m_ProcedureOwner;
+        private int m_MenuSerialId;
 
         protected override void OnEnter(IFsm<IProcedureManager> procedureOwner)
         {
             base.OnEnter(procedureOwner);
 
             Debug.Log("[UGF] Enter Menu procedure.");
-            CreateMenu(procedureOwner);
+            m_ProcedureOwner = procedureOwner;
+            OpenMenu();
         }
 
         protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -27,39 +35,89 @@ namespace GameMain.Procedures
 
         protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
         {
-            if (m_MenuRoot != null)
-            {
-                Object.Destroy(m_MenuRoot);
-                m_MenuRoot = null;
-            }
+            CloseMenu();
 
+            m_ProcedureOwner = null;
             Debug.Log("[UGF] Leave Menu procedure.");
             base.OnLeave(procedureOwner, isShutdown);
         }
 
-        private void CreateMenu(IFsm<IProcedureManager> procedureOwner)
+        private void OpenMenu()
         {
             EnsureEventSystem();
 
-            m_MenuRoot = new GameObject(MenuRootName);
-            Canvas canvas = m_MenuRoot.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            m_MenuRoot.AddComponent<CanvasScaler>();
-            m_MenuRoot.AddComponent<GraphicRaycaster>();
+            m_EventComponent = GameEntry.GetComponent<EventComponent>();
+            m_UIComponent = GameEntry.GetComponent<UIComponent>();
 
-            GameObject panel = CreateRect("Panel", m_MenuRoot.transform, Vector2.zero, new Vector2(420f, 260f));
-            Image panelImage = panel.AddComponent<Image>();
-            panelImage.color = new Color(0.08f, 0.09f, 0.11f, 0.88f);
-
-            Text title = CreateText("Title", panel.transform, "Mini Fighter", 36, new Vector2(0f, 64f), new Vector2(360f, 60f));
-            title.alignment = TextAnchor.MiddleCenter;
-
-            Button startButton = CreateButton(panel.transform, "Start Game", new Vector2(0f, -28f), new Vector2(220f, 54f));
-            startButton.onClick.AddListener(() =>
+            if (m_EventComponent == null || m_UIComponent == null)
             {
-                Debug.Log("[UGF] Start button clicked.");
-                ChangeState<ProcedureBattle>(procedureOwner);
-            });
+                Debug.LogError("[UGF] EventComponent or UIComponent is missing on GameEntry.");
+                return;
+            }
+
+            if (!m_UIComponent.HasUIGroup(MenuUIGroupName))
+            {
+                m_UIComponent.AddUIGroup(MenuUIGroupName, 0);
+            }
+
+            m_EventComponent.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            m_EventComponent.Subscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
+            m_MenuSerialId = m_UIComponent.OpenUIForm(MenuPrefabPath, MenuUIGroupName, this);
+            Debug.Log("[UGF] Open menu UI form, serial id: " + m_MenuSerialId + ".");
+        }
+
+        private void CloseMenu()
+        {
+            if (m_MenuView != null)
+            {
+                m_MenuView.StartClicked -= OnStartClicked;
+                m_MenuView = null;
+            }
+
+            if (m_EventComponent != null)
+            {
+                m_EventComponent.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+                m_EventComponent.Unsubscribe(OpenUIFormFailureEventArgs.EventId, OnOpenUIFormFailure);
+            }
+
+            if (m_UIComponent != null && m_MenuSerialId > 0)
+            {
+                m_UIComponent.CloseUIForm(m_MenuSerialId);
+            }
+
+            m_MenuSerialId = 0;
+            m_EventComponent = null;
+            m_UIComponent = null;
+        }
+
+        private void OnOpenUIFormSuccess(object sender, GameEventArgs e)
+        {
+            OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
+            if (ne.UserData != this || ne.UIForm.SerialId != m_MenuSerialId)
+            {
+                return;
+            }
+
+            m_MenuView = ne.UIForm.Logic as MainMenuView;
+            if (m_MenuView == null)
+            {
+                Debug.LogError("[UGF] MainMenuView is missing on menu UI form.");
+                return;
+            }
+
+            m_MenuView.StartClicked += OnStartClicked;
+            Debug.Log("[UGF] Menu UI form opened.");
+        }
+
+        private void OnOpenUIFormFailure(object sender, GameEventArgs e)
+        {
+            OpenUIFormFailureEventArgs ne = (OpenUIFormFailureEventArgs)e;
+            if (ne.UserData != this || ne.SerialId != m_MenuSerialId)
+            {
+                return;
+            }
+
+            Debug.LogError("[UGF] Open menu UI form failed: " + ne.ErrorMessage);
         }
 
         private static void EnsureEventSystem()
@@ -74,56 +132,15 @@ namespace GameMain.Procedures
             eventSystem.AddComponent<StandaloneInputModule>();
         }
 
-        private static GameObject CreateRect(string name, Transform parent, Vector2 anchoredPosition, Vector2 sizeDelta)
+        private void OnStartClicked()
         {
-            GameObject gameObject = new GameObject(name);
-            gameObject.transform.SetParent(parent, false);
-
-            RectTransform rectTransform = gameObject.AddComponent<RectTransform>();
-            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            rectTransform.anchoredPosition = anchoredPosition;
-            rectTransform.sizeDelta = sizeDelta;
-
-            return gameObject;
-        }
-
-        private static Text CreateText(string name, Transform parent, string content, int fontSize, Vector2 anchoredPosition, Vector2 sizeDelta)
-        {
-            GameObject gameObject = CreateRect(name, parent, anchoredPosition, sizeDelta);
-            Text text = gameObject.AddComponent<Text>();
-            text.text = content;
-            text.font = GetDefaultFont();
-            text.fontSize = fontSize;
-            text.color = Color.white;
-            return text;
-        }
-
-        private static Button CreateButton(Transform parent, string label, Vector2 anchoredPosition, Vector2 sizeDelta)
-        {
-            GameObject buttonObject = CreateRect("StartButton", parent, anchoredPosition, sizeDelta);
-
-            Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.22f, 0.48f, 0.86f, 1f);
-
-            Button button = buttonObject.AddComponent<Button>();
-            button.targetGraphic = image;
-
-            Text text = CreateText("Label", buttonObject.transform, label, 22, Vector2.zero, sizeDelta);
-            text.alignment = TextAnchor.MiddleCenter;
-
-            return button;
-        }
-
-        private static Font GetDefaultFont()
-        {
-            Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            if (font != null)
+            if (m_ProcedureOwner == null)
             {
-                return font;
+                return;
             }
 
-            return Resources.GetBuiltinResource<Font>("Arial.ttf");
+            Debug.Log("[UGF] Start button clicked.");
+            ChangeState<ProcedureBattle>(m_ProcedureOwner);
         }
     }
 }

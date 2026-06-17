@@ -10,6 +10,8 @@ namespace Characters.Player
     /// </summary>
     public class PlayerMovement : CharacterMovementBase
     {
+        private const string AttackTriggerName = "Attack";
+
         private WavePlayerInput playerInput;
 
         /// <summary>
@@ -43,6 +45,14 @@ namespace Characters.Player
         private void OnDisable()
         {
             playerInput?.Disable();
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.jKey.wasPressedThisFrame)
+            {
+                animator.SetTrigger(AttackTriggerName);
+            }
         }
 
         /// <summary>

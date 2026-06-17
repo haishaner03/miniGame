@@ -11,7 +11,7 @@ namespace GameMain.Editor
     internal static class CreateLaunchSceneOnLoad
     {
         private const string ScenePath = "Assets/GameMain/Scenes/Launch.unity";
-        private const string MarkerPath = "Assets/GameMain/Editor/.launch_scene_created";
+        private const string MarkerPath = "Assets/GameMain/Editor/Setup/.launch_scene_created";
 
         static CreateLaunchSceneOnLoad()
         {
@@ -28,8 +28,7 @@ namespace GameMain.Editor
             }
 
             Directory.CreateDirectory("Assets/GameMain/Scenes");
-            Directory.CreateDirectory("Assets/GameMain/UI");
-            Directory.CreateDirectory("Assets/GameMain/Configs");
+            Directory.CreateDirectory("Assets/GameMain/Prefabs");
 
             UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             scene.name = "Launch";
