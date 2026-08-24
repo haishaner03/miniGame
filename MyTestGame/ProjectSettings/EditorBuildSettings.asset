@@ -6,22 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ZombieShooterDemo/Scenes/MainMenuScene.unity
-    guid: 838270ce65cf7994fbc56cadf0ad0215
+    path: Assets/GameMain/Scenes/GameStart/GameStart.unity
+    guid: b13da774a1c144b498cc82fc5cb01e73
   - enabled: 1
-    path: Assets/ZombieShooterDemo/Scenes/TrainingGameScene.unity
-    guid: c9c4a311649c5f340b64a5bb287a4b22
+    path: Assets/GameMain/Scenes/Menu/Menu.unity
+    guid: 384b67841c5396a4db0b83b4a08fe735
   - enabled: 1
-    path: Assets/ZombieShooterDemo/Scenes/SurvivalGameScene.unity
-    guid: 383d27a3540439f45b7852cebfec14c7
+    path: Assets/GameMain/Scenes/Level1/Level1.unity
+    guid: f7b8cccf982339a44b69647c8093dc6d
   - enabled: 1
-    path: Assets/ZombieShooterDemo/Scenes/DeathGameScene.unity
-    guid: dff939b0ca2069f4cb756ae3b3488c5b
+    path: Assets/GameMain/Scenes/Level2/Level2.unity
+    guid: 703ea25111bccbd4db4d58a741d4699e
   - enabled: 1
-    path: Assets/GameMain/Scenes/Battle.unity
-    guid: c458e6655b012714397228a8582f40f4
+    path: Assets/GameMain/Scenes/Level3/Level3.unity
+    guid: b58c1ce8197772c44b235fe060b3b66d
   - enabled: 1
-    path: Assets/GameMain/Scenes/Launch.unity
-    guid: 57ad89eb0fc8aba42a8bfb16cfe3b068
+    path: Assets/GameMain/Scenes/Level4/Level4.unity
+    guid: da411bef1885c9c4fb241d192d02f27c
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Level5/Level5.unity
+    guid: 3a8ffd16aeae9fd4091c154184e0d5d5
   m_configObjects: {}
-  m_UseUCBPForAssetBundles: 0
