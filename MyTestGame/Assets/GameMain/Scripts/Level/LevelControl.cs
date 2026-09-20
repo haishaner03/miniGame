@@ -62,6 +62,9 @@ namespace Flower
             if (!level.Finish)
                 level.ProcessLevel(elapseSeconds, realElapseSeconds);
 
+            if (level.Finish && dicEntityEnemy.Count <= 0)
+                dataLevel.GameSuccess();
+
             if (isBuilding)
             {
                 if (Input.GetMouseButtonDown(0) && previewTowerEntityLogic != null && previewTowerEntityLogic.CanPlace)
@@ -213,6 +216,14 @@ namespace Flower
                 return;
             }
 
+            LevelPath levelPath = levelManager.GetLevelPath();
+            Transform startPathNode = levelManager.GetStartPathNode(levelPath);
+            if (levelPath == null || startPathNode == null)
+            {
+                Log.Error("Can not get a valid enemy path for enemy '{0}'.", enemyId);
+                return;
+            }
+
             entityLoader.ShowEntity(enemyData.EntityId, TypeUtility.GetEntityType(enemyData.Type),
                 (entity) =>
                 {
@@ -220,8 +231,8 @@ namespace Flower
                 },
                 EntityDataEnemy.Create(
                     enemyData,
-                    levelManager.GetLevelPath(),
-                    levelManager.GetStartPathNode().position - new Vector3(0, 0.2f, 0),
+                    levelPath,
+                    startPathNode.position - new Vector3(0, 0.2f, 0),
                     Quaternion.identity));
         }
 

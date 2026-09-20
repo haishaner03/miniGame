@@ -46,7 +46,15 @@ namespace Flower
         {
             LevelPath levelPath = GetLevelPath();
 
-            if (levelPath == null || levelPath.PathNodes.Length <= 0)
+            return GetStartPathNode(levelPath);
+        }
+
+        public Transform GetStartPathNode(LevelPath levelPath)
+        {
+            if (levelPath == null)
+                return null;
+
+            if (levelPath.PathNodes == null || levelPath.PathNodes.Length <= 0)
                 return null;
 
             return levelPath.PathNodes[0];

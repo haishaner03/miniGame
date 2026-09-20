@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Flower.Data;
 using UnityGameFramework.Runtime;
+using GameFramework.Event;
 
 namespace Flower
 {
@@ -47,6 +48,15 @@ namespace Flower
                 return;
             }
 
+            Subscribe(PlayerEnergyChangeEventArgs.EventId, OnPlayerEnergyChange);
+            RefreshTowerInfo();
+        }
+
+        private void RefreshTowerInfo()
+        {
+            if (tower == null)
+                return;
+
             towerNameText.text = tower.Name;
             descriptionText.text = tower.Des;
             dpsText.text = tower.DPS.ToString();
@@ -67,6 +77,11 @@ namespace Flower
                 DataPlayer dataPlayer = GameEntry.Data.GetData<DataPlayer>();
                 upgradeButton.interactable = (dataPlayer.Energy >= upgradeNeedEngry);
             }
+        }
+
+        private void OnPlayerEnergyChange(object sender, GameEventArgs e)
+        {
+            RefreshTowerInfo();
         }
 
         protected override void OnClose(bool isShutdown, object userData)

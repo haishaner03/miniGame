@@ -298,9 +298,11 @@ namespace Flower
         /// </summary>
         void OnTargetRemoved(EntityTargetable target)
         {
-            //target.removed -= OnTargetRemoved;
-            target.OnHidden += OnTargetRemoved;
-            target.OnDead += OnTargetRemoved;
+            if (target == null)
+                return;
+
+            target.OnHidden -= OnTargetRemoved;
+            target.OnDead -= OnTargetRemoved;
             if (m_CurrrentTargetable != null && target.Id == m_CurrrentTargetable.Id)
             {
                 if (lostTarget != null)
