@@ -1,0 +1,76 @@
+m10026.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+eye_L
+  rotate: false
+  xy: 2, 2
+  size: 21, 30
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+eye_R
+  rotate: false
+  xy: 78, 119
+  size: 21, 30
+  orig: 21, 30
+  offset: 0, 0
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 150, 182
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: false
+  xy: 78, 151
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: true
+  xy: 2, 34
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+mouth
+  rotate: false
+  xy: 222, 271
+  size: 85, 79
+  orig: 85, 79
+  offset: 0, 0
+  index: -1
+spine
+  rotate: false
+  xy: 2, 206
+  size: 218, 144
+  orig: 218, 144
+  offset: 0, 0
+  index: -1
+weapon_1
+  rotate: false
+  xy: 2, 113
+  size: 74, 91
+  orig: 74, 91
+  offset: 0, 0
+  index: -1
+weapon_2
+  rotate: false
+  xy: 309, 287
+  size: 36, 63
+  orig: 36, 63
+  offset: 0, 0
+  index: -1
+yingzi
+  rotate: false
+  xy: 222, 250
+  size: 83, 19
+  orig: 83, 19
+  offset: 0, 0
+  index: -1
+

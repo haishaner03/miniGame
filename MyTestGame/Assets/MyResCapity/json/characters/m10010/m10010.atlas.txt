@@ -1,0 +1,125 @@
+m10010.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+clothes
+  rotate: false
+  xy: 81, 55
+  size: 45, 33
+  orig: 45, 33
+  offset: 0, 0
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 81, 96
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: false
+  xy: 103, 150
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_l
+  rotate: true
+  xy: 220, 172
+  size: 31, 34
+  orig: 31, 34
+  offset: 0, 0
+  index: -1
+hand_r
+  rotate: false
+  xy: 128, 53
+  size: 37, 35
+  orig: 37, 35
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 118
+  size: 99, 85
+  orig: 99, 85
+  offset: 0, 0
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 87, 35
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: false
+  xy: 2, 54
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+leg_l
+  rotate: false
+  xy: 175, 157
+  size: 43, 46
+  orig: 43, 46
+  offset: 0, 0
+  index: -1
+leg_r
+  rotate: false
+  xy: 198, 205
+  size: 42, 49
+  orig: 42, 49
+  offset: 0, 0
+  index: -1
+spine
+  rotate: true
+  xy: 103, 90
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: -1
+upperarm_l_01
+  rotate: true
+  xy: 2, 2
+  size: 29, 30
+  orig: 29, 30
+  offset: 0, 0
+  index: -1
+upperarm_l_02
+  rotate: false
+  xy: 34, 2
+  size: 19, 29
+  orig: 19, 29
+  offset: 0, 0
+  index: -1
+upperarm_r_01
+  rotate: true
+  xy: 55, 5
+  size: 26, 32
+  orig: 26, 32
+  offset: 0, 0
+  index: -1
+upperarm_r_02
+  rotate: true
+  xy: 220, 147
+  size: 23, 26
+  orig: 23, 26
+  offset: 0, 0
+  index: -1
+weapon
+  rotate: false
+  xy: 2, 205
+  size: 194, 49
+  orig: 194, 49
+  offset: 0, 0
+  index: -1
+yingzi
+  rotate: false
+  xy: 2, 33
+  size: 83, 19
+  orig: 83, 19
+  offset: 0, 0
+  index: -1
+

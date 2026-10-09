@@ -1,0 +1,139 @@
+m10009.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+clothes
+  rotate: true
+  xy: 2, 7
+  size: 45, 33
+  orig: 45, 33
+  offset: 0, 0
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 71, 9
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: true
+  xy: 40, 97
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_l
+  rotate: true
+  xy: 101, 17
+  size: 30, 34
+  orig: 31, 34
+  offset: 0, 0
+  index: -1
+hand_r
+  rotate: false
+  xy: 153, 135
+  size: 31, 34
+  orig: 31, 35
+  offset: 0, 1
+  index: -1
+head
+  rotate: false
+  xy: 2, 169
+  size: 98, 85
+  orig: 98, 85
+  offset: 0, 0
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 139, 114
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+jianjia
+  rotate: false
+  xy: 95, 97
+  size: 42, 35
+  orig: 42, 35
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: false
+  xy: 170, 192
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+leg_l
+  rotate: false
+  xy: 101, 49
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+leg_r
+  rotate: true
+  xy: 102, 134
+  size: 42, 49
+  orig: 42, 49
+  offset: 0, 0
+  index: -1
+spine
+  rotate: false
+  xy: 40, 31
+  size: 59, 64
+  orig: 59, 64
+  offset: 0, 0
+  index: -1
+upperarm_l_01
+  rotate: false
+  xy: 186, 139
+  size: 29, 30
+  orig: 29, 30
+  offset: 0, 0
+  index: -1
+upperarm_l_02
+  rotate: false
+  xy: 217, 140
+  size: 18, 29
+  orig: 18, 29
+  offset: 0, 0
+  index: -1
+upperarm_r_01
+  rotate: true
+  xy: 37, 3
+  size: 26, 32
+  orig: 26, 32
+  offset: 0, 0
+  index: -1
+upperarm_r_02
+  rotate: false
+  xy: 237, 139
+  size: 17, 30
+  orig: 17, 30
+  offset: 0, 0
+  index: -1
+weapon_1
+  rotate: true
+  xy: 2, 54
+  size: 113, 36
+  orig: 113, 36
+  offset: 0, 0
+  index: -1
+weapon_2
+  rotate: false
+  xy: 102, 178
+  size: 66, 76
+  orig: 66, 76
+  offset: 0, 0
+  index: -1
+yingzi
+  rotate: false
+  xy: 170, 171
+  size: 83, 19
+  orig: 83, 19
+  offset: 0, 0
+  index: -1
+
