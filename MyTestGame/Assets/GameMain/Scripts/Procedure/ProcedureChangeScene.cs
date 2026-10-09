@@ -49,10 +49,12 @@ namespace Flower
 
             if (sceneData == null)
             {
+                ZombieBootLoadingScreen.Fail();
                 Log.Warning("Can not can scene data id :'{0}'.", loadingSceneId.ToString());
                 return;
             }
 
+            ZombieBootLoadingScreen.Report(0.7f, "\u6b63\u5728\u52a0\u8f7d\u907f\u96be\u6240\u2026");
             GameEntry.Scene.LoadScene(sceneData.AssetPath, Constant.AssetPriority.SceneAsset, this);
         }
 
@@ -60,12 +62,13 @@ namespace Flower
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
 
-            if (loadSceneCompleted)
+            if (loadSceneCompleted && ZombieBootLoadingScreen.CanContinue)
             {
                 Type procedureType = Type.GetType(string.Format("Flower.{0}", sceneData.Procedure));
                 if (null != procedureType)
                 {
 
+                    ZombieBootLoadingScreen.Hide();
                     ChangeState(procedureOwner, procedureType);
                 }
                 else
@@ -101,6 +104,7 @@ namespace Flower
             }
 
             loadSceneCompleted = true;
+            ZombieBootLoadingScreen.Complete();
             Log.Info("Load scene '{0}' OK.", ne.SceneAssetName);
         }
 
@@ -112,6 +116,7 @@ namespace Flower
                 return;
             }
 
+            ZombieBootLoadingScreen.Fail();
             Log.Error("Load scene '{0}' failure, error message '{1}'.", ne.SceneAssetName, ne.ErrorMessage);
         }
 
@@ -123,6 +128,7 @@ namespace Flower
                 return;
             }
 
+            ZombieBootLoadingScreen.Report(0.7f + ne.Progress * 0.25f, "\u6b63\u5728\u52a0\u8f7d\u907f\u96be\u6240\u2026");
             Log.Info("Load scene '{0}' update, progress '{1}'.", ne.SceneAssetName, ne.Progress.ToString("P2"));
         }
 
@@ -138,6 +144,5 @@ namespace Flower
         }
     }
 }
-
 
 

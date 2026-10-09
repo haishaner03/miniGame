@@ -31,6 +31,9 @@ namespace Flower
         {
             base.OnEnter(procedureOwner);
 
+            m_LoadedFlag.Clear();
+            ZombieBootLoadingScreen.Report(0.1f, "\u6b63\u5728\u52a0\u8f7d\u914d\u7f6e\u4e0e\u6570\u636e\u2026");
+
             GameEntry.Event.Subscribe(LoadConfigSuccessEventArgs.EventId, OnLoadConfigSuccess);
             GameEntry.Event.Subscribe(LoadConfigFailureEventArgs.EventId, OnLoadConfigFailure);
             GameEntry.Event.Subscribe(LoadDictionarySuccessEventArgs.EventId, OnLoadDictionarySuccess);
@@ -57,6 +60,14 @@ namespace Flower
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+
+            int readyCount = 0;
+            int totalCount = m_LoadedFlag.Count + (datas == null ? 0 : datas.Length);
+            foreach (bool ready in m_LoadedFlag.Values) if (ready) readyCount++;
+            if (datas != null)
+                foreach (DataBase data in datas) if (data != null && data.IsPreloadReady) readyCount++;
+            float progress = totalCount == 0 ? 0f : (float)readyCount / totalCount;
+            ZombieBootLoadingScreen.Report(0.1f + progress * 0.55f, "\u6b63\u5728\u52a0\u8f7d\u914d\u7f6e\u4e0e\u6570\u636e\u2026");
 
             foreach (var item in m_LoadedFlag)
             {
@@ -171,6 +182,7 @@ namespace Flower
                 return;
             }
 
+            ZombieBootLoadingScreen.Fail();
             Log.Error("Can not load config '{0}' from '{1}' with error message '{2}'.", ne.ConfigAssetName, ne.ConfigAssetName, ne.ErrorMessage);
         }
 
@@ -194,6 +206,7 @@ namespace Flower
                 return;
             }
 
+            ZombieBootLoadingScreen.Fail();
             Log.Error("Can not load dictionary '{0}' from '{1}' with error message '{2}'.", ne.DictionaryAssetName, ne.DictionaryAssetName, ne.ErrorMessage);
         }
 
