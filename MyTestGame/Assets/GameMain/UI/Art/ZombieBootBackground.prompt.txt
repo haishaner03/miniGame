@@ -1,0 +1,8 @@
+Use case: stylized-concept
+Asset type: full-screen widescreen startup loading background for a zombie survival game, 1920x1080.
+Primary request: a detailed pixel-art-inspired abandoned urban street at dusk, consistent with the game's existing safehouse menu artwork.
+Scene/backdrop: weathered brick buildings, cracked asphalt, abandoned cars, creeping vegetation and a fortified safehouse entrance. Small distant zombie silhouettes belong to the environment, not foreground portraits.
+Style/medium: polished atmospheric 2D game environment art, crisp readable architectural detail, restrained pixel texture, no photorealism.
+Composition/framing: immersive full-bleed wide scene, safehouse entrance on the right half, quieter space at the upper left for the game title and a calm lower fifth for a real UI loading bar. The path through the street leads toward the safehouse.
+Lighting/mood: cool dusk ambience, muted green vegetation and concrete grey, a restrained warm light at the safehouse door, tense but readable.
+Constraints: environment artwork only. No lettering, logos, watermarks, interface elements, progress bars, borders, collages or typography baked into the image. No graphic gore. Do not blur the environment.
