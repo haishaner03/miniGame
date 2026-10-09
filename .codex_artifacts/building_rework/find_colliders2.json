@@ -1,0 +1,12 @@
+{
+  "method": "tools/call",
+  "params": {
+    "name": "find_gameobjects",
+    "arguments": {
+      "search_method": "by_component",
+      "page_size": 50,
+      "search_term": "TilemapCollider2D"
+    }
+  },
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\find_colliders2_out.json"
+}

@@ -55,7 +55,7 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Graphics UV Starts At Top", SystemInfo.graphicsUVStartsAtTop.ToString());
 #endif
 #if UNITY_2019_1_OR_NEWER
-                    DrawItem("Min Constant Buffer Offset Alignment", SystemInfo.minConstantBufferOffsetAlignment.ToString());
+                    DrawItem("Min Constant Buffer Offset Alignment", SystemInfo.constantBufferOffsetAlignment.ToString());
 #endif
 #if UNITY_2018_3_OR_NEWER
                     DrawItem("Has Hidden Surface Removal On GPU", SystemInfo.hasHiddenSurfaceRemovalOnGPU.ToString());
@@ -128,3 +128,4 @@ namespace UnityGameFramework.Runtime
         }
     }
 }
+

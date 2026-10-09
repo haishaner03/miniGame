@@ -17,6 +17,7 @@ namespace Flower
             base.OnInit(userData);
 
             levelSelectButton.onClick.AddListener(OnLevelSelectButtonClick);
+            levelSelectButton.gameObject.SetActive(false);
             optionButton.onClick.AddListener(OnOptionButtonClick);
             quitButton.onClick.AddListener(OnQuitButtonClick);
         }
@@ -34,8 +35,7 @@ namespace Flower
 
         private void OnLevelSelectButtonClick()
         {
-            GameEntry.Sound.PlaySound(EnumSound.ui_sound_forward);
-            GameEntry.UI.OpenUIForm(EnumUIForm.UILevelSelectForm);
+            // Level selection is intentionally disabled while the project is being rebuilt as a 2D platformer.
         }
 
         private void OnOptionButtonClick()

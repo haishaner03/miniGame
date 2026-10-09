@@ -1,0 +1,1 @@
+{"method":"tools/call","params":{"name":"find_gameobjects","arguments":{"search_term":"BuildingVisuals","search_method":"by_name","page_size":50}},"output":"D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\find_buildings_out.json"}

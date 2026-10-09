@@ -1,0 +1,13 @@
+{
+  "params": {
+    "arguments": {
+      "action": "execute",
+      "safety_checks": true,
+      "compiler": "auto"
+    },
+    "name": "execute_code"
+  },
+  "code_file": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\verify_map_after_gpt.cs",
+  "method": "tools/call",
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\verify_map_after_gpt_out.json"
+}

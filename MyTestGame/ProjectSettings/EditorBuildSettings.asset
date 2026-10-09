@@ -26,4 +26,17 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameMain/Scenes/Level5/Level5.unity
     guid: 3a8ffd16aeae9fd4091c154184e0d5d5
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Level/ZombieLevel01.unity
+    guid: aa5aa2dfadd52d74caf37cbc5c550160
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Level/ZombieLevel02/ZombieLevel02.unity
+    guid: f382f0067622aaf4692a33a6d6a3b110
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Level/ZombieLevel03/ZombieLevel03.unity
+    guid: 42aa2ecaa6ae7e54581a065b42abdad0
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Level/ZombieLevel04/ZombieLevel04.unity
+    guid: c8a9cf3b9d7850947b5d49ed4c5c3162
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

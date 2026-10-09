@@ -1,0 +1,13 @@
+{
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\replace_existing_curbs_out.json",
+  "code_file": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\replace_existing_curbs.cs",
+  "method": "tools/call",
+  "params": {
+    "arguments": {
+      "action": "execute",
+      "compiler": "auto",
+      "safety_checks": true
+    },
+    "name": "execute_code"
+  }
+}

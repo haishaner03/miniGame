@@ -1,0 +1,16 @@
+{
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\capture_after_remap_out.json",
+  "params": {
+    "name": "manage_camera",
+    "arguments": {
+      "capture_source": "scene_view",
+      "include_image": false,
+      "output_folder": "Assets/Screenshots",
+      "view_target": "GroundTilemap",
+      "action": "screenshot",
+      "max_resolution": 1280,
+      "screenshot_file_name": "ZombieLevel01_Buildings_Curbs_GptImage2_Final.png"
+    }
+  },
+  "method": "tools/call"
+}

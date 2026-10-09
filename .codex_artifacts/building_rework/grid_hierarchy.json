@@ -1,0 +1,14 @@
+{
+  "params": {
+    "arguments": {
+      "page_size": 200,
+      "max_depth": 4,
+      "include_transform": false,
+      "parent": 40614,
+      "action": "get_hierarchy"
+    },
+    "name": "manage_scene"
+  },
+  "method": "tools/call",
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\grid_hierarchy_out.json"
+}

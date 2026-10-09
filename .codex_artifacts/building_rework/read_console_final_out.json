@@ -1,0 +1,18 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":true,\"message\":\"Retrieved 3 log entries.\",\"data\":[\"<b><color=#cc7a00>MCP-FOR-UNITY</color></b>: [WebSocket] Unexpected receive error: WebSocket is not initialised\",\"UnityException: Load is not allowed to be called from a MonoBehaviour constructor (or instance field initializer), call it in Awake or Start instead. Called from MonoBehaviour 'DebuggerComponent' on game object 'Debugger'.\",\"UnityException: Load is not allowed to be called during serialization, call it from Awake or Start instead. Called from MonoBehaviour 'DebuggerComponent' on game object 'Debugger'.\"]}"
+    }
+  ],
+  "structuredContent": {
+    "success": true,
+    "message": "Retrieved 3 log entries.",
+    "data": [
+      "<b><color=#cc7a00>MCP-FOR-UNITY</color></b>: [WebSocket] Unexpected receive error: WebSocket is not initialised",
+      "UnityException: Load is not allowed to be called from a MonoBehaviour constructor (or instance field initializer), call it in Awake or Start instead. Called from MonoBehaviour 'DebuggerComponent' on game object 'Debugger'.",
+      "UnityException: Load is not allowed to be called during serialization, call it from Awake or Start instead. Called from MonoBehaviour 'DebuggerComponent' on game object 'Debugger'."
+    ]
+  },
+  "isError": false
+}

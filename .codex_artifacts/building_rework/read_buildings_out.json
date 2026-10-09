@@ -1,0 +1,9 @@
+{
+  "contents": [
+    {
+      "uri": "mcpforunity://scene/gameobject/-17742",
+      "mimeType": "text/plain",
+      "text": "{\"success\":true,\"message\":null,\"error\":null,\"data\":{\"instanceID\":-17742,\"name\":\"BuildingVisuals\",\"tag\":\"Untagged\",\"layer\":0,\"layerName\":\"Default\",\"active\":true,\"activeInHierarchy\":true,\"isStatic\":false,\"transform\":{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"localPosition\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"rotation\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"localRotation\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"scale\":{\"x\":1.0,\"y\":1.0,\"z\":1.0},\"lossyScale\":{\"x\":1.0,\"y\":1.0,\"z\":1.0}},\"parent\":null,\"children\":[-17746,-17752,-17758,-17764,-17770,-17776,-17782,-17788,-17794],\"componentTypes\":[\"Transform\"],\"path\":\"BuildingVisuals\"},\"hint\":null}"
+    }
+  ]
+}

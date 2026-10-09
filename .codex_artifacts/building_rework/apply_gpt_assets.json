@@ -1,0 +1,13 @@
+{
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\apply_gpt_assets_out.json",
+  "method": "tools/call",
+  "code_file": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\apply_gpt_assets.cs",
+  "params": {
+    "name": "execute_code",
+    "arguments": {
+      "action": "execute",
+      "safety_checks": true,
+      "compiler": "auto"
+    }
+  }
+}

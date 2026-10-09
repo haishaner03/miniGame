@@ -1,0 +1,17 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":true,\"message\":\"Code executed successfully.\",\"data\":{\"result\":\"Applied 9 building SpriteRenderers; sprite=Building_ConvenienceStore_GptImage2; ppu=256; pivot=bottom; names=Building_00_Safehouse,Building_01_Apartment,Building_02_Apartment,Building_03_Safehouse,Building_04_Warehouse,Building_05_Apartment,Building_06_Warehouse,Building_07_Warehouse,Building_08_Safehouse\",\"compiler\":\"codedom\"}}"
+    }
+  ],
+  "structuredContent": {
+    "success": true,
+    "message": "Code executed successfully.",
+    "data": {
+      "result": "Applied 9 building SpriteRenderers; sprite=Building_ConvenienceStore_GptImage2; ppu=256; pivot=bottom; names=Building_00_Safehouse,Building_01_Apartment,Building_02_Apartment,Building_03_Safehouse,Building_04_Warehouse,Building_05_Apartment,Building_06_Warehouse,Building_07_Warehouse,Building_08_Safehouse",
+      "compiler": "codedom"
+    }
+  },
+  "isError": false
+}

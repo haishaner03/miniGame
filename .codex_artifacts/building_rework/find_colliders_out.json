@@ -1,0 +1,16 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":false,\"message\":null,\"error\":\"Unity plugin session caa42731-8e72-4366-8edb-44e29596ff46 disconnected while awaiting command_result\",\"data\":null,\"hint\":\"retry\"}"
+    }
+  ],
+  "structuredContent": {
+    "success": false,
+    "message": null,
+    "error": "Unity plugin session caa42731-8e72-4366-8edb-44e29596ff46 disconnected while awaiting command_result",
+    "data": null,
+    "hint": "retry"
+  },
+  "isError": false
+}

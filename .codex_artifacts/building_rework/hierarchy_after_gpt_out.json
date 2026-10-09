@@ -1,0 +1,170 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":true,\"message\":\"Retrieved hierarchy page for scene 'ZombieLevel01'.\",\"data\":{\"scope\":\"roots\",\"cursor\":0,\"pageSize\":200,\"next_cursor\":null,\"truncated\":false,\"total\":8,\"items\":[{\"name\":\"GameFramework\",\"instanceID\":40582,\"activeSelf\":false,\"activeInHierarchy\":false,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"GameFramework\",\"childCount\":4,\"childrenTruncated\":true,\"childrenCursor\":\"0\",\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\",\"GameEntry\"]},{\"name\":\"EventSystem\",\"instanceID\":40568,\"activeSelf\":false,\"activeInHierarchy\":false,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"EventSystem\",\"childCount\":0,\"childrenTruncated\":false,\"childrenCursor\":null,\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\",\"EventSystem\",\"StandaloneInputModule\"]},{\"name\":\"Grid\",\"instanceID\":40614,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"Grid\",\"childCount\":6,\"childrenTruncated\":true,\"childrenCursor\":\"0\",\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\",\"Grid\"]},{\"name\":\"StreetBlock01\",\"instanceID\":40800,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"StreetBlock01\",\"childCount\":143,\"childrenTruncated\":true,\"childrenCursor\":\"0\",\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\"]},{\"name\":\"SurvivorPlayer\",\"instanceID\":41098,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"SurvivorPlayer\",\"childCount\":0,\"childrenTruncated\":false,\"childrenCursor\":null,\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\",\"SpriteRenderer\",\"Rigidbody2D\",\"CapsuleCollider2D\",\"SurvivorMovement\",\"Animator\"]},{\"name\":\"MainCamera\",\"instanceID\":40382,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"MainCamera\",\"layer\":0,\"isStatic\":false,\"path\":\"MainCamera\",\"childCount\":0,\"childrenTruncated\":false,\"childrenCursor\":null,\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\",\"Camera\",\"CameraFollow2D\"]},{\"name\":\"BuildingVisuals\",\"instanceID\":-17742,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"BuildingVisuals\",\"childCount\":9,\"childrenTruncated\":true,\"childrenCursor\":\"0\",\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\"]},{\"name\":\"StreetClutter\",\"instanceID\":-18544,\"activeSelf\":true,\"activeInHierarchy\":true,\"tag\":\"Untagged\",\"layer\":0,\"isStatic\":false,\"path\":\"StreetClutter\",\"childCount\":67,\"childrenTruncated\":true,\"childrenCursor\":\"0\",\"childrenPageSizeDefault\":200,\"componentTypes\":[\"Transform\"]}]}}"
+    }
+  ],
+  "structuredContent": {
+    "success": true,
+    "message": "Retrieved hierarchy page for scene 'ZombieLevel01'.",
+    "data": {
+      "scope": "roots",
+      "cursor": 0,
+      "pageSize": 200,
+      "next_cursor": null,
+      "truncated": false,
+      "total": 8,
+      "items": [
+        {
+          "name": "GameFramework",
+          "instanceID": 40582,
+          "activeSelf": false,
+          "activeInHierarchy": false,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "GameFramework",
+          "childCount": 4,
+          "childrenTruncated": true,
+          "childrenCursor": "0",
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform",
+            "GameEntry"
+          ]
+        },
+        {
+          "name": "EventSystem",
+          "instanceID": 40568,
+          "activeSelf": false,
+          "activeInHierarchy": false,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "EventSystem",
+          "childCount": 0,
+          "childrenTruncated": false,
+          "childrenCursor": null,
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform",
+            "EventSystem",
+            "StandaloneInputModule"
+          ]
+        },
+        {
+          "name": "Grid",
+          "instanceID": 40614,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "Grid",
+          "childCount": 6,
+          "childrenTruncated": true,
+          "childrenCursor": "0",
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform",
+            "Grid"
+          ]
+        },
+        {
+          "name": "StreetBlock01",
+          "instanceID": 40800,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "StreetBlock01",
+          "childCount": 143,
+          "childrenTruncated": true,
+          "childrenCursor": "0",
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform"
+          ]
+        },
+        {
+          "name": "SurvivorPlayer",
+          "instanceID": 41098,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "SurvivorPlayer",
+          "childCount": 0,
+          "childrenTruncated": false,
+          "childrenCursor": null,
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform",
+            "SpriteRenderer",
+            "Rigidbody2D",
+            "CapsuleCollider2D",
+            "SurvivorMovement",
+            "Animator"
+          ]
+        },
+        {
+          "name": "MainCamera",
+          "instanceID": 40382,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "MainCamera",
+          "layer": 0,
+          "isStatic": false,
+          "path": "MainCamera",
+          "childCount": 0,
+          "childrenTruncated": false,
+          "childrenCursor": null,
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform",
+            "Camera",
+            "CameraFollow2D"
+          ]
+        },
+        {
+          "name": "BuildingVisuals",
+          "instanceID": -17742,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "BuildingVisuals",
+          "childCount": 9,
+          "childrenTruncated": true,
+          "childrenCursor": "0",
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform"
+          ]
+        },
+        {
+          "name": "StreetClutter",
+          "instanceID": -18544,
+          "activeSelf": true,
+          "activeInHierarchy": true,
+          "tag": "Untagged",
+          "layer": 0,
+          "isStatic": false,
+          "path": "StreetClutter",
+          "childCount": 67,
+          "childrenTruncated": true,
+          "childrenCursor": "0",
+          "childrenPageSizeDefault": 200,
+          "componentTypes": [
+            "Transform"
+          ]
+        }
+      ]
+    }
+  },
+  "isError": false
+}

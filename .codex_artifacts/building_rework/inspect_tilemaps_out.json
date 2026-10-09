@@ -1,0 +1,17 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":true,\"message\":\"Code executed successfully.\",\"data\":{\"result\":\"GroundTilemap:count=1920,bounds=(0, 0, 0)..(40, 48, 1),sprites=Grass_Mask_019=5|Grass_Mask_155=52|Grass_Mask_137=11|Soil_Center=442|Grass_Mask_055=74|Grass_Center_0=203|Grass_Center_1=187|Grass_Center_2=193|Grass_Mask_205=65|Grass_Mask_239=8|Grass_Mask_110=47|Grass_Mask_127=6|Grass_Mask_076=12|ConcreteCurb_01=59|Grass_Mask_038=9|ConcreteCurb_02=49|WornAsphalt_2=85|WornAsphalt_0=113|ConcreteCurb_08=51|WornAsphalt_1=81|ConcreteCurb_09=6|Soil_CrackedCenter=56|ConcreteCurb_04=60|ConcreteCurb_06=7|Grass_Mask_223=8|ConcreteCurb_03=7|ConcreteCurb_12=5|Grass_Mask_001=2|Grass_Mask_023=1|Grass_Mask_191=1|Grass_Mask_078=1|Grass_Mask_010=2|Grass_Mask_046=2|Grass_Mask_002=1|Grass_Mask_139=1|Grass_Mask_008=1|ConcreteCurb_13=1|ConcreteCurb_05=4|Grass_Mask_000=1|Grass_Mask_141=1\\nGroundDetailTilemap:count=0,bounds=(0, 0, 0)..(0, 0, 1),sprites=\\nObstacleTilemap:count=27,bounds=(0, 0, 0)..(39, 43, 1),sprites=RockLarge=7|FallenTrunk=3|DeadTree=4|RockPile=4|TreeStump=6|RockTall=3\\nBuildingTilemap:count=248,bounds=(0, 0, 0)..(38, 46, 1),sprites=HouseWallSprite=102|HouseFloorSprite=94|BrickRoofSprite=20|SlateRoofSprite=32\",\"compiler\":\"codedom\"}}"
+    }
+  ],
+  "structuredContent": {
+    "success": true,
+    "message": "Code executed successfully.",
+    "data": {
+      "result": "GroundTilemap:count=1920,bounds=(0, 0, 0)..(40, 48, 1),sprites=Grass_Mask_019=5|Grass_Mask_155=52|Grass_Mask_137=11|Soil_Center=442|Grass_Mask_055=74|Grass_Center_0=203|Grass_Center_1=187|Grass_Center_2=193|Grass_Mask_205=65|Grass_Mask_239=8|Grass_Mask_110=47|Grass_Mask_127=6|Grass_Mask_076=12|ConcreteCurb_01=59|Grass_Mask_038=9|ConcreteCurb_02=49|WornAsphalt_2=85|WornAsphalt_0=113|ConcreteCurb_08=51|WornAsphalt_1=81|ConcreteCurb_09=6|Soil_CrackedCenter=56|ConcreteCurb_04=60|ConcreteCurb_06=7|Grass_Mask_223=8|ConcreteCurb_03=7|ConcreteCurb_12=5|Grass_Mask_001=2|Grass_Mask_023=1|Grass_Mask_191=1|Grass_Mask_078=1|Grass_Mask_010=2|Grass_Mask_046=2|Grass_Mask_002=1|Grass_Mask_139=1|Grass_Mask_008=1|ConcreteCurb_13=1|ConcreteCurb_05=4|Grass_Mask_000=1|Grass_Mask_141=1\nGroundDetailTilemap:count=0,bounds=(0, 0, 0)..(0, 0, 1),sprites=\nObstacleTilemap:count=27,bounds=(0, 0, 0)..(39, 43, 1),sprites=RockLarge=7|FallenTrunk=3|DeadTree=4|RockPile=4|TreeStump=6|RockTall=3\nBuildingTilemap:count=248,bounds=(0, 0, 0)..(38, 46, 1),sprites=HouseWallSprite=102|HouseFloorSprite=94|BrickRoofSprite=20|SlateRoofSprite=32",
+      "compiler": "codedom"
+    }
+  },
+  "isError": false
+}

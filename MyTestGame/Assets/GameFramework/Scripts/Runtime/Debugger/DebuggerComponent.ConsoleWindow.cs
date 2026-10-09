@@ -19,7 +19,7 @@ namespace UnityGameFramework.Runtime
         private sealed class ConsoleWindow : IDebuggerWindow
         {
             private readonly Queue<LogNode> m_LogNodes = new Queue<LogNode>();
-            private readonly TextEditor m_TextEditor = new TextEditor();
+            private TextEditor m_TextEditor = null;
 
             private SettingComponent m_SettingComponent = null;
             private Vector2 m_LogScrollPosition = Vector2.zero;
@@ -372,6 +372,11 @@ namespace UnityGameFramework.Runtime
                             GUILayout.Label(Utility.Text.Format("<color=#{0}{1}{2}{3}><b>{4}</b></color>", color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"), m_SelectedNode.LogMessage));
                             if (GUILayout.Button("COPY", GUILayout.Width(60f), GUILayout.Height(30f)))
                             {
+                                // Unity 6 requires TextEditor creation on the GUI thread.
+                                if (m_TextEditor == null)
+                                {
+                                    m_TextEditor = new TextEditor();
+                                }
                                 m_TextEditor.text = Utility.Text.Format("{0}{2}{2}{1}", m_SelectedNode.LogMessage, m_SelectedNode.StackTrack, Environment.NewLine);
                                 m_TextEditor.OnFocus();
                                 m_TextEditor.Copy();

@@ -1,0 +1,3 @@
+RunRight: 16/16 sampled frame matches across two loops; distinct=8; flipX=False
+RunLeft: 16/16 sampled frame matches across two loops; distinct=8; flipX=True
+Restored idle, movement and animator speed; no scene transform modified.

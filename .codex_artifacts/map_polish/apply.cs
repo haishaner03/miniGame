@@ -1,0 +1,26 @@
+if (UnityEditor.EditorApplication.isPlaying) throw new System.Exception("Stop Play Mode before applying map polish.");
+var scene = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
+if (scene.path != "Assets/GameMain/Scenes/Level/ZombieLevel01.unity") throw new System.Exception("Active scene is not ZombieLevel01.");
+var ground = UnityEngine.GameObject.Find("GroundTilemap");
+var obstacle = UnityEngine.GameObject.Find("ObstacleTilemap");
+var gameplay = UnityEngine.GameObject.Find("GameplayTilemap");
+if (ground == null || obstacle == null || gameplay == null) throw new System.Exception("Required tilemaps missing.");
+var groundMap=ground.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+var obstacleMap=obstacle.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+var gameplayMap=gameplay.GetComponent<UnityEngine.Tilemaps.Tilemap>();
+string root="Assets/GameMain/Res/Map/StreetBlock01/Polished";
+System.Func<string,UnityEngine.Tilemaps.TileBase> load=delegate(string n){var t=UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Tilemaps.TileBase>(root+"/Tile_"+n+".asset");if(t==null)throw new System.Exception("Missing polished tile "+n);return t;};
+var asphalt=new UnityEngine.Tilemaps.TileBase[3];for(int i=0;i<3;i++)asphalt[i]=load("WornAsphalt_"+i);
+var curb=new UnityEngine.Tilemaps.TileBase[16];for(int i=0;i<16;i++)curb[i]=load("ConcreteCurb_"+i.ToString("00"));
+System.Func<UnityEngine.Vector3Int,int> roadMask=delegate(UnityEngine.Vector3Int p){int m=0;var ds=new[]{new UnityEngine.Vector3Int(0,1,0),new UnityEngine.Vector3Int(1,0,0),new UnityEngine.Vector3Int(0,-1,0),new UnityEngine.Vector3Int(-1,0,0)};for(int i=0;i<4;i++){var t=groundMap.GetTile(p+ds[i]);if(t!=null&&t.name=="Asphalt")m|=1<<i;}return m;};
+var roadPositions=new System.Collections.Generic.List<UnityEngine.Vector3Int>();var roadTiles=new System.Collections.Generic.List<UnityEngine.Tilemaps.TileBase>();int pavement=0,asphaltCount=0;
+foreach(var p in groundMap.cellBounds.allPositionsWithin){var t=groundMap.GetTile(p);if(t==null)continue;if(t.name=="Pavement"){roadPositions.Add(p);roadTiles.Add(curb[roadMask(p)]);pavement++;}else if(t.name=="Asphalt"){uint h=unchecked((uint)((p.x*73856093)^(p.y*19349663)));roadPositions.Add(p);roadTiles.Add(asphalt[h%3]);asphaltCount++;}}
+UnityEditor.Undo.RegisterCompleteObjectUndo(groundMap,"Polish roads and props");groundMap.SetTiles(roadPositions.ToArray(),roadTiles.ToArray());groundMap.RefreshAllTiles();
+var obstacleNames=new System.Collections.Generic.Dictionary<string,string>();
+obstacleNames["03_RocksTrees_4x4_03_00"]="RockLarge";obstacleNames["03_RocksTrees_4x4_03_01"]="FallenTrunk";obstacleNames["03_RocksTrees_4x4_00_00"]="RockLarge";obstacleNames["03_RocksTrees_4x4_00_01"]="DeadTree";obstacleNames["03_RocksTrees_4x4_01_00"]="RockPile";obstacleNames["03_RocksTrees_4x4_01_01"]="TreeStump";obstacleNames["03_RocksTrees_4x4_02_00"]="RockTall";obstacleNames["03_RocksTrees_4x4_02_01"]="TreeStump";
+var gameplayNames=new System.Collections.Generic.Dictionary<string,string>();
+gameplayNames["04_CarsFencesDoors_4x4_00_00"]="AbandonedSedan";gameplayNames["04_CarsFencesDoors_4x4_00_01"]="WreckedCar";gameplayNames["04_CarsFencesDoors_4x4_01_00"]="ChainFence";gameplayNames["04_CarsFencesDoors_4x4_01_01"]="WoodFence";gameplayNames["04_CarsFencesDoors_4x4_02_00"]="RoadBarricade";gameplayNames["04_CarsFencesDoors_4x4_02_01"]="DamagedBarricade";
+System.Action<UnityEngine.Tilemaps.Tilemap,System.Collections.Generic.Dictionary<string,string>> replace=delegate(UnityEngine.Tilemaps.Tilemap map,System.Collections.Generic.Dictionary<string,string> names){var ps=new System.Collections.Generic.List<UnityEngine.Vector3Int>();var ts=new System.Collections.Generic.List<UnityEngine.Tilemaps.TileBase>();foreach(var p in map.cellBounds.allPositionsWithin){var t=map.GetTile(p);if(t==null||!names.ContainsKey(t.name))continue;ps.Add(p);ts.Add(load(names[t.name]));}map.SetTiles(ps.ToArray(),ts.ToArray());map.RefreshAllTiles();};
+replace(obstacleMap,obstacleNames);replace(gameplayMap,gameplayNames);
+UnityEditor.EditorUtility.SetDirty(groundMap);UnityEditor.EditorUtility.SetDirty(obstacleMap);UnityEditor.EditorUtility.SetDirty(gameplayMap);UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);UnityEditor.AssetDatabase.SaveAssets();
+return new {scene=scene.path,pavementChanged=pavement,asphaltChanged=asphaltCount,obstacleMap=obstacleMap.cellBounds.size.ToString(),gameplayMap=gameplayMap.cellBounds.size.ToString(),note="Visual only; collision layers were not changed."};

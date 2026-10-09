@@ -1,0 +1,13 @@
+{
+  "output": "D:\\UnityProject\\miniGame\\.codex_artifacts\\building_rework\\hierarchy_after_gpt_out.json",
+  "method": "tools/call",
+  "params": {
+    "name": "manage_scene",
+    "arguments": {
+      "action": "get_hierarchy",
+      "page_size": 200,
+      "max_depth": 5,
+      "include_transform": false
+    }
+  }
+}

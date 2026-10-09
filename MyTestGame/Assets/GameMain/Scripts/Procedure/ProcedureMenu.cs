@@ -25,11 +25,10 @@ namespace Flower
             this.procedureOwner = procedureOwner;
             this.changeScene = false;
 
-            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Subscribe(ChangeSceneEventArgs.EventId, OnChangeScene);
-            GameEntry.Event.Subscribe(LoadLevelEventArgs.EventId, OnLoadLevel);
 
-            GameEntry.UI.OpenUIForm(EnumUIForm.UIMainMenuForm);
+            // 菜单场景内已经放置 ZombieMainMenu.prefab。
+            // 这里不再打开旧的 UIMainMenuForm，避免两个菜单叠加显示。
             GameEntry.UI.OpenDownloadForm();
             GameEntry.Sound.PlayMusic(EnumSound.MenuBGM);
         }
@@ -49,9 +48,7 @@ namespace Flower
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.Sound.StopMusic();
 
-            GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Unsubscribe(ChangeSceneEventArgs.EventId, OnChangeScene);
-            GameEntry.Event.Unsubscribe(LoadLevelEventArgs.EventId, OnLoadLevel);
         }
 
         protected override void OnDestroy(ProcedureOwner procedureOwner)
@@ -76,28 +73,6 @@ namespace Flower
 
             changeScene = true;
             procedureOwner.SetData<VarInt32>(Constant.ProcedureData.NextSceneId, ne.SceneId);
-        }
-
-        private void OnLoadLevel(object sender, GameEventArgs e)
-        {
-            LoadLevelEventArgs ne = (LoadLevelEventArgs)e;
-            if (ne == null)
-                return;
-
-            if (ne.LevelData == null)
-            {
-                Log.Error("Load level event param LevelData is null");
-                return;
-            }
-
-            if (ne.LevelData.SceneData == null)
-            {
-                Log.Error("Load level event param SceneData is null");
-                return;
-            }
-
-            changeScene = true;
-            procedureOwner.SetData<VarInt32>(Constant.ProcedureData.NextSceneId, ne.LevelData.SceneData.Id);
         }
 
     }

@@ -101,8 +101,6 @@ namespace Flower
             }
 
             loadSceneCompleted = true;
-
-            GameEntry.Event.Fire(this, LoadLevelFinishEventArgs.Create(loadingSceneId));
             Log.Info("Load scene '{0}' OK.", ne.SceneAssetName);
         }
 
@@ -140,5 +138,6 @@ namespace Flower
         }
     }
 }
+
 
 

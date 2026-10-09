@@ -1449,10 +1449,10 @@ namespace UnityGameFramework.Editor.ResourceTools
                 buildOptions |= BuildAssetBundleOptions.DisableWriteTypeTree;
             }
 
-            if (DeterministicAssetBundleSelected)
-            {
-                buildOptions |= BuildAssetBundleOptions.DeterministicAssetBundle;
-            }
+            // Deterministic AssetBundles are always enabled by Unity's modern
+            // AssetBundle build system (Unity 5.0+). Keep the legacy setting in
+            // the editor/configuration for compatibility, but do not pass the
+            // obsolete enum value to the Unity 6 build API.
 
             if (ForceRebuildAssetBundleSelected)
             {

@@ -13,7 +13,6 @@ using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedure
 using LoadDataTableSuccessEventArgs = UnityGameFramework.Runtime.LoadDataTableSuccessEventArgs;
 using LoadDataTableFailureEventArgs = UnityGameFramework.Runtime.LoadDataTableFailureEventArgs;
 
-using DataItem = Flower.Data.DataItem;
 
 namespace Flower
 {
@@ -111,7 +110,6 @@ namespace Flower
             SetDataComponent();
             SetUIComponent();
             //SetEntityComponent();
-            SetItemComponent();
             SetSoundComponent();
         }
 
@@ -126,26 +124,6 @@ namespace Flower
             foreach (var item in uiGroupDatas)
             {
                 GameEntry.UI.AddUIGroup(item.Name, item.Depth);
-            }
-        }
-
-        private void SetItemComponent()
-        {
-            ItemGroupData[] itemGroupDatas = GameEntry.Data.GetData<Data.DataItem>().GetAllItemGroupData();
-            foreach (var item in itemGroupDatas)
-            {
-                PoolParamData poolParamData = item.PoolParamData;
-                GameEntry.Item.AddItemGroup(item.Name, poolParamData.InstanceAutoReleaseInterval, poolParamData.InstanceCapacity, poolParamData.InstanceExpireTime, poolParamData.InstancePriority);
-            }
-        }
-
-        private void SetEntityComponent()
-        {
-            EntityGroupData[] entityGroupDatas = GameEntry.Data.GetData<DataEntity>().GetAllEntityGroupData();
-            foreach (var item in entityGroupDatas)
-            {
-                PoolParamData poolParamData = item.PoolParamData;
-                GameEntry.Entity.AddEntityGroup(item.Name, poolParamData.InstanceAutoReleaseInterval, poolParamData.InstanceCapacity, poolParamData.InstanceExpireTime, poolParamData.InstancePriority);
             }
         }
 

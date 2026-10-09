@@ -1,0 +1,12 @@
+# Survivor V2 generation prompt
+
+Use case: stylized-concept
+Asset type: 2D pixel-art game character sprite sheet for a top-down zombie survival game.
+Primary request: a rugged adult survivor with a clear readable silhouette, short black hair, olive-green field jacket, orange emergency backpack, red first-aid pouch, charcoal cargo pants, brown boots, dark outline, warm skin highlights.
+Composition: exactly 8 equal cells in a 4x2 grid, one full-body running pose per cell, same scale and baseline, generous transparent padding, no gutters, no labels.
+Animation: strong alternating left/right leg strides, opposite arm swings, visible knee bends, slight body bob; frame order is contact, compression, push-off, flight, opposite contact, compression, push-off, flight.
+Camera: orthographic elevated 3/4 top-down game view, consistent proportions and character identity.
+Style: clean readable 32-36 pixel-tall pixel character when reduced to a 64x64 cell, crisp pixel clusters, limited palette, no blur, no anti-aliasing.
+Constraints: transparent background with real alpha, no ground, no shadow, no weapon, no scenery, no text, no watermark.
+
+Generate matching sheets for: RunDown, RunUp, RunRight. RunLeft is mirrored from RunRight. For the next pass, generate diagonal sheets using the same character and palette: RunUpRight, RunUpLeft, RunDownRight, RunDownLeft.

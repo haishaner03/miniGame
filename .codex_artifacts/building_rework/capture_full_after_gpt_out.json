@@ -1,0 +1,26 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"success\":true,\"message\":\"Scene View screenshot captured to 'Assets/Screenshots/ZombieLevel01_GptBuilding2.png' (scene view: Scene).\",\"data\":{\"path\":\"Assets/Screenshots/ZombieLevel01_GptBuilding2.png\",\"fullPath\":\"D:/UnityProject/miniGame/MyTestGame/Assets/Screenshots/ZombieLevel01_GptBuilding2.png\",\"superSize\":1,\"isAsync\":false,\"camera\":\"SceneCamera\",\"captureSource\":\"scene_view\",\"captureMode\":\"scene_view_viewport\",\"sceneViewName\":\"Scene\",\"viewportWidth\":1107,\"viewportHeight\":929,\"viewTarget\":\"GroundTilemap\"}}"
+    }
+  ],
+  "structuredContent": {
+    "success": true,
+    "message": "Scene View screenshot captured to 'Assets/Screenshots/ZombieLevel01_GptBuilding2.png' (scene view: Scene).",
+    "data": {
+      "path": "Assets/Screenshots/ZombieLevel01_GptBuilding2.png",
+      "fullPath": "D:/UnityProject/miniGame/MyTestGame/Assets/Screenshots/ZombieLevel01_GptBuilding2.png",
+      "superSize": 1,
+      "isAsync": false,
+      "camera": "SceneCamera",
+      "captureSource": "scene_view",
+      "captureMode": "scene_view_viewport",
+      "sceneViewName": "Scene",
+      "viewportWidth": 1107,
+      "viewportHeight": 929,
+      "viewTarget": "GroundTilemap"
+    }
+  },
+  "isError": false
+}
