@@ -1,1 +1,0 @@
-scene=Assets/GameMain/Scenes/Level/ZombieLevel01.unity totalTiles=1963 roadTiles=528 polishedPropTiles=43 missingSprites=0 playerRigidbody=True tileKinds=28; sceneIsDirty=False

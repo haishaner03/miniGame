@@ -59,5 +59,17 @@ sysinfo.txt
 crashlytics-build.properties
 
 UnityPackageManager/
-Assets/StreamingAssets/
-Assets/StreamingAssets.meta
+
+# Local backups, permissions reports, and unrelated prototypes
+/Backups/
+/dsh-acl-reports/
+/build_pelican.py
+/pelican-bike.html
+/pelican-bike-preview.png
+
+# Editor captures are generated output; ignore their Unity metadata as well
+/Assets/Screenshots/
+/Assets/Screenshots.meta
+
+# Keep map generators in Tools; ignore only their rendered previews
+/Tools/Level02/level02_preview_*.png

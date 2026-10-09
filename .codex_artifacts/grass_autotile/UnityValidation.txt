@@ -1,1 +1,0 @@
-256 neighbour combinations passed; diagonal erase refresh passed; 47 shape sprites assigned; scene grass=894, ground=1920, nullSprites=0; used shapes=25

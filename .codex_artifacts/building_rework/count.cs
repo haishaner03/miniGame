@@ -1,1 +1,0 @@
-var maps=UnityEngine.Object.FindObjectsByType<UnityEngine.Tilemaps.Tilemap>(UnityEngine.FindObjectsSortMode.None);var outp=new System.Collections.Generic.List<object>();foreach(var m in maps){if(!m.gameObject.scene.IsValid())continue;int n=0;foreach(var p in m.cellBounds.allPositionsWithin)if(m.GetTile(p)!=null)n++;outp.Add(new{name=m.name,cells=n});}return outp;

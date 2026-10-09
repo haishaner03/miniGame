@@ -30,3 +30,45 @@ sysinfo.txt
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Local agent scratch files (not Unity project assets)
+.codex_artifacts/
+__pycache__/
+*.py[cod]
+
+# Unrelated video project and rendered output
+/remotion-wuxia/
+/output/
+
+# One-off editor automation and inspection scripts in the repository root
+/.mcp_probe.py
+/mcp_*.py
+/*_zombie*.py
+/repair_zombie*.py
+/stop_*.py
+/split_*.py
+/camera_schema.py
+/schema_edit.py
+/state_now.py
+/final_errors.py
+/mcp_call.ps1
+/mcp_tools.txt
+/build_block.cs.txt
+/build_block.ps1
+/unity-map-session.txt
+
+# Image-generation requests, responses, and previews in the repository root
+/*_request*.json
+/*_response*.json
+/ui_generation_*.json
+/chat.json
+/gh.json
+/req.json
+/idle_down_cardinal_sheet.png
+/old_runright_contact.png
+/runleft_*.png
+/runleft_*.gif
+/bing.html
+/freeart.html
+/xindu.js
+/prompt-sword-woman.txt

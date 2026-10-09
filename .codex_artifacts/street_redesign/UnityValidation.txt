@@ -1,9 +1,0 @@
-Scene: Assets/GameMain/Scenes/Level/ZombieLevel01.unity
-Spawn clear: True; Exit clear: True
-Quarter-cell collision sampling, clearance box 0.42 x 0.26 (larger than player collider).
-Route length: 78 units; reachable samples=21724; blocked samples=8996
-South cordon crossed via western alley at x=9.875
-North cordon crossed via eastern street at x=30.375
-Ground tiles: 1920/1920; asphalt connectivity: 544/544
-Camera target: SurvivorPlayer (UnityEngine.Transform); ortho size=3; smoothing=0.16
-Active nonempty solid colliders: 76
