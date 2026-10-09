@@ -1,0 +1,20 @@
+ui_main_button_2.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+j1
+  rotate: false
+  xy: 2, 2
+  size: 104, 104
+  orig: 104, 104
+  offset: 0, 0
+  index: -1
+j2
+  rotate: false
+  xy: 2, 108
+  size: 105, 104
+  orig: 105, 104
+  offset: 0, 0
+  index: -1
+

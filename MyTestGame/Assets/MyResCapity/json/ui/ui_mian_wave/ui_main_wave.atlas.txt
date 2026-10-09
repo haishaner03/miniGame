@@ -1,0 +1,20 @@
+ui_main_wave.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+1
+  rotate: false
+  xy: 1, 1
+  size: 28, 36
+  orig: 30, 38
+  offset: 1, 1
+  index: -1
+2
+  rotate: false
+  xy: 1, 39
+  size: 62, 65
+  orig: 64, 67
+  offset: 1, 1
+  index: -1
+

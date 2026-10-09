@@ -1,0 +1,111 @@
+ui_main_btn_gift_first.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+f1
+  rotate: false
+  xy: 1, 137
+  size: 68, 57
+  orig: 68, 57
+  offset: 0, 0
+  index: -1
+f2
+  rotate: false
+  xy: 84, 200
+  size: 59, 42
+  orig: 59, 42
+  offset: 0, 0
+  index: -1
+f3
+  rotate: false
+  xy: 1, 196
+  size: 81, 46
+  orig: 81, 46
+  offset: 0, 0
+  index: -1
+fadai
+  rotate: false
+  xy: 24, 29
+  size: 33, 13
+  orig: 35, 15
+  offset: 1, 1
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 24, 9
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+jian
+  rotate: true
+  xy: 1, 1
+  size: 73, 21
+  orig: 73, 21
+  offset: 0, 0
+  index: -1
+jian2
+  rotate: false
+  xy: 181, 227
+  size: 40, 15
+  orig: 41, 15
+  offset: 0, 0
+  index: -1
+tou
+  rotate: false
+  xy: 1, 76
+  size: 61, 59
+  orig: 63, 61
+  offset: 1, 1
+  index: -1
+xin
+  rotate: false
+  xy: 145, 212
+  size: 34, 30
+  orig: 36, 32
+  offset: 1, 1
+  index: -1
+xin2
+  rotate: false
+  xy: 24, 44
+  size: 34, 30
+  orig: 36, 32
+  offset: 1, 1
+  index: -1
+xx6
+  rotate: false
+  xy: 42, 14
+  size: 15, 13
+  orig: 17, 15
+  offset: 1, 1
+  index: -1
+xx7
+  rotate: false
+  xy: 203, 212
+  size: 15, 13
+  orig: 17, 15
+  offset: 1, 1
+  index: -1
+xx8
+  rotate: true
+  xy: 223, 227
+  size: 15, 18
+  orig: 17, 20
+  offset: 1, 1
+  index: -1
+y1
+  rotate: true
+  xy: 181, 212
+  size: 13, 20
+  orig: 15, 22
+  offset: 1, 1
+  index: -1
+y2
+  rotate: false
+  xy: 71, 174
+  size: 10, 20
+  orig: 12, 22
+  offset: 1, 1
+  index: -1
+

@@ -1,0 +1,41 @@
+ui_level_up.png
+size: 1024, 1024
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+biao
+  rotate: false
+  xy: 498, 507
+  size: 203, 228
+  orig: 205, 230
+  offset: 1, 1
+  index: -1
+guangquan
+  rotate: false
+  xy: 2, 250
+  size: 494, 485
+  orig: 505, 519
+  offset: 7, 17
+  index: -1
+tiaofu
+  rotate: false
+  xy: 2, 148
+  size: 481, 100
+  orig: 481, 100
+  offset: 0, 0
+  index: -1
+xx
+  rotate: false
+  xy: 498, 462
+  size: 35, 43
+  orig: 39, 46
+  offset: 2, 2
+  index: -1
+ye2
+  rotate: false
+  xy: 2, 2
+  size: 163, 144
+  orig: 163, 144
+  offset: 0, 0
+  index: -1
+

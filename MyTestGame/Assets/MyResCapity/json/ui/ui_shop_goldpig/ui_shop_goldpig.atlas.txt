@@ -1,0 +1,167 @@
+ui_shop_goldpig.png
+size: 1024, 1024
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+chuizi
+  rotate: false
+  xy: 808, 808
+  size: 168, 211
+  orig: 168, 211
+  offset: 0, 0
+  index: -1
+guang1
+  rotate: false
+  xy: 2, 220
+  size: 373, 421
+  orig: 381, 434
+  offset: 4, 1
+  index: -1
+guang2
+  rotate: false
+  xy: 2, 643
+  size: 524, 376
+  orig: 534, 387
+  offset: 5, 1
+  index: -1
+hengfu
+  rotate: true
+  xy: 528, 351
+  size: 668, 125
+  orig: 668, 125
+  offset: 0, 0
+  index: -1
+shuaguang
+  rotate: false
+  xy: 655, 754
+  size: 151, 265
+  orig: 168, 283
+  offset: 8, 9
+  index: -1
+xx
+  rotate: false
+  xy: 377, 354
+  size: 54, 54
+  orig: 56, 56
+  offset: 1, 1
+  index: -1
+xx2
+  rotate: false
+  xy: 377, 354
+  size: 54, 54
+  orig: 56, 56
+  offset: 1, 1
+  index: -1
+xx3
+  rotate: false
+  xy: 335, 185
+  size: 33, 33
+  orig: 35, 35
+  offset: 1, 1
+  index: -1
+zhu_bizi
+  rotate: false
+  xy: 377, 410
+  size: 80, 67
+  orig: 82, 69
+  offset: 1, 1
+  index: -1
+zhu_er
+  rotate: false
+  xy: 258, 12
+  size: 53, 46
+  orig: 55, 48
+  offset: 1, 1
+  index: -1
+zhu_shenti
+  rotate: true
+  xy: 377, 479
+  size: 162, 136
+  orig: 164, 138
+  offset: 1, 1
+  index: -1
+zhu_tou
+  rotate: true
+  xy: 655, 566
+  size: 186, 159
+  orig: 186, 159
+  offset: 0, 0
+  index: -1
+zhu_tui1
+  rotate: true
+  xy: 655, 352
+  size: 48, 71
+  orig: 48, 71
+  offset: 0, 0
+  index: -1
+zhu_tui2
+  rotate: false
+  xy: 258, 60
+  size: 56, 72
+  orig: 56, 72
+  offset: 0, 0
+  index: -1
+zhu_tui3
+  rotate: true
+  xy: 808, 754
+  size: 52, 62
+  orig: 52, 62
+  offset: 0, 0
+  index: -1
+zhu_wei
+  rotate: false
+  xy: 459, 404
+  size: 67, 73
+  orig: 67, 73
+  offset: 0, 0
+  index: -1
+zhu_yan
+  rotate: false
+  xy: 787, 537
+  size: 12, 27
+  orig: 14, 29
+  offset: 1, 1
+  index: -1
+zhu_yan2
+  rotate: false
+  xy: 787, 537
+  size: 12, 27
+  orig: 14, 29
+  offset: 1, 1
+  index: -1
+zhu_zui
+  rotate: true
+  xy: 978, 920
+  size: 99, 41
+  orig: 101, 43
+  offset: 1, 1
+  index: -1
+zs1
+  rotate: false
+  xy: 258, 134
+  size: 75, 84
+  orig: 77, 86
+  offset: 1, 1
+  index: -1
+zs2
+  rotate: false
+  xy: 2, 7
+  size: 254, 211
+  orig: 257, 213
+  offset: 1, 1
+  index: -1
+zs3
+  rotate: false
+  xy: 655, 402
+  size: 130, 162
+  orig: 132, 164
+  offset: 1, 1
+  index: -1
+zs4
+  rotate: false
+  xy: 816, 703
+  size: 43, 49
+  orig: 45, 51
+  offset: 1, 1
+  index: -1
+

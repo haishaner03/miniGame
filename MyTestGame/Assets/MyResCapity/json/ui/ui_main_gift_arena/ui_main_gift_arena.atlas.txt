@@ -1,0 +1,90 @@
+ui_main_gift_arena.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+di
+  rotate: true
+  xy: 107, 75
+  size: 51, 13
+  orig: 51, 13
+  offset: 0, 0
+  index: -1
+g
+  rotate: false
+  xy: 18, 36
+  size: 38, 36
+  orig: 41, 38
+  offset: 2, 1
+  index: -1
+jiangbei_1
+  rotate: false
+  xy: 68, 71
+  size: 33, 13
+  orig: 35, 15
+  offset: 1, 1
+  index: -1
+jiangbei_2
+  rotate: false
+  xy: 102, 57
+  size: 24, 12
+  orig: 26, 14
+  offset: 1, 1
+  index: -1
+jiangbei_3
+  rotate: false
+  xy: 62, 14
+  size: 17, 21
+  orig: 19, 23
+  offset: 1, 1
+  index: -1
+jiangbei_4
+  rotate: true
+  xy: 2, 3
+  size: 69, 14
+  orig: 71, 16
+  offset: 1, 1
+  index: -1
+jiangbei_5
+  rotate: false
+  xy: 68, 86
+  size: 37, 40
+  orig: 39, 42
+  offset: 1, 1
+  index: -1
+jiangbei_6
+  rotate: false
+  xy: 2, 74
+  size: 64, 52
+  orig: 66, 54
+  offset: 1, 1
+  index: -1
+jiangbei_7
+  rotate: true
+  xy: 18, 2
+  size: 32, 42
+  orig: 34, 44
+  offset: 1, 1
+  index: -1
+jiangbei_8
+  rotate: true
+  xy: 58, 37
+  size: 32, 42
+  orig: 34, 44
+  offset: 1, 1
+  index: -1
+xx1
+  rotate: false
+  xy: 102, 37
+  size: 17, 18
+  orig: 19, 20
+  offset: 1, 1
+  index: -1
+xx2
+  rotate: false
+  xy: 81, 17
+  size: 18, 18
+  orig: 20, 20
+  offset: 1, 1
+  index: -1
+

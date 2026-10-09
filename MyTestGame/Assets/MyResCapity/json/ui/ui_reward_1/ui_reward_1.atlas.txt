@@ -1,0 +1,48 @@
+ui_reward_1.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+16
+  rotate: false
+  xy: 543, 737
+  size: 104, 120
+  orig: 128, 128
+  offset: 12, 0
+  index: -1
+17
+  rotate: false
+  xy: 2, 534
+  size: 539, 566
+  orig: 539, 566
+  offset: 0, 0
+  index: -1
+g
+  rotate: false
+  xy: 2, 2
+  size: 293, 28
+  orig: 327, 32
+  offset: 18, 2
+  index: -1
+g31
+  rotate: false
+  xy: 543, 859
+  size: 256, 241
+  orig: 300, 300
+  offset: 22, 30
+  index: -1
+quan
+  rotate: false
+  xy: 2, 32
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+xx1
+  rotate: false
+  xy: 504, 509
+  size: 17, 23
+  orig: 17, 23
+  offset: 0, 0
+  index: -1
+

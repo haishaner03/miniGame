@@ -1,0 +1,41 @@
+ui_hero_up_3.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+guangdian
+  rotate: false
+  xy: 267, 373
+  size: 23, 23
+  orig: 25, 25
+  offset: 1, 1
+  index: -1
+guangyun
+  rotate: false
+  xy: 2, 33
+  size: 150, 151
+  orig: 160, 159
+  offset: 6, 5
+  index: -1
+q
+  rotate: false
+  xy: 2, 186
+  size: 221, 210
+  orig: 240, 224
+  offset: 10, 7
+  index: -1
+xian4
+  rotate: true
+  xy: 225, 54
+  size: 342, 40
+  orig: 348, 45
+  offset: 3, 2
+  index: -1
+xx1
+  rotate: false
+  xy: 2, 2
+  size: 32, 29
+  orig: 33, 30
+  offset: 0, 1
+  index: -1
+

@@ -1,0 +1,20 @@
+ui_hero_green.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+ui_hero_green_1
+  rotate: false
+  xy: 2, 2
+  size: 144, 144
+  orig: 144, 144
+  offset: 0, 0
+  index: -1
+ui_hero_green_2
+  rotate: false
+  xy: 2, 148
+  size: 181, 132
+  orig: 181, 132
+  offset: 0, 0
+  index: -1
+
