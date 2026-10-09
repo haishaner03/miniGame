@@ -8,8 +8,8 @@ public static class ZombieUiPrefabBuilder
 {
     private const string PrefabFolder = "Assets/GameMain/UI/Prefabs";
     private const string ArtFolder = "Assets/GameMain/UI/Art";
-    private const string FontPath = "Assets/GameMain/Res/Fonts/Roboto/Roboto-Regular.ttf";
-    private const string FontBoldPath = "Assets/GameMain/Res/Fonts/Roboto/Roboto-Black.ttf";
+    private const string FontPath = "Assets/GameMain/Res/Fonts/NotoSansSC/NotoSansCJKsc-Regular.otf";
+    private const string FontBoldPath = FontPath;
 
     [MenuItem("Tools/Zombie/Build UGUI Main Menu Prefabs")]
     public static void Build()
@@ -100,26 +100,26 @@ public static class ZombieUiPrefabBuilder
         accentRect.anchoredPosition = Vector2.zero;
         accentRect.sizeDelta = new Vector2(0f, 5f);
 
-        CreateText("Title", mainPanel.transform, "LAST SAFEHOUSE", bold, 62, new Color(0.93f, 0.87f, 0.73f, 1f), new Vector2(70f, -92f), new Vector2(620f, 86f), TextAnchor.MiddleLeft);
-        CreateText("Subtitle", mainPanel.transform, "ZOMBIE SURVIVAL // STREET BLOCK 01", regular, 18, new Color(0.48f, 0.72f, 0.7f, 1f), new Vector2(75f, -174f), new Vector2(620f, 42f), TextAnchor.MiddleLeft);
-        CreateText("Tagline", mainPanel.transform, "Reach the next safe door.", regular, 20, new Color(0.78f, 0.78f, 0.72f, 0.85f), new Vector2(75f, -220f), new Vector2(600f, 40f), TextAnchor.MiddleLeft);
+        CreateMainText("Title", mainPanel.transform, "\u6700\u540e\u7684\u907f\u96be\u6240", bold, 54, new Color(0.93f, 0.87f, 0.73f, 1f), new Vector2(70f, -92f), new Vector2(620f, 86f), TextAnchor.MiddleLeft);
+        CreateMainText("Subtitle", mainPanel.transform, "\u4e27\u5c38\u751f\u5b58 // \u7b2c\u4e00\u8857\u533a", regular, 18, new Color(0.48f, 0.72f, 0.7f, 1f), new Vector2(75f, -174f), new Vector2(620f, 42f), TextAnchor.MiddleLeft);
+        CreateMainText("Tagline", mainPanel.transform, "\u62b5\u8fbe\u4e0b\u4e00\u5904\u5b89\u5168\u5c4b\u3002", regular, 20, new Color(0.78f, 0.78f, 0.72f, 0.85f), new Vector2(75f, -220f), new Vector2(600f, 40f), TextAnchor.MiddleLeft);
 
-        Button start = CreateButton("StartButton", mainPanel.transform, play, "START RUN", new Vector2(70f, -292f), regular);
-        Button chapters = CreateButton("ChapterButton", mainPanel.transform, map, "CHAPTERS", new Vector2(70f, -392f), regular);
-        Button options = CreateButton("OptionsButton", mainPanel.transform, settings, "OPTIONS", new Vector2(70f, -492f), regular);
-        Button quit = CreateButton("QuitButton", mainPanel.transform, back, "QUIT", new Vector2(70f, -592f), regular);
-        CreateText("Footer", mainPanel.transform, "A quiet street. Three chances. Keep moving.", regular, 16, new Color(0.52f, 0.56f, 0.55f, 0.9f), new Vector2(75f, 42f), new Vector2(620f, 34f), TextAnchor.MiddleLeft);
+        Button start = CreateButton("StartButton", mainPanel.transform, play, "\u5f00\u59cb\u5192\u9669", new Vector2(70f, -292f), regular);
+        Button chapters = CreateButton("ChapterButton", mainPanel.transform, map, "\u7ae0\u8282\u9009\u62e9", new Vector2(70f, -392f), regular);
+        Button options = CreateButton("OptionsButton", mainPanel.transform, settings, "\u8bbe\u7f6e", new Vector2(70f, -492f), regular);
+        Button quit = CreateButton("QuitButton", mainPanel.transform, back, "\u9000\u51fa\u6e38\u620f", new Vector2(70f, -592f), regular);
+        CreateMainText("Footer", mainPanel.transform, "\u5bc2\u9759\u8857\u533a\uff0c\u5371\u673a\u56db\u4f0f\u3002\u7ee7\u7eed\u524d\u884c\u3002", regular, 16, new Color(0.52f, 0.56f, 0.55f, 0.9f), new Vector2(75f, 42f), new Vector2(620f, 34f), TextAnchor.MiddleLeft);
 
         GameObject chapterPanel = CreateImage("ChapterPanel", root.transform, null, new Color(0.02f, 0.045f, 0.065f, 0.93f));
         SetFull(chapterPanel.GetComponent<RectTransform>());
-        CreateText("ChapterTitle", chapterPanel.transform, "CHAPTER SELECT", bold, 54, new Color(0.93f, 0.87f, 0.73f, 1f), new Vector2(0f, -85f), new Vector2(900f, 80f), TextAnchor.MiddleCenter);
-        CreateText("ChapterSubtitle", chapterPanel.transform, "Choose a route through the abandoned district", regular, 20, new Color(0.48f, 0.72f, 0.7f, 1f), new Vector2(0f, -150f), new Vector2(900f, 42f), TextAnchor.MiddleCenter);
+        CreateText("ChapterTitle", chapterPanel.transform, "\u7ae0\u8282\u9009\u62e9", bold, 54, new Color(0.93f, 0.87f, 0.73f, 1f), new Vector2(0f, -85f), new Vector2(900f, 80f), TextAnchor.MiddleCenter);
+        CreateText("ChapterSubtitle", chapterPanel.transform, "\u9009\u62e9\u7a7f\u8d8a\u5e9f\u5f03\u8857\u533a\u7684\u8def\u7ebf", regular, 20, new Color(0.48f, 0.72f, 0.7f, 1f), new Vector2(0f, -150f), new Vector2(900f, 42f), TextAnchor.MiddleCenter);
 
-        Button c1 = CreateCenteredButton("Chapter01", chapterPanel.transform, safehouse, "CHAPTER 01  //  SOUTH BLOCK", new Vector2(-270f, 130f), regular);
-        Button c2 = CreateCenteredButton("Chapter02", chapterPanel.transform, lockIcon, "CHAPTER 02  //  MARKET LANE", new Vector2(270f, 130f), regular);
-        Button c3 = CreateCenteredButton("Chapter03", chapterPanel.transform, lockIcon, "CHAPTER 03  //  FLOODED YARD", new Vector2(-270f, -40f), regular);
-        Button c4 = CreateCenteredButton("Chapter04", chapterPanel.transform, lockIcon, "CHAPTER 04  //  NORTH GATE", new Vector2(270f, -40f), regular);
-        Button backButton = CreateCenteredButton("BackButton", chapterPanel.transform, back, "BACK", new Vector2(0f, -275f), regular);
+        Button c1 = CreateCenteredButton("Chapter01", chapterPanel.transform, safehouse, "\u7b2c\u4e00\u7ae0 // \u5357\u90e8\u8857\u533a", new Vector2(-270f, 130f), regular);
+        Button c2 = CreateCenteredButton("Chapter02", chapterPanel.transform, lockIcon, "\u7b2c\u4e8c\u7ae0 // \u96c6\u5e02\u5c0f\u5df7", new Vector2(270f, 130f), regular);
+        Button c3 = CreateCenteredButton("Chapter03", chapterPanel.transform, lockIcon, "\u7b2c\u4e09\u7ae0 // \u79ef\u6c34\u5ead\u9662", new Vector2(-270f, -40f), regular);
+        Button c4 = CreateCenteredButton("Chapter04", chapterPanel.transform, lockIcon, "\u7b2c\u56db\u7ae0 // \u5317\u90e8\u5927\u95e8", new Vector2(270f, -40f), regular);
+        Button backButton = CreateCenteredButton("BackButton", chapterPanel.transform, back, "\u8fd4\u56de", new Vector2(0f, -275f), regular);
 
         ZombieUiFlow flow = root.GetComponent<ZombieUiFlow>();
         flow.mainPanel = mainPanel;
@@ -138,6 +138,11 @@ public static class ZombieUiPrefabBuilder
             "Assets/GameMain/Scenes/Level/ZombieLevel04/ZombieLevel04.unity"
         };
         chapterPanel.SetActive(false);
+        foreach (string name in new[] { "ChapterTitle", "ChapterSubtitle" })
+        {
+            RectTransform rect = chapterPanel.transform.Find(name).GetComponent<RectTransform>();
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 1f);
+        }
     }
 
     private static Button CreateButton(string name, Transform parent, Sprite icon, string label, Vector2 position, Font font)
@@ -153,8 +158,12 @@ public static class ZombieUiPrefabBuilder
         button.targetGraphic = go.GetComponent<Image>();
         button.transition = Selectable.Transition.ColorTint;
         button.colors = MakeColors();
-        AddIcon(go.transform, icon, new Vector2(45f, -39f), new Vector2(58f, 58f));
-        CreateText("Label", go.transform, label, font, 24, new Color(0.9f, 0.88f, 0.76f, 1f), new Vector2(92f, 0f), new Vector2(420f, 78f), TextAnchor.MiddleLeft);
+        AddIcon(go.transform, icon, new Vector2(45f, 0f), new Vector2(58f, 58f));
+        RectTransform iconRect = go.transform.Find("Icon").GetComponent<RectTransform>();
+        iconRect.anchorMin = iconRect.anchorMax = new Vector2(0f, 0.5f);
+        GameObject labelObject = CreateText("Label", go.transform, label, font, 24, new Color(0.9f, 0.88f, 0.76f, 1f), new Vector2(92f, 0f), new Vector2(420f, 78f), TextAnchor.MiddleLeft);
+        RectTransform labelRect = labelObject.GetComponent<RectTransform>();
+        labelRect.anchorMin = labelRect.anchorMax = labelRect.pivot = new Vector2(0f, 0.5f);
         return button;
     }
 
@@ -172,7 +181,8 @@ public static class ZombieUiPrefabBuilder
         button.transition = Selectable.Transition.ColorTint;
         button.colors = MakeColors();
         AddIcon(go.transform, icon, new Vector2(-205f, 0f), new Vector2(92f, 92f));
-        CreateText("Label", go.transform, label, font, 21, new Color(0.9f, 0.88f, 0.76f, 1f), new Vector2(-130f, 0f), new Vector2(330f, 100f), TextAnchor.MiddleLeft);
+        GameObject labelObject = CreateText("Label", go.transform, label, font, 21, new Color(0.9f, 0.88f, 0.76f, 1f), new Vector2(-130f, 0f), new Vector2(330f, 100f), TextAnchor.MiddleLeft);
+        labelObject.GetComponent<RectTransform>().pivot = new Vector2(0f, 0.5f);
         return button;
     }
 
@@ -208,6 +218,15 @@ public static class ZombieUiPrefabBuilder
         rect.anchoredPosition = position;
         rect.sizeDelta = size;
         go.GetComponent<Image>().preserveAspect = true;
+    }
+
+    private static GameObject CreateMainText(string name, Transform parent, string content, Font font, int fontSize, Color color, Vector2 position, Vector2 size, TextAnchor alignment)
+    {
+        GameObject go = CreateText(name, parent, content, font, fontSize, color, position, size, alignment);
+        RectTransform rect = go.GetComponent<RectTransform>();
+        Vector2 anchor = name == "Footer" ? Vector2.zero : new Vector2(0f, 1f);
+        rect.anchorMin = rect.anchorMax = rect.pivot = anchor;
+        return go;
     }
 
     private static GameObject CreateText(string name, Transform parent, string content, Font font, int fontSize, Color color, Vector2 position, Vector2 size, TextAnchor alignment)
