@@ -1,0 +1,12 @@
+#	Run upgrades
+#	Id		Name	Description	Effect	Value	MaxStacks
+#	int		string	string	string	float	int
+#	Id	Notes	Name	Description	Effect	Value	MaxStacks
+	1		Heavy blade	Melee damage +1.	Damage	1	4
+	2		Wide sweep	Melee reach and slash size +25%.	Range	0.25	3
+	3		Quick hands	Attack cooldown -15% of its starting value.	AttackSpeed	0.15	3
+	4		Light feet	Movement speed +12%.	MoveSpeed	0.12	3
+	5		Vitality	Maximum health +2. Recover 2 health now.	MaxHealth	2	3
+	6		Second wind	Dash cooldown -20% of its starting value.	DashCooldown	0.2	3
+	7		Long stride	Dash distance +25%.	DashDistance	0.25	2
+	8		Blood return	Every 5 successful melee hits restore 1 health.	LifeSteal	5	1
