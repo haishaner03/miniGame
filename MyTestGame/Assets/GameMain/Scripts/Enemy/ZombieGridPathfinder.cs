@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// 适用于当前俯视 Tilemap 街区的轻量网格寻路器。
@@ -17,9 +18,19 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
     [SerializeField] private bool allowDiagonal = true;
 
     private bool[,] blocked;
+    private byte[,] connections;
     private int width;
     private int height;
     private bool ready;
+    private int[] routeParent;
+    private bool[] visited;
+    private readonly Queue<int> routeQueue = new Queue<int>();
+    private readonly List<Vector2> walkableCells = new List<Vector2>();
+    private readonly List<Vector2> spawnPath = new List<Vector2>();
+    private Tilemap ground;
+    private readonly Collider2D[] overlapHits = new Collider2D[64];
+    private readonly RaycastHit2D[] edgeHits = new RaycastHit2D[32];
+    private Vector2Int cachedGoal = new Vector2Int(-1, -1);
 
     private static readonly Vector2Int[] FourDirections =
     {
@@ -40,15 +51,37 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
 
     public void Rebuild()
     {
+        if (ground == null)
+            foreach (Tilemap map in FindObjectsByType<Tilemap>(FindObjectsSortMode.None))
+                if (map.name == "GroundTilemap") { ground = map; break; }
         cellSize = Mathf.Max(0.25f, cellSize);
         width = Mathf.Max(1, Mathf.CeilToInt((gridMax.x - gridMin.x) / cellSize));
         height = Mathf.Max(1, Mathf.CeilToInt((gridMax.y - gridMin.y) / cellSize));
         blocked = new bool[width, height];
+        connections = new byte[width, height];
+        routeParent = new int[width * height];
+        visited = new bool[width * height];
+        cachedGoal = new Vector2Int(-1, -1);
+        walkableCells.Clear();
 
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
-                blocked[x, y] = IsBlocked(GridToWorld(new Vector2Int(x, y)));
+            {
+                Vector2 center = GridToWorld(new Vector2Int(x, y));
+                blocked[x, y] = !HasGround(center) || IsBlocked(center);
+                if (!blocked[x, y]) walkableCells.Add(center);
+            }
+        }
+
+        // Sampling only cell centers can miss a thin fence or car edge between
+        // two walkable cells. Cache swept-circle edges once per map rebuild.
+        for (int x = 0; x < width; x++) for (int y = 0; y < height; y++)
+        {
+            if (blocked[x,y]) continue;
+            var current = new Vector2Int(x,y);
+            CacheConnections(current, FourDirections, 0);
+            if (allowDiagonal) CacheConnections(current, DiagonalDirections, 4);
         }
 
         ready = true;
@@ -62,7 +95,7 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
         result.Clear();
         // 进入/退出 Play Mode、脚本热重载或场景重新加载时，缓存可能短暂被清空。
         // 不仅检查 ready，还检查数组本身，避免丧尸在这一帧访问空缓存。
-        if (!ready || blocked == null || blocked.GetLength(0) != width || blocked.GetLength(1) != height)
+        if (!ready || blocked == null || connections == null || blocked.GetLength(0) != width || blocked.GetLength(1) != height)
             Rebuild();
 
         if (blocked == null)
@@ -73,50 +106,65 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
         if (!IsInside(startCell) || !IsInside(goalCell))
             return false;
 
-        int total = width * height;
-        bool[] visited = new bool[total];
-        int[] parent = new int[total];
-        for (int i = 0; i < parent.Length; i++)
-            parent[i] = -1;
-
-        Queue<int> queue = new Queue<int>(Mathf.Min(total, 256));
         int startIndex = ToIndex(startCell);
         int goalIndex = ToIndex(goalCell);
-        visited[startIndex] = true;
-        queue.Enqueue(startIndex);
-
-        while (queue.Count > 0)
+        // All pursuing zombies share a reverse route field to the player's current cell.
+        // Recompute only when the goal cell changes instead of allocating a BFS per zombie.
+        if (cachedGoal != goalCell)
         {
-            int currentIndex = queue.Dequeue();
-            if (currentIndex == goalIndex)
-                break;
-
-            Vector2Int current = FromIndex(currentIndex);
-            VisitNeighbors(current, FourDirections, queue, visited, parent, currentIndex, goalCell);
-            if (allowDiagonal)
-                VisitNeighbors(current, DiagonalDirections, queue, visited, parent, currentIndex, goalCell);
+            System.Array.Clear(visited, 0, visited.Length);
+            for (int i = 0; i < routeParent.Length; i++) routeParent[i] = -1;
+            routeQueue.Clear();
+            routeQueue.Enqueue(goalIndex);
+            visited[goalIndex] = true;
+            while (routeQueue.Count > 0)
+            {
+                int currentIndex = routeQueue.Dequeue();
+                Vector2Int current = FromIndex(currentIndex);
+                VisitNeighbors(current, FourDirections, routeQueue, visited, routeParent, currentIndex, goalCell);
+                if (allowDiagonal) VisitNeighbors(current, DiagonalDirections, routeQueue, visited, routeParent, currentIndex, goalCell);
+            }
+            cachedGoal = goalCell;
         }
-
-        if (!visited[goalIndex])
+        if (!visited[startIndex])
             return false;
-
-        List<Vector2> reverse = new List<Vector2>(32);
-        int trace = goalIndex;
+        int trace = startIndex;
         while (trace >= 0)
         {
-            reverse.Add(GridToWorld(FromIndex(trace)));
-            if (trace == startIndex)
+            result.Add(GridToWorld(FromIndex(trace)));
+            if (trace == goalIndex)
                 break;
-            trace = parent[trace];
+            trace = routeParent[trace];
         }
-
-        for (int i = reverse.Count - 1; i >= 0; i--)
-            result.Add(reverse[i]);
 
         // 当前格只用于寻路，不需要让丧尸重复走回自己的脚下。
         if (result.Count > 1 && Vector2.Distance(start, result[0]) < cellSize * 0.75f)
             result.RemoveAt(0);
         return result.Count > 0;
+    }
+
+    public bool IsWalkablePosition(Vector2 position)
+    {
+        if (!ready || blocked == null) Rebuild();
+        Vector2Int cell = WorldToGrid(position);
+        return IsInside(cell) && !blocked[cell.x, cell.y] && HasGround(position) && !IsBlocked(position);
+    }
+
+    public bool TryRandomWalkable(Vector2 player, float minimumDistance, out Vector3 position)
+    {
+        if (!ready || blocked == null) Rebuild();
+        for (int i = 0; i < 128 && walkableCells.Count > 0; i++)
+        {
+            Vector2 candidate = walkableCells[Random.Range(0, walkableCells.Count)];
+            if ((candidate - player).sqrMagnitude < minimumDistance * minimumDistance) continue;
+            if (IsBlocked(candidate)) continue;
+            // Exclude enclosed or unreachable cells from the ground spawn population.
+            if (!TryFindPath(candidate, player, spawnPath)) continue;
+            position = candidate;
+            return true;
+        }
+        position = Vector3.zero;
+        return false;
     }
 
     private void VisitNeighbors(
@@ -133,6 +181,8 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
             Vector2Int next = current + directions[i];
             if (!IsInside(next) || blocked[next.x, next.y])
                 continue;
+            int edge = i + (directions == DiagonalDirections ? 4 : 0);
+            if ((connections[current.x,current.y] & (1 << edge)) == 0) continue;
 
             // 防止斜向穿过两个墙角之间的缝隙。
             if (directions[i].x != 0 && directions[i].y != 0 &&
@@ -150,12 +200,39 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
         }
     }
 
+    private void CacheConnections(Vector2Int current, Vector2Int[] directions, int offset)
+    {
+        for (int i=0;i<directions.Length;i++)
+        {
+            var next=current+directions[i];
+            if (!IsInside(next) || blocked[next.x,next.y]) continue;
+            if (directions[i].x != 0 && directions[i].y != 0 &&
+                (blocked[current.x+directions[i].x,current.y] || blocked[current.x,current.y+directions[i].y])) continue;
+            Vector2 origin=GridToWorld(current), delta=GridToWorld(next)-origin;
+            var filter=new ContactFilter2D();filter.SetLayerMask(obstacleMask);filter.useTriggers=false;
+            int count=Physics2D.CircleCast(origin,agentRadius,delta.normalized,filter,edgeHits,delta.magnitude);
+            bool clear=true;
+            for(int h=0;h<count;h++)
+            {
+                var collider=edgeHits[h].collider;
+                if(collider==null)continue;
+                var body=collider.attachedRigidbody;
+                if(body!=null && body.bodyType!=RigidbodyType2D.Static)continue;
+                clear=false;break;
+            }
+            if(clear)connections[current.x,current.y]|=(byte)(1<< (offset+i));
+        }
+    }
+
     private bool IsBlocked(Vector2 position)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(position, agentRadius, obstacleMask);
-        for (int i = 0; i < hits.Length; i++)
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(obstacleMask);
+        filter.useTriggers = false;
+        int count = Physics2D.OverlapCircle(position, agentRadius, filter, overlapHits);
+        for (int i = 0; i < count; i++)
         {
-            Collider2D hit = hits[i];
+            Collider2D hit = overlapHits[i];
             if (hit == null || hit.isTrigger)
                 continue;
 
@@ -168,6 +245,11 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
         }
 
         return false;
+    }
+
+    private bool HasGround(Vector2 position)
+    {
+        return ground == null || ground.HasTile(ground.WorldToCell(position));
     }
 
     private Vector2Int FindNearestWalkable(Vector2Int origin)

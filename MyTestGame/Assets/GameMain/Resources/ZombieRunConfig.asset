@@ -20,8 +20,42 @@ MonoBehaviour:
   - Assets/GameMain/Scenes/Level/ZombieLevel04/ZombieLevel04.unity
   menuScenePath: Assets/GameMain/Scenes/Menu/Menu.unity
   upgradeTable: {fileID: 4900000, guid: b03ccf913ca7f604b9475169a443f2a4, type: 3}
-  uiFont: {fileID: 12800000, guid: acf4716a8fa254a2589ba008c867a3bc, type: 3}
+  uiFont: {fileID: 12800000, guid: e849ebae01e5777438c6c76d97918521, type: 3}
+  battleUiPrefab: {fileID: 4579325712644561853, guid: d9077adb61581ca45b40a83ba7305c59,
+    type: 3}
+  startingWeaponPickerPrefab: {fileID: 1652561852119335596, guid: e05648500b017a74c8dc51487233d001,
+    type: 3}
+  eliteEncounterPrefab: {fileID: 5994269687398861871, guid: 7a7113fb9ad29f945a4d5cc13dc99f38,
+    type: 3}
+  bossEncounterPrefab: {fileID: 3892269961145252800, guid: ae05ac95900beaf4580ac6bbfdb06406,
+    type: 3}
+  eliteRoomNumber: 3
+  elitePreparationKills: 35
+  bossPreparationKills: 25
+  eliteEncounterExperience: 120
+  bossEncounterExperience: 240
+  experiencePickupPrefab: {fileID: 791135917448952806, guid: bf39deca252b04f40be2d3b79cecfb44,
+    type: 3}
+  healthPickupPrefab: {fileID: 3997671903497163246, guid: e1ef32aa8919b6449943fbd2e7a7e8df,
+    type: 3}
+  healthDropChance: 0.05
+  firstLevelExperience: 80
+  experienceGrowthPerLevel: 30
+  normalExperience: 10
+  eliteExperience: 30
+  experiencePoolPrewarm: 64
+  baseFreezeDuration: 1.8
+  initialWanderers: 40
+  firstRoomPopulationMultiplier: 0.7
+  zombieMoveSpeedMultiplier: {x: 0.8, y: 1.2}
+  maxLivingZombies: 100
+  reinforcementDelay: {x: 2, y: 4}
+  reinforcementCount: {x: 3, y: 6}
+  hordeDelay: {x: 12, y: 22}
+  hordeCount: {x: 15, y: 25}
+  roomKillTarget: 60
+  firstRoomZombieHealth: {x: 80, y: 140}
   enemiesPerRoom: 0.2
-  healthPerRoom: 0.1
+  healthPerRoom: 0.05
   initialVariantChance: 0.1
   variantChancePerRoom: 0.1

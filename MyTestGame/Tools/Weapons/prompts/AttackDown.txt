@@ -1,0 +1,14 @@
+Use case: identity-preserve
+Asset type: six-frame BODY-ONLY melee attack sprite sheet for a top-down 2D pixel-art game.
+Input image 1: character identity and style reference. It shows the same survivor from FRONT/DOWN, BACK/UP, RIGHT PROFILE and LEFT PROFILE. Use ONLY the FRONT/DOWN character in this output. Keep identical black tousled hair, face, dark navy jacket, olive cargo trousers, black boots, olive backpack straps, proportions and pixel shading.
+Primary request: EXACTLY SIX distinct consecutive frames, in a 3-column by 2-row grid on a 1024x1024 canvas. Read left to right, top row then bottom row. ONE full-body survivor in each cell, facing STRAIGHT DOWN toward the viewer in ALL six frames. No diagonal or profile turn. Feet planted at the same ground baseline, character height identical in each cell. Smooth coherent animation, no duplicates.
+Action: a single-handed melee swing using the CHARACTER'S RIGHT ARM, which appears on the VIEWER'S LEFT. No weapon is drawn; his right hand is a CLOSED EMPTY GRIPPING FIST around an invisible handle. That fist must be visible and outside the torso silhouette. Left arm balances at the other side.
+Frame 1: ready, feet slightly apart, gripping fist low beside viewer-left hip.
+Frame 2: anticipation, right elbow bent, gripping fist rises to viewer-left shoulder; shoulders lean back slightly.
+Frame 3: start swing, fist moves across in front of chest, elbow extends, knees brace.
+Frame 4: impact, fist is strongly extended toward viewer-right at mid-chest height; torso leans forward slightly, keep face visible and feet planted.
+Frame 5: follow through, fist lower toward viewer-right waist, body settles.
+Frame 6: return to planted neutral ready pose, fist beside viewer-left hip.
+Style: exact reference character, crisp 16-bit pixel clusters, dark outlines, modest shading. Each figure fits comfortably inside its equal grid cell with at least 15 percent blank margin, no clipping. Use the same clothing, head size and face in every frame.
+Background: perfectly uniform solid magenta #FF00FF, no pink/magenta in the character.
+Constraints: NO weapons, NO trails, NO text, NO captions, NO grid lines, NO ground, NO shadows, NO camera tilt. Six full figures, visible hands and boots. Do not change character design or invent costume details. Grip hand is body artwork; external weapon sprite will be attached later.

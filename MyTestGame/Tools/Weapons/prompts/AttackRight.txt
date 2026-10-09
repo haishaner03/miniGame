@@ -1,0 +1,14 @@
+Use case: identity-preserve
+Asset type: six-frame BODY-ONLY side-facing melee attack sprite sheet, later mirrored for left-facing attack.
+Input image 1: character identity and style reference. Use ONLY its RIGHT PROFILE view: black tousled hair, dark navy jacket, olive cargo trousers, black boots, olive backpack. Character's face points to screen RIGHT in ALL frames. Preserve the exact character design and proportions.
+Primary request: EXACTLY SIX distinct consecutive full-body poses in a 3-column by 2-row equal grid on a 1024x1024 canvas. Read left to right, top row then bottom row. Fixed feet baseline, same height every cell, no camera or character turn, strict RIGHT-facing side view.
+Action: one-handed forward melee strike toward screen RIGHT. Nearest arm has a CLOSED EMPTY GRIPPING FIST that is always clearly visible outside torso; a separate weapon attaches to it, so draw NO weapon. Far arm balances, knees and shoulders brace subtly.
+Frame 1: planted neutral ready stance, near elbow bent and empty gripping fist in front of waist toward screen-right.
+Frame 2: anticipation, near elbow bent high, gripping fist raised beside forehead on screen-right; shoulders lean back a little.
+Frame 3: swing accelerates, fist reaches screen-right in front of face at shoulder height.
+Frame 4: impact, near arm fully extends toward screen-right at chest height, fist farthest right; torso slightly leans forward, keep feet planted.
+Frame 5: follow through, fist drops toward screen-right at waist height, knees straighten.
+Frame 6: return to planted neutral ready stance, bent elbow and gripping fist in front of waist.
+Style: exactly the reference survivor with crisp consistent 16-bit pixel clusters and modest shading. No duplicate frames, do not change hair/face/jacket/backpack/boots. Keep each complete figure with at least 15 percent empty margin.
+Background: perfectly uniform solid magenta #FF00FF, no pink/magenta in character.
+Constraints: NO weapons, NO motion trails, NO text, NO labels, NO grid lines, NO ground, NO cast shadow. Never face left or look at viewer. Six distinct clear attack phases, body-only animation.

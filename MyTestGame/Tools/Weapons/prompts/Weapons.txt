@@ -1,0 +1,7 @@
+Use case: stylized-concept
+Asset type: separate weapon sprites for a 64x64 top-down pixel-art zombie-survival character.
+Primary request: a clean 1024x1024 sprite sheet containing EXACTLY TWO isolated melee weapons. LEFT HALF: a worn steel machete with a subtly curved broad silver-gray blade, dark brown wrapped grip, small brass guard. RIGHT HALF: a straight heavy iron club / steel pipe with a thick dark gray shaft, a small blunt capped tip and a black taped hand grip.
+Composition: two equal 512x1024 vertical cells, each containing one full weapon, oriented STRAIGHT VERTICAL with the grip at the bottom and tip at the top. Generous empty padding. No overlap. Both weapons same overall length and centered in their cells. Handle lower 20 percent; blade / shaft upper 80 percent. Clearly visible handgrip, the object will rotate around the CENTER OF THE GRIP.
+Style: crisp handcrafted 16-bit pixel art; chunky consistent square pixel clusters, dark navy one-pixel outline, restrained metal highlights, readable shapes. Dark gritty survival-game palette matching a dark navy jacket and olive trousers. No ornate fantasy embellishments.
+Background: perfectly uniform solid magenta #FF00FF for chroma key removal. No magenta or pink inside the weapons.
+Constraints: no character, no hands, no text, no letters, no labels, no ground, no cast shadow, no grid lines, no UI, no duplicated weapons, no sparks, no motion trail, no perspective diagonal. Two sprites only.

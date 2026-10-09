@@ -1,0 +1,14 @@
+Use case: identity-preserve
+Asset type: six-frame BODY-ONLY melee attack sprite sheet for a top-down 2D pixel-art game.
+Input image 1: character identity and style reference. Use ONLY its BACK/UP view. Same black tousled hair, dark navy jacket, olive trousers, black boots, and olive backpack. Face must NOT be visible.
+Primary request: EXACTLY SIX distinct consecutive frames in a 3-column by 2-row equal grid on a 1024x1024 canvas. Read left to right, top row then bottom row. ONE full-body survivor per cell, facing STRAIGHT UP away from viewer in ALL frames. Not diagonal. Fixed feet baseline, same height and head/body proportions in every frame. Backpack remains recognizable.
+Action: single-handed melee slash toward the top of the screen, using character's RIGHT ARM on VIEWER'S RIGHT. Hand is a CLOSED EMPTY GRIPPING FIST; no weapon is drawn. Keep fist visible beyond shoulder or side silhouette so an external weapon can attach.
+Frame 1: planted ready stance, fist outside viewer-right hip.
+Frame 2: anticipation, bent elbow, fist rises beside viewer-right shoulder.
+Frame 3: swing starts, fist extends above viewer-right shoulder, torso slightly braces.
+Frame 4: impact, arm extends across toward viewer-left beside head without hiding entire head, fist visible left of shoulder.
+Frame 5: follow through, fist lowers outside viewer-left waist, feet planted.
+Frame 6: recover to planted neutral ready, fist outside viewer-right hip.
+Style: preserve reference clothing, olive backpack, color palette and 16-bit pixel shading. Clear distinct arm movement, modest coherent torso motion. Whole figure comfortably inside each cell with at least 15 percent padding.
+Background: uniform pure magenta #FF00FF. No magenta inside character.
+Constraints: NO weapons, NO text, NO labels, NO grid borders, NO shadows, NO trails, NO ground, NO faces looking backward, NO diagonal view, NO changing outfit. Six complete separate figures.

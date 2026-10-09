@@ -1,0 +1,7 @@
+Use case: stylized-concept
+Asset type: collectible sprite for a top-down 2D pixel-art zombie survival roguelike.
+Primary request: one small luminous turquoise-green experience shard, a solid faceted diamond crystal, readable as a collectible experience pickup on dark asphalt and dirty grass.
+Style: handcrafted 16-bit game pixel art, crisp square pixel clusters, dark navy one-pixel outline, four to six shades of teal and mint, a tiny bright highlight. Match gritty survival-game sprites while making the collectible easy to spot.
+Composition: a SINGLE centered crystal, almost front-facing with slight top-down visible facets, occupying the central 50 percent of the square canvas. Entire outline visible with generous clean margin.
+Background: perfectly uniform solid magenta #FF00FF for clean chroma removal. No magenta or pink inside the crystal. No gradient background.
+Constraints: no text, no letters, no UI, no frame, no ground, no cast shadow, no objects or characters, no duplicate crystals, no glow haze or floating particles outside the outline. Designed to be downsampled to a 32x32 sprite.

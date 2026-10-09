@@ -3331,6 +3331,8 @@ MonoBehaviour:
   - Assets/GameMain/Scenes/Level/ZombieLevel03/ZombieLevel03.unity
   - Assets/GameMain/Scenes/Level/ZombieLevel04/ZombieLevel04.unity
   startOnChapterPanel: 0
+  weaponPickerPrefab: {fileID: 1652561852119335596, guid: e05648500b017a74c8dc51487233d001,
+    type: 3}
 --- !u!1 &9074739958714820866
 GameObject:
   m_ObjectHideFlags: 0

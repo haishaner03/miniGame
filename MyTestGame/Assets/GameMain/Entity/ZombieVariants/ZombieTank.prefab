@@ -177,19 +177,19 @@ MonoBehaviour:
   fastSpeedMultiplier: 1.75
   tankSpeedMultiplier: 0.62
   tankHealthMultiplier: 3
-  tankAttackDamageBonus: 1
+  tankAttackDamageBonus: 20
   exploderSpeedMultiplier: 1.1
   explosionRadius: 1.45
-  explosionDamage: 2
+  explosionDamage: 40
   explosionKnockback: 3.5
   explodeOnContact: 1
   target: {fileID: 0}
   moveSpeed: 1.35
   attackDistance: 0.8
   attackCooldown: 1.1
-  attackDamage: 1
+  attackDamage: 20
   animationFps: 8
-  maxHealth: 8
+  maxHealth: 200
   knockbackDamping: 12
   useGridPathfinding: 1
   pathRefreshInterval: 0.35
@@ -244,6 +244,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldHealthBar
   width: 0.62
   height: 0.075
+  zombieHeight: 0.035
+  zombieOutlinePadding: 0.02
   offsetY: 0.52
   hideWhenDead: 1
   fillColor: {r: 0.3, g: 1, b: 0.35, a: 1}

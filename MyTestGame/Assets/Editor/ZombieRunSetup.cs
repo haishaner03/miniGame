@@ -23,7 +23,7 @@ public static class ZombieRunSetup
             AssetDatabase.CreateAsset(config, path);
         }
         config.upgradeTable = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/GameMain/DataTables/RunUpgrade.txt");
-        config.uiFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/GameMain/Res/Fonts/Roboto/Roboto-Regular.ttf");
+        config.uiFont = AssetDatabase.LoadAssetAtPath<Font>("Assets/GameMain/Res/Fonts/NotoSansSC/NotoSansCJKsc-Regular.otf");
         EditorUtility.SetDirty(config);
         AssetDatabase.SaveAssets();
         Debug.Log("Roguelite config ready: " + path);

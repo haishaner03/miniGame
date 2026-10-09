@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 区域路障：绑定一个区域波次，波次触发过且场上丧尸清空后打开（关闭碰撞、淡出路障、重建寻路网格）。
+/// 区域路障：绑定的波次清理完成后打开，不受其它区域和随机增援影响。
 /// 用于线性推进关卡，把地图切成若干段。
 /// </summary>
 [DisallowMultipleComponent]
@@ -17,6 +17,7 @@ public sealed class ZoneGate : MonoBehaviour
     private bool opening;
 
     public bool IsOpen { get; private set; }
+    public ZombieWaveTrigger RequiredWave => requiredWave;
 
     private void Start()
     {
@@ -29,7 +30,7 @@ public sealed class ZoneGate : MonoBehaviour
         if (IsOpen || opening || requiredWave == null || spawner == null)
             return;
 
-        if (requiredWave.HasTriggered && spawner.ActiveCount == 0)
+        if (requiredWave.IsCleared)
             StartCoroutine(OpenRoutine());
     }
 

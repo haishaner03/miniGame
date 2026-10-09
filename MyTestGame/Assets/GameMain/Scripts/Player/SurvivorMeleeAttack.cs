@@ -2,14 +2,49 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 玩家第一版近战攻击：用程序化挥砍弧光表现动作，并在命中帧检测丧尸。
-/// 后续可以把 DrawSlash 替换成真正的攻击序列帧，伤害接口保持不变。
+/// 独立武器、四方向攻击帧和与命中帧同步的扇形伤害检测。
 /// </summary>
 [DisallowMultipleComponent]
 public sealed class SurvivorMeleeAttack : MonoBehaviour
 {
+    [Header("可装备武器")]
+    [SerializeField] private MeleeWeaponDefinition machete;
+    [SerializeField] private MeleeWeaponDefinition ironBar;
+    private MeleeWeaponDefinition equipped;
+    private SurvivorWeaponVisual weaponVisual;
+    private bool heavyWeapon;
+    private readonly Collider2D[] hitBuffer = new Collider2D[128];
+    private readonly RaycastHit2D[] obstacleBuffer = new RaycastHit2D[32];
+    private readonly HashSet<int> hitTargets = new HashSet<int>();
+    public MeleeWeaponDefinition EquippedWeapon => equipped;
+    public float AttackDuration => attackDuration;
+    public float ImpactTime => hitTime;
+    public float AttackProgress => Mathf.Clamp01(attackElapsed / Mathf.Max(0.01f, attackDuration));
+    public float WeaponKnockbackMultiplier => equipped != null ? equipped.knockbackMultiplier : 1f;
+    public MeleeWeaponDefinition GetWeaponDefinition(bool heavy) => heavy ? ironBar : machete;
+
+    public void EquipWeapon(bool heavy)
+    {
+        if (IsAttacking) EndAttack();
+        heavyWeapon = heavy;
+        equipped = GetWeaponDefinition(heavy);
+        if (equipped != null)
+        {
+            damage = equipped.damage;
+            cooldown = equipped.cooldown;
+            attackRadius = equipped.reach;
+            attackDuration = equipped.attackDuration;
+            hitTime = attackDuration * equipped.impactProgress;
+            slashColor = equipped.trailColor;
+            slashRadius = attackRadius;
+            if (weaponVisual == null) weaponVisual = GetComponent<SurvivorWeaponVisual>();
+            if (weaponVisual != null) weaponVisual.Equip(equipped);
+        }
+    }
     [Header("攻击参数")]
-    [SerializeField] private int damage = 2;
+    [SerializeField] private int damage = 80;
+    [Tooltip("每次挥击在伤害基础上随机加减的点数；同一次挥击共用一个随机结果。")]
+    [SerializeField, Min(0)] private int damageVariance = 5;
     [SerializeField] private float attackDuration = 0.16f;
     [SerializeField] private float hitTime = 0.055f;
     [SerializeField] private float cooldown = 0.28f;
@@ -28,9 +63,15 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
     public float CooldownRemaining => Mathf.Max(0f, nextAttackTime - Time.time);
     public Vector2 CurrentAttackDirection => facingDirection;
     public int Damage => damage;
+    public int DamageVariance => Mathf.Max(0, damageVariance);
     public float AttackRadius => attackRadius;
     public float AttackCooldown => cooldown;
-    private float slashToHitRadius;
+    public float KnockbackMultiplier { get; private set; } = 1f;
+    public void SetKnockbackMultiplier(float multiplier) { KnockbackMultiplier = Mathf.Max(1f, multiplier); }
+    public void SetWeaponAppearance(bool heavy)
+    {
+        if (heavyWeapon != heavy || equipped == null) EquipWeapon(heavy);
+    }
     private float offsetToHitRadius;
 
     public void SetRunStats(int attackDamage, float attackCooldown, float radius)
@@ -38,8 +79,13 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
         damage = Mathf.Max(1, attackDamage);
         cooldown = Mathf.Max(0.05f, attackCooldown);
         attackRadius = Mathf.Max(0.1f, radius);
-        slashRadius = attackRadius * slashToHitRadius;
+        slashRadius = attackRadius;
         attackOffset = attackRadius * offsetToHitRadius;
+        if (equipped != null)
+        {
+            attackDuration = Mathf.Max(0.05f, equipped.attackDuration * cooldown / equipped.cooldown);
+            hitTime = attackDuration * equipped.impactProgress;
+        }
         if (attackKey == KeyCode.Space) attackKey = KeyCode.None;
     }
 
@@ -63,23 +109,24 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
         movement = GetComponent<SurvivorMovement>();
         health = GetComponent<SurvivorHealth>();
         animator = GetComponent<Animator>();
+        weaponVisual = GetComponent<SurvivorWeaponVisual>();
         slashSegments = Mathf.Clamp(slashSegments, 4, 32);
         attackDuration = Mathf.Max(0.05f, attackDuration);
         hitTime = Mathf.Clamp(hitTime, 0.01f, attackDuration);
-        slashToHitRadius = slashRadius / Mathf.Max(0.1f, attackRadius);
         offsetToHitRadius = attackOffset / Mathf.Max(0.1f, attackRadius);
         CreateSlashRenderer();
+        EquipWeapon(false);
     }
 
     private void Update()
     {
-        if (Time.timeScale <= 0f) return;
         if (health != null && (health.IsDead || health.IsGameOver))
         {
             if (IsAttacking)
                 EndAttack();
             return;
         }
+        if (Time.timeScale <= 0f) return;
 
         if (!IsAttacking)
         {
@@ -92,6 +139,7 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
 
         attackElapsed += Time.deltaTime;
         float progress = Mathf.Clamp01(attackElapsed / attackDuration);
+        if (weaponVisual != null) weaponVisual.SetAttackProgress(progress);
         DrawSlash(progress);
 
         if (!hitApplied && attackElapsed >= hitTime)
@@ -118,7 +166,7 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
         Attack();
     }
 
-private bool IsAttackPressed()
+    private bool IsAttackPressed()
     {
         if (allowMouseLeftButton && Input.GetMouseButtonDown(0))
         {
@@ -138,7 +186,7 @@ private bool IsAttackPressed()
         return false;
     }
 
-private void BeginAttack()
+    private void BeginAttack()
     {
         SurvivorDash dash = GetComponent<SurvivorDash>();
         if (dash != null && dash.IsDashing) return;
@@ -147,7 +195,7 @@ private void BeginAttack()
         hitApplied = false;
         nextAttackTime = Time.time + Mathf.Max(0.05f, cooldown);
         randomSwingOffset = Random.Range(-14f, 14f);
-        randomSweep = Random.Range(112f, 150f);
+        randomSweep = equipped != null ? equipped.arcDegrees : 120f;
         randomRadiusScale = Random.Range(0.94f, 1.08f);
 
         Vector2 attackDirection = pendingAttackDirection;
@@ -159,6 +207,7 @@ private void BeginAttack()
             attackDirection = Vector2.down;
 
         facingDirection = attackDirection.normalized;
+        if (movement != null) movement.SetFacingDirection(facingDirection);
 
         if (movement != null)
         {
@@ -168,9 +217,10 @@ private void BeginAttack()
 
         pendingAttackDirection = Vector2.zero;
         ApplyAttackPose();
+        if (weaponVisual != null) weaponVisual.BeginAttack(facingDirection);
 
         if (slash != null)
-            slash.enabled = true;
+            slash.enabled = false;
     }
 
     private Vector2 GetMouseWorldDirection()
@@ -196,6 +246,7 @@ private void BeginAttack()
             slash.enabled = false;
         if (movement != null && !healthIsDead())
             movement.enabled = movementWasEnabled;
+        if (weaponVisual != null) weaponVisual.EndAttack();
     }
 
     private bool healthIsDead()
@@ -205,23 +256,58 @@ private void BeginAttack()
 
     private void ApplyHit()
     {
-        Vector2 hitCenter = (Vector2)transform.position + facingDirection * attackOffset;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(hitCenter, attackRadius);
-        HashSet<int> hitTargets = new HashSet<int>();
-
-        foreach (Collider2D collider in colliders)
+        Vector2 origin = AttackOrigin;
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
+        filter.useTriggers = true;
+        int count = Physics2D.OverlapCircle(origin, attackRadius, filter, hitBuffer);
+        hitTargets.Clear();
+        float halfArc = (equipped != null ? equipped.arcDegrees : 120f) * 0.5f;
+        var run = RunState.Instance;
+        var effects = run != null ? run.CombatEffects : null;
+        int swingDamage = effects != null ? effects.SwingDamage(damage) : damage;
+        swingDamage = Mathf.Max(1, swingDamage + Random.Range(-DamageVariance, DamageVariance + 1));
+        int actualSwingDamage = 0;
+        for (int i = 0; i < count; i++)
         {
+            Collider2D collider = hitBuffer[i];
             if (collider == null)
                 continue;
 
             ZombieChaser zombie = collider.GetComponentInParent<ZombieChaser>();
-            if (zombie == null || zombie.CurrentHealth <= 0 || !hitTargets.Add(zombie.gameObject.GetInstanceID()))
+            if (zombie == null || zombie.CurrentHealth <= 0 || hitTargets.Contains(zombie.gameObject.GetInstanceID()))
                 continue;
+            Vector2 point = collider.ClosestPoint(origin);
+            Vector2 toHit = point - origin;
+            if (toHit.sqrMagnitude > 0.01f && Vector2.Angle(facingDirection, toHit) > halfArc) continue;
+            if (HasObstacleBetween(origin, point, zombie)) continue;
+            hitTargets.Add(zombie.gameObject.GetInstanceID());
 
-            float knockbackForce = Random.Range(2.2f, 3.1f);
-            zombie.TakeDamage(damage, facingDirection, knockbackForce);
-            if (RunState.Instance != null) RunState.Instance.RecordMeleeHit();
+            float knockbackForce = Random.Range(2.2f, 3.1f) * KnockbackMultiplier * WeaponKnockbackMultiplier;
+            int targetDamage = effects != null ? effects.PrepareHit(zombie, swingDamage) : swingDamage;
+            int healthBefore = zombie.CurrentHealth;
+            zombie.TakeDamage(targetDamage, facingDirection, knockbackForce, true);
+            actualSwingDamage += healthBefore - zombie.CurrentHealth;
         }
+        if (effects != null) effects.CompleteSwing(actualSwingDamage);
+    }
+
+    private bool HasObstacleBetween(Vector2 origin, Vector2 point, ZombieChaser targetZombie)
+    {
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
+        filter.useTriggers = false;
+        int count = Physics2D.Linecast(origin, point, filter, obstacleBuffer);
+        for (int i = 0; i < count; i++)
+        {
+            var collider = obstacleBuffer[i].collider;
+            if (collider == null || collider.transform.IsChildOf(transform) || collider.transform.IsChildOf(targetZombie.transform)) continue;
+            var attached = collider.attachedRigidbody;
+            if (attached != null && attached.bodyType != RigidbodyType2D.Static) continue;
+            if (collider.GetComponentInParent<ZombieChaser>() != null) continue;
+            return true;
+        }
+        return false;
     }
 
     private void CreateSlashRenderer()
@@ -257,11 +343,18 @@ private void BeginAttack()
     {
         if (slash == null)
             return;
+        float duration = equipped != null ? equipped.trailDuration : 0.07f;
+        float local = (attackElapsed - hitTime + duration * 0.25f) / duration;
+        slash.enabled = local >= 0f && local < 1f;
+        if (!slash.enabled) return;
+        progress = Mathf.Clamp01(local);
+        SpriteRenderer bodyRenderer = GetComponent<SpriteRenderer>();
+        if (bodyRenderer != null) slash.sortingOrder = bodyRenderer.sortingOrder + 3;
 
         float centerAngle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
         float sweep = randomSweep > 0f ? randomSweep : 138f;
         float swingOffset = randomSwingOffset + Mathf.Lerp(-32f, 32f, progress);
-        Vector3 center = transform.position;
+        Vector3 center = new Vector3(AttackOrigin.x, AttackOrigin.y, transform.position.z);
 
         for (int i = 0; i <= slashSegments; i++)
         {
@@ -290,12 +383,15 @@ private void BeginAttack()
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0.3f, 0.85f, 1f, 0.65f);
-        Vector2 direction = facingDirection.sqrMagnitude > 0.001f ? facingDirection : Vector2.down;
-        Gizmos.DrawWireSphere((Vector2)transform.position + direction * attackOffset, attackRadius);
+        Gizmos.DrawWireSphere(AttackOrigin, attackRadius);
     }
 
+    // Both the damage sector and its arc use the same point in front of the feet.
+    private Vector2 AttackOrigin => (Vector2)transform.position +
+        (facingDirection.sqrMagnitude > 0.001f ? facingDirection : Vector2.down) * 0.2f;
 
-private void ApplyAttackPose()
+
+    private void ApplyAttackPose()
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         if (renderer == null)
@@ -306,6 +402,7 @@ private void ApplyAttackPose()
 
         if (animator == null)
             return;
+        if (weaponVisual != null) return;
 
         string animationName;
         if (Mathf.Abs(facingDirection.x) > Mathf.Abs(facingDirection.y))
@@ -314,5 +411,10 @@ private void ApplyAttackPose()
             animationName = facingDirection.y > 0f ? "RunUp" : "RunDown";
 
         animator.Play(animationName, 0, 0f);
+    }
+
+    private void OnDisable()
+    {
+        if (IsAttacking) EndAttack();
     }
 }

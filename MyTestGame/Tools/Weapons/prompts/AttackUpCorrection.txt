@@ -1,0 +1,6 @@
+Use case: precise-object-edit
+Input image 1 is a six-frame 3x2 pixel-art sprite sheet. Preserve the character, backpack, clothes, pure magenta background, layout and frames 1, 2, 3, 6.
+Correct ONLY frames FOUR and FIVE (bottom-left and bottom-middle). They erroneously switch to the anatomical left arm. ALL action must use the same anatomical RIGHT arm from the shoulder on VIEWER RIGHT. The left arm on VIEWER LEFT must stay hanging still next to left hip in ALL six figures.
+Frame FOUR: from VIEWER-RIGHT shoulder the right arm reaches upward, elbow bends above and to the right of the head; right gripping fist extends above the head toward center-left, remaining visible outside the head silhouette. It does NOT grow from the left shoulder. Keep the viewer-left sleeve hanging down beside left hip. Right hand sweeps over the head, not the left arm extending sideways.
+Frame FIVE: that SAME viewer-right arm follows through downward, right fist ends outside viewer-right upper waist, elbow bent. The viewer-left arm still hangs beside left hip. Keep legs planted and same backpack.
+Do not change any other frame. Six figures all face STRAIGHT UP away from viewer. No weapons, text, shadows, trails, camera turn or grids. Same pixel art character and scale.

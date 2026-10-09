@@ -22,22 +22,25 @@ public sealed class ZombieChaser : MonoBehaviour
     public float fastSpeedMultiplier = 1.75f;
     public float tankSpeedMultiplier = 0.62f;
     public int tankHealthMultiplier = 3;
-    public int tankAttackDamageBonus = 1;
+    public int tankAttackDamageBonus = 20;
     public float exploderSpeedMultiplier = 1.1f;
     public float explosionRadius = 1.45f;
-    public int explosionDamage = 2;
+    public int explosionDamage = 40;
     public float explosionKnockback = 3.5f;
     public bool explodeOnContact = true;
 public Transform target;
     public float moveSpeed = 1.4f;
     public float attackDistance = 0.75f;
     public float attackCooldown = 1.1f;
-    public int attackDamage = 1;
+    public int attackDamage = 20;
     public float animationFps = 10f;
-    public int maxHealth = 8;
+    public int maxHealth = 200;
     public float knockbackDamping = 12f;
     public bool useGridPathfinding = true;
     public float pathRefreshInterval = 0.35f;
+    [Range(0.1f, 1f)] public float freezeDurationMultiplier = 1f;
+    [Range(0f, 1f)] public float receivedKnockbackMultiplier = 1f;
+    public ZombieChampion Champion { get; private set; }
     public SpriteRenderer spriteRenderer;
     public Sprite[] walkFrames;
     public Sprite[] attackFrames;
@@ -73,7 +76,30 @@ public Transform target;
     private Vector3 baseScale;
     private Color baseColor;
     private int currentHealth;
+    private float frozenUntil, burningUntil, nextBurnTick;
+    private int burnDamage;
+    private bool lastDamageByPlayer;
+    public bool IsFrozen => currentHealth > 0 && Time.time < frozenUntil;
+    public bool IsBurning => currentHealth > 0 && Time.time < burningUntil;
+
+    public void ApplyFreeze(float duration)
+    {
+        if (state == State.Death) return;
+        frozenUntil = Mathf.Max(frozenUntil, Time.time + duration * freezeDurationMultiplier);
+        desiredVelocity = Vector2.zero;
+    }
+
+    public void ApplyBurn(float duration, int damagePerSecond)
+    {
+        if (state == State.Death) return;
+        if (!IsBurning) nextBurnTick = Time.time + 1f;
+        burningUntil = Mathf.Max(burningUntil, Time.time + duration);
+        burnDamage = Mathf.Max(burnDamage, damagePerSecond);
+    }
+
+    public void ForceAggro() { hasAggro = true; persistentAggro = true; }
         private float runtimeMoveSpeed;
+    private float spawnSpeedMultiplier = 1f;
     private int runtimeMaxHealth;
     private int runtimeAttackDamage;
     private Coroutine hitFlashRoutine;
@@ -87,12 +113,15 @@ private Vector2 knockbackVelocity;
     private Vector2 wanderTarget;
     private float nextWanderDecision;
     private bool hasAggro;
+    private bool persistentAggro;
     private bool waitingAtWanderTarget;
 
         public int CurrentMaxHealth => runtimeMaxHealth;
     public float EffectiveMoveSpeed => runtimeMoveSpeed;
+    public float SpawnSpeedMultiplier => spawnSpeedMultiplier;
     public int EffectiveAttackDamage => runtimeAttackDamage;
 public int CurrentHealth => currentHealth;
+    public event Action<ZombieChaser> Died;
 
 
     private enum State
@@ -106,6 +135,7 @@ public int CurrentHealth => currentHealth;
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        Champion = GetComponent<ZombieChampion>();
         hitCollider = GetComponent<Collider2D>();
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -131,6 +161,12 @@ public int CurrentHealth => currentHealth;
 
 private void Update()
     {
+        if (Time.timeScale <= 0f) return;
+        if (state != State.Death && burnDamage > 0 && nextBurnTick <= burningUntil && Time.time >= nextBurnTick)
+        {
+            nextBurnTick += 1f;
+            ApplyDamage(burnDamage, true);
+        }
         if (state == State.Death)
         {
             deathElapsed += Time.deltaTime;
@@ -151,12 +187,22 @@ private void Update()
         ResolveTarget();
         if (target == null)
             return;
+        if (Champion != null && Champion.enabled && Champion.TickBehaviour(Time.deltaTime))
+        {
+            UpdateAnimation();
+            return;
+        }
+        if (IsFrozen)
+        {
+            desiredVelocity = Vector2.zero;
+            return;
+        }
 
         float distance = Vector2.Distance(target.position, transform.position);
 
         if (!hasAggro && distance <= Mathf.Max(0.1f, aggroRadius))
             hasAggro = true;
-        else if (hasAggro && distance >= Mathf.Max(aggroRadius, loseTargetRadius))
+        else if (hasAggro && !persistentAggro && distance >= Mathf.Max(aggroRadius, loseTargetRadius))
         {
             hasAggro = false;
             path.Clear();
@@ -212,7 +258,7 @@ private void Update()
         if (distance <= attackDistance)
         {
             desiredVelocity = Vector2.zero;
-            if (Time.time >= nextAttackTime)
+            if (Champion == null && Time.time >= nextAttackTime)
                 BeginAttack();
             UpdateAnimation();
             return;
@@ -227,16 +273,17 @@ private void Update()
 
     private bool distanceNeedsPathRefresh()
     {
-        return Time.time >= nextPathRefreshTime || pathIndex >= path.Count;
+        return Time.time >= nextPathRefreshTime;
     }
 
     private void FixedUpdate()
     {
         if (state == State.Death)
             return;
+        if (Champion != null && Champion.IsCharging) return;
 
         Vector2 velocity = knockbackVelocity;
-        if (state == State.Walk || state == State.Idle)
+        if (!IsFrozen && (state == State.Walk || state == State.Idle))
             velocity += desiredVelocity;
         if (velocity.sqrMagnitude > 0.0001f)
             body.MovePosition(body.position + velocity * Time.fixedDeltaTime);
@@ -320,8 +367,17 @@ private void Update()
     {
         target = newTarget;
         hasAggro = false;
+        persistentAggro = false;
         waitingAtWanderTarget = false;
         ChooseWanderTarget(true);
+    }
+
+    public void HoldForSpecial(bool attacking)
+    {
+        desiredVelocity = Vector2.zero;
+        var next = attacking ? State.Attack : State.Idle;
+        if (state != next) { frameIndex = 0; frameTimer = 0f; }
+        state = next;
     }
 
     /// <summary>
@@ -337,7 +393,13 @@ private void Update()
     /// </summary>
     public void OnSpawnedFromPool(Transform newTarget)
     {
+        lastDamageByPlayer = false;
+        frozenUntil = burningUntil = nextBurnTick = 0f;
+        burnDamage = 0;
+        if (hitFlashRoutine != null) { StopCoroutine(hitFlashRoutine); hitFlashRoutine = null; }
+        pathfinder = FindFirstObjectByType<ZombieGridPathfinder>();
         target = newTarget;
+        spawnSpeedMultiplier = 1f;
         ApplyArchetypeStats();
         currentHealth = runtimeMaxHealth;
         desiredVelocity = Vector2.zero;
@@ -352,6 +414,7 @@ private void Update()
         path.Clear();
         homePosition = transform.position;
         hasAggro = false;
+        persistentAggro = false;
         ChooseWanderTarget(true);
         state = State.Walk;
         transform.localScale = baseScale;
@@ -375,32 +438,56 @@ private void Update()
 
     public void TakeDamage(int damage)
     {
+        ApplyDamage(damage, false);
+    }
+
+    private void ApplyDamage(int damage, bool causedByPlayer)
+    {
         if (damage <= 0 || state == State.Death)
             return;
 
-        currentHealth = Mathf.Max(0, currentHealth - damage);
-        FloatingCombatText.Spawn(damageTextPrefab, transform.position + Vector3.up * 0.45f, "-" + damage.ToString(), damageTextColor);
+        int actualDamage = Mathf.Min(currentHealth, damage);
+        lastDamageByPlayer = causedByPlayer;
+        currentHealth -= actualDamage;
+        if (causedByPlayer && RunState.Instance != null)
+            RunState.Instance.RecordDamageDealt(actualDamage);
+        FloatingCombatText.Spawn(damageTextPrefab, transform.position + Vector3.up * 0.45f, "-" + actualDamage.ToString(), damageTextColor);
         StartHitFlash();
         if (currentHealth == 0)
             Die();
     }
 
-    public void TakeDamage(int damage, Vector2 hitDirection, float knockbackForce)
+    public void TakeDamage(int damage, Vector2 hitDirection, float knockbackForce, bool causedByPlayer = false)
     {
         if (state == State.Death)
             return;
 
         Vector2 direction = hitDirection.sqrMagnitude > 0.001f ? hitDirection.normalized : Vector2.down;
-        knockbackVelocity = Vector2.ClampMagnitude(knockbackVelocity + direction * Mathf.Max(0f, knockbackForce), 5f);
-        TakeDamage(damage);
+        knockbackForce *= receivedKnockbackMultiplier;
+        knockbackVelocity = Vector2.ClampMagnitude(knockbackVelocity + direction * Mathf.Max(0f, knockbackForce), Mathf.Max(5f, knockbackForce));
+        ApplyDamage(damage, causedByPlayer);
     }
 
     public void Die()
     {
         if (state == State.Death)
             return;
+        bool frozenOnDeath = Time.time < frozenUntil;
+        bool burningOnDeath = Time.time < burningUntil;
+        Vector2 burstOrigin = hitCollider != null ? (Vector2)hitCollider.bounds.center : (Vector2)transform.position;
         currentHealth = 0;
-        if (RunState.Instance != null) RunState.Instance.RecordKill();
+        // Notify before returning this instance to its pool or clearing status effects.
+        state = State.Death;
+        Died?.Invoke(this);
+        if (RunState.Instance != null)
+        {
+            bool elite = archetype != ZombieArchetype.Standard;
+            RunState.Instance.RecordKill(elite);
+            RunState.Instance.DropExperience(transform.position, elite);
+            RunState.Instance.CombatEffects.EnemyKilled(burstOrigin, frozenOnDeath, burningOnDeath, lastDamageByPlayer);
+        }
+        frozenUntil = burningUntil = 0f;
+        burnDamage = 0;
         if (hitFlashRoutine != null)
         {
             StopCoroutine(hitFlashRoutine);
@@ -423,7 +510,8 @@ private void Update()
 
     public void ApplyRunDifficulty(float healthMultiplier)
     {
-        runtimeMaxHealth = Mathf.Max(1, Mathf.CeilToInt(runtimeMaxHealth * healthMultiplier));
+        // Round integral HP so float error cannot turn 200 * 1.2 into 241 HP.
+        runtimeMaxHealth = Mathf.Max(1, Mathf.RoundToInt(runtimeMaxHealth * healthMultiplier));
         currentHealth = runtimeMaxHealth;
         if (spriteRenderer != null)
         {
@@ -432,6 +520,19 @@ private void Update()
                 archetype == ZombieArchetype.Exploder ? new Color(1f, 0.62f, 0.62f) : Color.white;
             spriteRenderer.color = baseColor;
         }
+    }
+
+    public void SetSpawnMoveSpeedMultiplier(float multiplier)
+    {
+        float next = Mathf.Max(.1f, multiplier);
+        runtimeMoveSpeed = runtimeMoveSpeed / spawnSpeedMultiplier * next;
+        spawnSpeedMultiplier = next;
+    }
+
+    public void SetSpawnHealth(int maximum)
+    {
+        runtimeMaxHealth = Mathf.Max(1, maximum);
+        currentHealth = runtimeMaxHealth;
     }
 
     private void UpdateIdleWander()
@@ -504,6 +605,14 @@ private void Update()
         if (hitFlashRoutine != null)
             StopCoroutine(hitFlashRoutine);
         hitFlashRoutine = StartCoroutine(HitFlashRoutine());
+    }
+
+    private void LateUpdate()
+    {
+        if (spriteRenderer == null || state == State.Death || hitFlashRoutine != null) return;
+        if (IsFrozen) spriteRenderer.color = new Color(0.35f, 0.82f, 1f);
+        else if (IsBurning) spriteRenderer.color = Color.Lerp(new Color(1f, 0.35f, 0.1f), new Color(1f, 0.8f, 0.2f), (Mathf.Sin(Time.time * 14f) + 1f) * 0.5f);
+        else if (state != State.Attack) spriteRenderer.color = baseColor;
     }
 
     private System.Collections.IEnumerator HitFlashRoutine()

@@ -24,6 +24,8 @@ public sealed class ZombieUiFlow : MonoBehaviour
     public Button[] chapterButtons;
     public string[] chapterScenePaths;
     public bool startOnChapterPanel;
+    public GameObject weaponPickerPrefab;
+    private StartingWeaponPicker weaponPicker;
 
     private void Awake()
     {
@@ -114,7 +116,16 @@ public sealed class ZombieUiFlow : MonoBehaviour
             return;
         }
 
-        RunState.StartNewRun(scenePath);
+        if (weaponPickerPrefab == null) { RunState.StartNewRun(scenePath); return; }
+        // This prefab owns a screen-space Canvas and its scaler; keep it a root
+        // canvas rather than inheriting the menu's scale and sorting settings.
+        if (weaponPicker == null) weaponPicker = Instantiate(weaponPickerPrefab).GetComponent<StartingWeaponPicker>();
+        weaponPicker.Show(scenePath);
+    }
+
+    private void OnDestroy()
+    {
+        if (weaponPicker != null) Destroy(weaponPicker.gameObject);
     }
 
     private void OnOptionsClicked()

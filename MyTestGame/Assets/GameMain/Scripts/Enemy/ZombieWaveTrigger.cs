@@ -15,9 +15,12 @@ public sealed class ZombieWaveTrigger : MonoBehaviour
     [SerializeField] private Transform[] spawnPointsOverride;
 
     private bool triggered;
+    private ZombieSpawner spawner;
 
     public string WaveId => waveId;
     public bool HasTriggered => triggered;
+    public int Remaining => triggered && spawner != null ? spawner.WaveRemaining(waveId) : 0;
+    public bool IsCleared => triggered && spawner != null && spawner.WaveCleared(waveId);
 
     private void Awake()
     {
@@ -38,7 +41,7 @@ public sealed class ZombieWaveTrigger : MonoBehaviour
         if (triggered)
             return;
 
-        ZombieSpawner spawner = FindFirstObjectByType<ZombieSpawner>();
+        spawner = FindFirstObjectByType<ZombieSpawner>();
         if (spawner == null || !spawner.TriggerWaveOnce(waveId, waveCount, spawnPointsOverride))
             return;
 

@@ -1,0 +1,14 @@
+Use case: stylized-concept
+Asset type: production sprite atlas for a top-down pixel-art zombie-survival roguelite HUD.
+Primary request: exactly sixteen separate, readable pixel-art UI icons arranged in a precise 4 by 4 grid on a 1024 by 1024 canvas. Each cell is 256 by 256 pixels. All sixteen icons share one consistent art direction.
+Style/medium: crisp hand-pixelled 2D game art, restrained 16-bit detail, hard pixel edges, compact silhouettes. The existing game has cracked asphalt, abandoned brick buildings, moss, olive fatigues and a survivor carrying a backpack. Match this grounded urban survival setting.
+Materials/textures: worn gunmetal, chalk-white markings, muted olive cloth, pale steel edges, minimal scratches. Small green, amber, red and cyan accents distinguish functions. No polished futuristic holograms or fantasy ornaments.
+Composition/framing: one isolated icon per cell, centered, with at least 48 pixels of completely empty padding on every side. Keep the visible icon within approximately 128 by 128 pixels. No slot backgrounds or button frames behind the icons. Same apparent scale and pixel density across the atlas.
+Exact cell contents, reading left to right, top to bottom:
+Row 1: health, a compact ivory heart with a small medical red accent; melee attack, a single steel machete angled diagonally; dash, a running boot with two short green motion strokes; survival time, a readable mechanical stopwatch.
+Row 2: zombie kills, a stylized pale zombie skull without gore; current room, a barricaded doorway with a small amber checkpoint marker; pause, two clear ivory vertical bars; restart, one clear ivory circular arrow.
+Row 3: heavy blade upgrade, a heavier steel blade with a small amber upward arrow; wide sweep upgrade, a machete with one cyan curved sweep arc; quick hands upgrade, a gloved hand gripping a knife with a small yellow speed spark; light feet upgrade, a light olive running shoe with green speed strokes.
+Row 4: vitality upgrade, a compact green first-aid pouch with an ivory cross; second wind upgrade, a boot beside a small amber hourglass; long stride upgrade, a boot above one cyan elongated directional arrow; blood return upgrade, a single red blood drop containing a tiny pale medical cross.
+Scene/backdrop: flat perfectly uniform chroma-key magenta RGB 255,0,255. Magenta is exclusively the removable background and MUST NOT appear within any icon. No background lighting, shadows on the magenta, gradients or checkerboard texture.
+Text: none. Absolutely no words, numbers, letters, captions, cell outlines, watermarks or logos.
+Constraints: orthographic flat sprite art only, no perspective mockup. Every icon must be complete and entirely inside its own cell, separated from its neighbours by the plain background. Legible when reduced to 32 or 48 pixels. No anti-aliased soft borders, drop shadows, bloom or excessive visual noise.

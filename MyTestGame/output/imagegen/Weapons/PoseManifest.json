@@ -1,0 +1,948 @@
+{
+  "poses": [
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_00.png",
+      "view": "Down",
+      "gripPixel": [
+        21.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_01.png",
+      "view": "Down",
+      "gripPixel": [
+        24.4,
+        27.0
+      ],
+      "weaponAngle": 45
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_02.png",
+      "view": "Down",
+      "gripPixel": [
+        41.33,
+        27.06
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_03.png",
+      "view": "Down",
+      "gripPixel": [
+        8.5,
+        27.8
+      ],
+      "weaponAngle": 125
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_04.png",
+      "view": "Down",
+      "gripPixel": [
+        30.0,
+        39.0
+      ],
+      "weaponAngle": 170
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_05.png",
+      "view": "Down",
+      "gripPixel": [
+        23.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_00.png",
+      "view": "Up",
+      "gripPixel": [
+        42.67,
+        41.33
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_01.png",
+      "view": "Up",
+      "gripPixel": [
+        43.79,
+        21.5
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_02.png",
+      "view": "Up",
+      "gripPixel": [
+        43.5,
+        6.33
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_03.png",
+      "view": "Up",
+      "gripPixel": [
+        38.7,
+        6.1
+      ],
+      "weaponAngle": 35
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_04.png",
+      "view": "Up",
+      "gripPixel": [
+        45.64,
+        36.07
+      ],
+      "weaponAngle": 70
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_05.png",
+      "view": "Up",
+      "gripPixel": [
+        42.38,
+        40.38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_00.png",
+      "view": "Right",
+      "gripPixel": [
+        41.17,
+        34.06
+      ],
+      "weaponAngle": -25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_01.png",
+      "view": "Right",
+      "gripPixel": [
+        37.5,
+        19.5
+      ],
+      "weaponAngle": 65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_02.png",
+      "view": "Right",
+      "gripPixel": [
+        56.0,
+        23.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_03.png",
+      "view": "Right",
+      "gripPixel": [
+        58.83,
+        24.25
+      ],
+      "weaponAngle": -90
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_04.png",
+      "view": "Right",
+      "gripPixel": [
+        38.32,
+        36.05
+      ],
+      "weaponAngle": -130
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_05.png",
+      "view": "Right",
+      "gripPixel": [
+        41.4,
+        34.3
+      ],
+      "weaponAngle": -25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_00.png",
+      "view": "Left",
+      "gripPixel": [
+        22.83,
+        34.06
+      ],
+      "weaponAngle": 25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_01.png",
+      "view": "Left",
+      "gripPixel": [
+        26.5,
+        19.5
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_02.png",
+      "view": "Left",
+      "gripPixel": [
+        8.0,
+        23.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_03.png",
+      "view": "Left",
+      "gripPixel": [
+        5.170000000000002,
+        24.25
+      ],
+      "weaponAngle": 90
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_04.png",
+      "view": "Left",
+      "gripPixel": [
+        25.68,
+        36.05
+      ],
+      "weaponAngle": 130
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_05.png",
+      "view": "Left",
+      "gripPixel": [
+        22.6,
+        34.3
+      ],
+      "weaponAngle": 25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_00.png",
+      "view": "Down",
+      "gripPixel": [
+        22.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_01.png",
+      "view": "Down",
+      "gripPixel": [
+        22.67,
+        42.67
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_02.png",
+      "view": "Down",
+      "gripPixel": [
+        22.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_03.png",
+      "view": "Down",
+      "gripPixel": [
+        22.5,
+        42.94
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_04.png",
+      "view": "Down",
+      "gripPixel": [
+        22.38,
+        43.12
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_05.png",
+      "view": "Down",
+      "gripPixel": [
+        22.67,
+        42.67
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_06.png",
+      "view": "Down",
+      "gripPixel": [
+        22.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/IdleDown/Survivor_IdleDown_07.png",
+      "view": "Down",
+      "gripPixel": [
+        22.5,
+        42.94
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_00.png",
+      "view": "Down",
+      "gripPixel": [
+        19.5,
+        27.9
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_01.png",
+      "view": "Down",
+      "gripPixel": [
+        28.43,
+        32.77
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_02.png",
+      "view": "Down",
+      "gripPixel": [
+        20.7,
+        31.5
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_03.png",
+      "view": "Down",
+      "gripPixel": [
+        27.97,
+        33.29
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_04.png",
+      "view": "Down",
+      "gripPixel": [
+        27.39,
+        33.44
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_05.png",
+      "view": "Down",
+      "gripPixel": [
+        26.17,
+        31.97
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_06.png",
+      "view": "Down",
+      "gripPixel": [
+        20.5,
+        30.9
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunDown/Survivor_RunDown_07.png",
+      "view": "Down",
+      "gripPixel": [
+        28.06,
+        32.81
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_00.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_01.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_02.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_03.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_04.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_05.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_06.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Normalized/RunUp/Survivor_RunUp_07.png",
+      "view": "Up",
+      "gripPixel": [
+        43,
+        38
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_00.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        32.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_01.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_02.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_03.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_04.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        30.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_05.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_06.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_07.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_08.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        32.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_09.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_10.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_11.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_12.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        30.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_13.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_14.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunRight/Survivor_RunRight_Continuous_15.png",
+      "view": "Right",
+      "gripPixel": [
+        46.5,
+        31.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_00.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        32.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_01.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_02.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_03.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_04.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        30.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_05.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_06.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_07.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_08.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        32.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_09.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_10.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_11.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_12.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        30.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_13.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_14.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Generated/Continuous/RunLeft/Survivor_RunLeft_Continuous_15.png",
+      "view": "Left",
+      "gripPixel": [
+        17.5,
+        31.0
+      ],
+      "weaponAngle": 20
+    }
+  ],
+  "attackDown": [
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_00.png",
+      "view": "Down",
+      "gripPixel": [
+        21.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_01.png",
+      "view": "Down",
+      "gripPixel": [
+        24.4,
+        27.0
+      ],
+      "weaponAngle": 45
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_02.png",
+      "view": "Down",
+      "gripPixel": [
+        41.33,
+        27.06
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_03.png",
+      "view": "Down",
+      "gripPixel": [
+        8.5,
+        27.8
+      ],
+      "weaponAngle": 125
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_04.png",
+      "view": "Down",
+      "gripPixel": [
+        30.0,
+        39.0
+      ],
+      "weaponAngle": 170
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackDown/Survivor_AttackDown_05.png",
+      "view": "Down",
+      "gripPixel": [
+        23.62,
+        43.0
+      ],
+      "weaponAngle": 165
+    }
+  ],
+  "attackUp": [
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_00.png",
+      "view": "Up",
+      "gripPixel": [
+        42.67,
+        41.33
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_01.png",
+      "view": "Up",
+      "gripPixel": [
+        43.79,
+        21.5
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_02.png",
+      "view": "Up",
+      "gripPixel": [
+        43.5,
+        6.33
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_03.png",
+      "view": "Up",
+      "gripPixel": [
+        38.7,
+        6.1
+      ],
+      "weaponAngle": 35
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_04.png",
+      "view": "Up",
+      "gripPixel": [
+        45.64,
+        36.07
+      ],
+      "weaponAngle": 70
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackUp/Survivor_AttackUp_05.png",
+      "view": "Up",
+      "gripPixel": [
+        42.38,
+        40.38
+      ],
+      "weaponAngle": -20
+    }
+  ],
+  "attackRight": [
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_00.png",
+      "view": "Right",
+      "gripPixel": [
+        41.17,
+        34.06
+      ],
+      "weaponAngle": -25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_01.png",
+      "view": "Right",
+      "gripPixel": [
+        37.5,
+        19.5
+      ],
+      "weaponAngle": 65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_02.png",
+      "view": "Right",
+      "gripPixel": [
+        56.0,
+        23.0
+      ],
+      "weaponAngle": 20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_03.png",
+      "view": "Right",
+      "gripPixel": [
+        58.83,
+        24.25
+      ],
+      "weaponAngle": -90
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_04.png",
+      "view": "Right",
+      "gripPixel": [
+        38.32,
+        36.05
+      ],
+      "weaponAngle": -130
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackRight/Survivor_AttackRight_05.png",
+      "view": "Right",
+      "gripPixel": [
+        41.4,
+        34.3
+      ],
+      "weaponAngle": -25
+    }
+  ],
+  "attackLeft": [
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_00.png",
+      "view": "Left",
+      "gripPixel": [
+        22.83,
+        34.06
+      ],
+      "weaponAngle": 25
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_01.png",
+      "view": "Left",
+      "gripPixel": [
+        26.5,
+        19.5
+      ],
+      "weaponAngle": -65
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_02.png",
+      "view": "Left",
+      "gripPixel": [
+        8.0,
+        23.0
+      ],
+      "weaponAngle": -20
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_03.png",
+      "view": "Left",
+      "gripPixel": [
+        5.170000000000002,
+        24.25
+      ],
+      "weaponAngle": 90
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_04.png",
+      "view": "Left",
+      "gripPixel": [
+        25.68,
+        36.05
+      ],
+      "weaponAngle": 130
+    },
+    {
+      "path": "Assets/GameMain/Res/Characters/Survivor/Combat/AttackLeft/Survivor_AttackLeft_05.png",
+      "view": "Left",
+      "gripPixel": [
+        22.6,
+        34.3
+      ],
+      "weaponAngle": 25
+    }
+  ]
+}

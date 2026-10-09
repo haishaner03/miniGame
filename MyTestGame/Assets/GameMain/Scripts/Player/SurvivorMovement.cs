@@ -16,6 +16,18 @@ public class SurvivorMovement : MonoBehaviour
 private Vector2 input;
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public float MoveSpeed => moveSpeed;
+    public Vector2 MoveInput => input;
+
+    public void SetFacingDirection(Vector2 direction)
+    {
+        if (direction.sqrMagnitude > 0.001f) FacingDirection = direction.normalized;
+    }
+
+    public void RefreshAnimation()
+    {
+        currentAnimation = null;
+        UpdateAnimation();
+    }
 
     public void SetMoveSpeed(float speed)
     {
@@ -58,7 +70,13 @@ private void UpdateAnimation()
         {
             if (spriteRenderer != null)
                 spriteRenderer.flipX = false;
-            PlayAnimation("Idle");
+            string state = "Idle";
+            if (GetComponent<SurvivorWeaponVisual>() != null)
+            {
+                var view = SurvivorWeaponPoseLibrary.View(FacingDirection);
+                state = view == SurvivorView.Up ? "IdleUp" : view == SurvivorView.Left ? "IdleLeft" : view == SurvivorView.Right ? "IdleRight" : "Idle";
+            }
+            PlayAnimation(state);
             return;
         }
 

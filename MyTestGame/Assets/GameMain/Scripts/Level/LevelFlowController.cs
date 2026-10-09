@@ -27,16 +27,30 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField] private string nextScenePath;
     [SerializeField] private bool autoStart = true;
     [SerializeField] private bool requireAllZombiesDefeated = true;
-        [SerializeField] private bool stopSpawningWhenExitUnlocked = true;
-[SerializeField] private bool disableSpawnerRespawn = true;
+    [SerializeField] private bool stopSpawningWhenExitUnlocked = true;
+    [SerializeField] private bool disableSpawnerRespawn = true;
     [SerializeField] private float nextSceneDelay = 0.75f;
     [SerializeField] private bool showDebugOverlay = true;
-    [Tooltip("可选：这些区域波次全部触发过、且场上丧尸清空后才解锁出口。为空时保持旧逻辑。")]
+    [Tooltip("击杀目标和这些区域波次全部完成后解锁出口。为空时自动查找本场景区域触发器。")]
     [SerializeField] private ZombieWaveTrigger[] requiredWaves;
 
     public FlowState State { get; private set; } = FlowState.Waiting;
     public bool ExitUnlocked { get; private set; }
     public string NextScenePath => nextScenePath;
+    public int TotalObjectiveWaves => requiredWaves == null ? 0 : requiredWaves.Length;
+    public int CompletedObjectiveWaves => ClearedWaveCount();
+    public int RemainingEnemies => zombieSpawner != null ? zombieSpawner.ActiveCount : 0;
+    public int RequiredKills
+    {
+        get
+        {
+            var run = RunState.Instance;
+            if (run == null) return 0;
+            if (run.RoomNumber == run.RoomCount) return run.Config.bossPreparationKills;
+            if (run.RoomNumber == run.Config.eliteRoomNumber) return run.Config.elitePreparationKills;
+            return run.Config.roomKillTarget + run.RoomIndex * 15;
+        }
+    }
 
     private bool hadEnemies;
     private bool loadRequested;
@@ -94,6 +108,8 @@ public sealed class LevelFlowController : MonoBehaviour
     {
         if (State != FlowState.Playing)
             return;
+        if (RunState.Instance != null && RunState.Instance.Phase != RunState.RunPhase.Playing)
+            return;
 
         if (playerHealth != null && playerHealth.IsGameOver)
         {
@@ -107,30 +123,36 @@ public sealed class LevelFlowController : MonoBehaviour
         if (zombieSpawner.ActiveCount > 0)
             hadEnemies = true;
 
-        if (requireAllZombiesDefeated && hadEnemies && zombieSpawner.ActiveCount == 0 && AllRequiredWavesTriggered())
-            UnlockExit();
+        bool objectiveMet = RunState.Instance != null
+            ? RunState.Instance.RoomKills >= RequiredKills
+            : hadEnemies && zombieSpawner.ActiveCount == 0;
+        if (requireAllZombiesDefeated && objectiveMet && AllRequiredWavesCleared())
+        {
+            var encounter = RunState.Instance != null ? RunState.Instance.Encounter : null;
+            if (encounter == null || encounter.TryResolveObjective()) UnlockExit();
+        }
     }
 
-    private int TriggeredWaveCount()
+    private int ClearedWaveCount()
     {
         int count = 0;
         if (requiredWaves == null)
             return 0;
         for (int i = 0; i < requiredWaves.Length; i++)
         {
-            if (requiredWaves[i] != null && requiredWaves[i].HasTriggered)
+            if (requiredWaves[i] != null && requiredWaves[i].IsCleared)
                 count++;
         }
         return count;
     }
 
-    private bool AllRequiredWavesTriggered()
+    private bool AllRequiredWavesCleared()
     {
         if (requiredWaves == null || requiredWaves.Length == 0)
             return true;
         for (int i = 0; i < requiredWaves.Length; i++)
         {
-            if (requiredWaves[i] != null && !requiredWaves[i].HasTriggered)
+            if (requiredWaves[i] != null && !requiredWaves[i].IsCleared)
                 return false;
         }
         return true;
@@ -156,6 +178,8 @@ public sealed class LevelFlowController : MonoBehaviour
     public void UnlockExit()
     {
         if (ExitUnlocked)
+            return;
+        if (RunState.Instance != null && RunState.Instance.Encounter != null && !RunState.Instance.Encounter.IsResolved)
             return;
 
         ExitUnlocked = true;
@@ -235,6 +259,8 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private void ResolveReferences()
     {
+        if (requiredWaves == null || requiredWaves.Length == 0)
+            requiredWaves = FindObjectsByType<ZombieWaveTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         if (playerHealth == null)
             playerHealth = FindFirstObjectByType<SurvivorHealth>();
         if (zombieSpawner == null)
@@ -268,7 +294,7 @@ public sealed class LevelFlowController : MonoBehaviour
 
         string objective = ExitUnlocked ? "出口已解锁，前往出口门" : "清理街区中的丧尸";
         if (!ExitUnlocked && requiredWaves != null && requiredWaves.Length > 0)
-            objective = "推进街区 " + TriggeredWaveCount() + "/" + requiredWaves.Length + "，清空路障前的丧尸";
+            objective = "推进街区 " + ClearedWaveCount() + "/" + requiredWaves.Length + "，清理区域波次";
         GUI.Label(new Rect(18f, 18f, 500f, 24f), "关卡状态: " + State + "  |  " + objective);
     }
 }

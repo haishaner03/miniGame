@@ -43,9 +43,17 @@ public sealed class PlayerRunStats : MonoBehaviour
         if (movement != null)
             movement.SetMoveSpeed(baseMoveSpeed * (1f + run.EffectTotal("MoveSpeed")));
         if (melee != null)
-            melee.SetRunStats(baseDamage + Mathf.RoundToInt(run.EffectTotal("Damage")),
-                baseAttackCooldown * Mathf.Max(0.25f, 1f - run.EffectTotal("AttackSpeed")),
-                baseRange * (1f + run.EffectTotal("Range")));
+        {
+            var weapon = melee.GetWeaponDefinition(run.UsesHeavyWeapon);
+            melee.EquipWeapon(run.UsesHeavyWeapon);
+            int weaponDamage = weapon != null ? weapon.damage : baseDamage;
+            float weaponCooldown = weapon != null ? weapon.cooldown : baseAttackCooldown;
+            float weaponRange = weapon != null ? weapon.reach : baseRange;
+            melee.SetRunStats(Mathf.RoundToInt((weaponDamage + run.EffectTotal("Damage")) * (1f + run.EffectTotal("DamagePercent"))),
+                weaponCooldown * Mathf.Max(0.25f, 1f - run.EffectTotal("AttackSpeed")),
+                weaponRange * (1f + run.EffectTotal("Range")));
+            melee.SetKnockbackMultiplier(1f + run.EffectTotal("Knockback"));
+        }
         if (dash != null)
             dash.SetRunStats(baseDashCooldown * Mathf.Max(0.25f, 1f - run.EffectTotal("DashCooldown")),
                 baseDashDistance * (1f + run.EffectTotal("DashDistance")));

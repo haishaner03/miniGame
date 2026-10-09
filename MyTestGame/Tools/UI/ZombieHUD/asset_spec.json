@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "status": "integrated_and_runtime_verified",
+  "targetFolder": "Assets/GameMain/UI/Art/ZombieHUD",
+  "referenceCanvas": [
+    1280,
+    720
+  ],
+  "safeInset": 32,
+  "dynamicContent": [
+    "Chinese labels",
+    "health values",
+    "room number",
+    "objective progress",
+    "elapsed time",
+    "kill count",
+    "upgrade stack count",
+    "cooldown fill amount"
+  ],
+  "import": {
+    "textureType": "Sprite",
+    "spriteMode": "Single",
+    "filterMode": "Point",
+    "compression": "Uncompressed",
+    "mipmaps": false,
+    "wrapMode": "Clamp"
+  },
+  "atlases": [
+    {
+      "prompt": "prompts/icons.txt",
+      "size": [
+        1024,
+        1024
+      ],
+      "grid": [
+        4,
+        4
+      ],
+      "exportSize": [
+        64,
+        64
+      ],
+      "assets": [
+        {
+          "name": "Icon_Health",
+          "role": "player health"
+        },
+        {
+          "name": "Icon_Melee",
+          "role": "melee skill"
+        },
+        {
+          "name": "Icon_Dash",
+          "role": "dash skill"
+        },
+        {
+          "name": "Icon_Time",
+          "role": "elapsed run time"
+        },
+        {
+          "name": "Icon_Kills",
+          "role": "zombie kills"
+        },
+        {
+          "name": "Icon_Room",
+          "role": "current room"
+        },
+        {
+          "name": "Icon_Pause",
+          "role": "pause command"
+        },
+        {
+          "name": "Icon_Retry",
+          "role": "restart command"
+        },
+        {
+          "name": "Upgrade_Damage",
+          "upgradeId": 1
+        },
+        {
+          "name": "Upgrade_Range",
+          "upgradeId": 2
+        },
+        {
+          "name": "Upgrade_AttackSpeed",
+          "upgradeId": 3
+        },
+        {
+          "name": "Upgrade_MoveSpeed",
+          "upgradeId": 4
+        },
+        {
+          "name": "Upgrade_MaxHealth",
+          "upgradeId": 5
+        },
+        {
+          "name": "Upgrade_DashCooldown",
+          "upgradeId": 6
+        },
+        {
+          "name": "Upgrade_DashDistance",
+          "upgradeId": 7
+        },
+        {
+          "name": "Upgrade_LifeSteal",
+          "upgradeId": 8
+        }
+      ]
+    }
+  ],
+  "assembly": [
+    {
+      "name": "PlayerStatus",
+      "anchor": "top-left",
+      "offset": [
+        32,
+        -32
+      ],
+      "size": [
+        284,
+        84
+      ]
+    },
+    {
+      "name": "RoomObjective",
+      "anchor": "top-center",
+      "offset": [
+        0,
+        -32
+      ],
+      "size": [
+        348,
+        92
+      ]
+    },
+    {
+      "name": "RunStatistics",
+      "anchor": "top-right",
+      "offset": [
+        -92,
+        -32
+      ],
+      "size": [
+        216,
+        76
+      ]
+    },
+    {
+      "name": "PauseButton",
+      "anchor": "top-right",
+      "offset": [
+        -32,
+        -32
+      ],
+      "size": [
+        48,
+        48
+      ]
+    },
+    {
+      "name": "UpgradeRow",
+      "anchor": "bottom-left",
+      "offset": [
+        32,
+        32
+      ],
+      "slotSize": [
+        56,
+        56
+      ],
+      "spacing": 8,
+      "maximumVisible": 8
+    },
+    {
+      "name": "Skills",
+      "anchor": "bottom-right",
+      "offset": [
+        -32,
+        32
+      ],
+      "slotSize": [
+        76,
+        108
+      ],
+      "spacing": 12
+    }
+  ],
+  "notes": [
+    "16 sprites exported from the generated gpt-image-2 icon sheet using the saved icons prompt.",
+    "Magenta background removed; transparent exports visually checked before Unity import.",
+    "UI uses a serialized, editable UGUI hierarchy and the Noto Sans CJK Chinese font.",
+    "Runtime validation report: output/imagegen/HUD_validation.txt",
+    "Additional frame-art prompt is retained as an unused design draft."
+  ],
+  "prefab": "Assets/GameMain/UI/Prefabs/ZombieBattleHUD.prefab",
+  "nativePanels": "UGUI Image and Outline; colors and layout metrics live in ZombieHudTheme.cs"
+}

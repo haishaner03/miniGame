@@ -10,7 +10,7 @@ using UnityEngine;
 public sealed class SurvivorHealth : MonoBehaviour
 {
     [Header("生命")]
-    [SerializeField] private int maxHealth = 5;
+    [SerializeField] private int maxHealth = 100;
     [SerializeField] private float invulnerabilityDuration = 0.75f;
     [SerializeField] private float hitFlashDuration = 0.12f;
 
@@ -50,14 +50,20 @@ public sealed class SurvivorHealth : MonoBehaviour
         singleLifeRun = true;
         showGameOverOverlay = false;
         maxHealth = Mathf.Max(1, maximum);
+        int previousHealth = CurrentHealth;
         CurrentHealth = Mathf.Clamp(current, 1, maxHealth);
+        // Upgrade healing counts; initial room binding is excluded by the run phase.
+        if (RunState.Instance != null && RunState.Instance.Phase == RunState.RunPhase.ChoosingUpgrade)
+            RunState.Instance.RecordHealing(CurrentHealth - previousHealth);
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
     }
 
     public void Heal(int amount)
     {
         if (amount <= 0 || IsDead || IsGameOver) return;
-        CurrentHealth = Mathf.Min(maxHealth, CurrentHealth + amount);
+        int restored = Mathf.Min(amount, maxHealth - CurrentHealth);
+        CurrentHealth += restored;
+        if (RunState.Instance != null) RunState.Instance.RecordHealing(restored);
         HealthChanged?.Invoke(CurrentHealth, maxHealth);
     }
 
@@ -119,7 +125,9 @@ public sealed class SurvivorHealth : MonoBehaviour
                 body.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
         }
 
-        CurrentHealth = Mathf.Max(0, CurrentHealth - damage);
+        int actualDamage = Mathf.Min(CurrentHealth, damage);
+        CurrentHealth -= actualDamage;
+        if (RunState.Instance != null) RunState.Instance.RecordDamageTaken(actualDamage);
         FloatingCombatText.Spawn(damageTextPrefab, transform.position + Vector3.up * 0.58f, "-" + damage.ToString(), damageTextColor);
         invulnerableUntil = Time.time + Mathf.Max(0f, invulnerabilityDuration);
         HealthChanged?.Invoke(CurrentHealth, maxHealth);

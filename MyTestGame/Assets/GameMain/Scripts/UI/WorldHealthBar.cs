@@ -10,6 +10,8 @@ public sealed class WorldHealthBar : MonoBehaviour
 {
     [SerializeField] private float width = 0.82f;
     [SerializeField] private float height = 0.095f;
+    [SerializeField] private float zombieHeight = 0.035f;
+    [SerializeField] private float zombieOutlinePadding = 0.02f;
     [SerializeField] private float offsetY = 0.72f;
     [SerializeField] private bool hideWhenDead = true;
     [SerializeField] private Color fillColor = new Color(0.3f, 1f, 0.35f, 1f);
@@ -73,6 +75,8 @@ public sealed class WorldHealthBar : MonoBehaviour
 
     private void CreateVisuals()
     {
+        float barHeight = isZombie ? zombieHeight : height;
+        float outlinePadding = isZombie ? zombieOutlinePadding : 0.06f;
         if (pixelSprite == null)
         {
             Texture2D texture = new Texture2D(1, 1, TextureFormat.RGBA32, false)
@@ -97,7 +101,7 @@ public sealed class WorldHealthBar : MonoBehaviour
 
         barRoot = rootObject.GetComponent<RectTransform>();
         barRoot.SetParent(transform, false);
-        barRoot.sizeDelta = new Vector2(width, height);
+        barRoot.sizeDelta = new Vector2(width, barHeight);
 
         // 抵消角色自身缩放，保证玩家和缩小后的丧尸血条尺寸一致；
         // 位置也按父物体缩放反算，避免玩家血条被整体抬高。
@@ -107,9 +111,9 @@ public sealed class WorldHealthBar : MonoBehaviour
         barRoot.localScale = new Vector3(1f / scaleX, 1f / scaleY, 1f);
         barRoot.localPosition = new Vector3(0f, offsetY / scaleY, 0f);
 
-        CreateImage("Outline", new Vector2(width + 0.06f, height + 0.06f), new Color(0.02f, 0.02f, 0.025f, 0.95f));
-        CreateImage("Background", new Vector2(width, height), new Color(0.16f, 0.04f, 0.04f, 1f));
-        fillImage = CreateImage("Fill", new Vector2(width, height), fillColor);
+        CreateImage("Outline", new Vector2(width + outlinePadding, barHeight + outlinePadding), new Color(0.02f, 0.02f, 0.025f, 0.95f));
+        CreateImage("Background", new Vector2(width, barHeight), new Color(0.16f, 0.04f, 0.04f, 1f));
+        fillImage = CreateImage("Fill", new Vector2(width, barHeight), fillColor);
         fillImage.type = Image.Type.Filled;
         fillImage.fillMethod = Image.FillMethod.Horizontal;
         fillImage.fillOrigin = 0;

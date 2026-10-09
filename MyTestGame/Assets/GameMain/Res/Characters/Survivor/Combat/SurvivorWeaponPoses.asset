@@ -1,0 +1,435 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c2f8d29242f3546bc3eeca8e510cbc, type: 3}
+  m_Name: SurvivorWeaponPoses
+  m_EditorClassIdentifier: Assembly-CSharp::SurvivorWeaponPoseLibrary
+  poses:
+  - sprite: {fileID: 21300000, guid: 844ee6074dcca4340b3a2fc9d9e7c91d, type: 3}
+    view: 0
+    gripPixel: {x: 21.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: d5f023a1be925bb41a38274715f5ef5b, type: 3}
+    view: 0
+    gripPixel: {x: 24.4, y: 27}
+    weaponAngle: 45
+  - sprite: {fileID: 21300000, guid: 6bee2a85c831d084f81eec99606cb600, type: 3}
+    view: 0
+    gripPixel: {x: 41.33, y: 27.06}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: 153cd2866b1de5c408da9d397d530d25, type: 3}
+    view: 0
+    gripPixel: {x: 8.5, y: 27.8}
+    weaponAngle: 125
+  - sprite: {fileID: 21300000, guid: 76e3637ff12f27949bb1f823f760701a, type: 3}
+    view: 0
+    gripPixel: {x: 30, y: 39}
+    weaponAngle: 170
+  - sprite: {fileID: 21300000, guid: c942c3ee568be8542a25982befc17e7d, type: 3}
+    view: 0
+    gripPixel: {x: 23.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: b152b1721b263404a9219de5e166e2f8, type: 3}
+    view: 1
+    gripPixel: {x: 42.67, y: 41.33}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: c98eee0fe59642047978f4a57f35423b, type: 3}
+    view: 1
+    gripPixel: {x: 43.79, y: 21.5}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: 51b3e691c13350042ad20f774c24905c, type: 3}
+    view: 1
+    gripPixel: {x: 43.5, y: 6.33}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: ddfb8ed4937d39b4aba17d1352b36f2c, type: 3}
+    view: 1
+    gripPixel: {x: 38.7, y: 6.1}
+    weaponAngle: 35
+  - sprite: {fileID: 21300000, guid: 66958f8109432424caa0d828735e715a, type: 3}
+    view: 1
+    gripPixel: {x: 45.64, y: 36.07}
+    weaponAngle: 70
+  - sprite: {fileID: 21300000, guid: 9e041ef485485c045884195b5ffbd33c, type: 3}
+    view: 1
+    gripPixel: {x: 42.38, y: 40.38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: c4b03d3e47035fb4081fe0199581f4e2, type: 3}
+    view: 2
+    gripPixel: {x: 41.17, y: 34.06}
+    weaponAngle: -25
+  - sprite: {fileID: 21300000, guid: 47e5e264c08bac94ab2d6005158ac88b, type: 3}
+    view: 2
+    gripPixel: {x: 37.5, y: 19.5}
+    weaponAngle: 65
+  - sprite: {fileID: 21300000, guid: 9e696996a4753894cb9c8e53b89a39c0, type: 3}
+    view: 2
+    gripPixel: {x: 56, y: 23}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: c26a66b1fc8fe4c48ada1f44acc08fbf, type: 3}
+    view: 2
+    gripPixel: {x: 58.83, y: 24.25}
+    weaponAngle: -90
+  - sprite: {fileID: 21300000, guid: bcb9292b338df214298383bcaf4004c9, type: 3}
+    view: 2
+    gripPixel: {x: 38.32, y: 36.05}
+    weaponAngle: -130
+  - sprite: {fileID: 21300000, guid: 817b99d30a972904283a5786ffb69d8b, type: 3}
+    view: 2
+    gripPixel: {x: 41.4, y: 34.3}
+    weaponAngle: -25
+  - sprite: {fileID: 21300000, guid: da804dc5308e9314e8382f4ea0c49bf3, type: 3}
+    view: 3
+    gripPixel: {x: 22.83, y: 34.06}
+    weaponAngle: 25
+  - sprite: {fileID: 21300000, guid: 4cf2169d456bc69469c4c8cb0152c1bd, type: 3}
+    view: 3
+    gripPixel: {x: 26.5, y: 19.5}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: d81a01b877921f2469ebc506e0cc3fe0, type: 3}
+    view: 3
+    gripPixel: {x: 8, y: 23}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: b1ba035556aa8f647a80c9ffdd183152, type: 3}
+    view: 3
+    gripPixel: {x: 5.17, y: 24.25}
+    weaponAngle: 90
+  - sprite: {fileID: 21300000, guid: 890d856094dd0c64db32af517633702e, type: 3}
+    view: 3
+    gripPixel: {x: 25.68, y: 36.05}
+    weaponAngle: 130
+  - sprite: {fileID: 21300000, guid: f350d32cd9e574943bb3e58cfa97a707, type: 3}
+    view: 3
+    gripPixel: {x: 22.6, y: 34.3}
+    weaponAngle: 25
+  - sprite: {fileID: 21300000, guid: 3248f56a433afd44caf57efc52592e02, type: 3}
+    view: 0
+    gripPixel: {x: 22.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 655f2fd7a20d439419f3e28f107ce0e9, type: 3}
+    view: 0
+    gripPixel: {x: 22.67, y: 42.67}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: b682d74fb6637da49a81ebf2aa514fae, type: 3}
+    view: 0
+    gripPixel: {x: 22.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: f8d448d84cb7e9d49a9f9a0dc2f3f671, type: 3}
+    view: 0
+    gripPixel: {x: 22.5, y: 42.94}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 42fc0a974e5e5234eb0fb7ec03a258a7, type: 3}
+    view: 0
+    gripPixel: {x: 22.38, y: 43.12}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 5f9e84c250fd5494f9707122bfcea402, type: 3}
+    view: 0
+    gripPixel: {x: 22.67, y: 42.67}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 2095b7a3ab5028d49b89c67d94aa0515, type: 3}
+    view: 0
+    gripPixel: {x: 22.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: d3ae5f5bb3f63fa49ac3aa8843902f7a, type: 3}
+    view: 0
+    gripPixel: {x: 22.5, y: 42.94}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 7a646229d7a88864cb53d5a6236b5be8, type: 3}
+    view: 0
+    gripPixel: {x: 19.5, y: 27.9}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 7ad5779f81b553f43b396dae1d36455a, type: 3}
+    view: 0
+    gripPixel: {x: 28.43, y: 32.77}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 9447f1a15165d8c4db3190b538ee9302, type: 3}
+    view: 0
+    gripPixel: {x: 20.7, y: 31.5}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 121d0ed03132b034aa899946c4dce52a, type: 3}
+    view: 0
+    gripPixel: {x: 27.97, y: 33.29}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 97008bd0af813e045a82426545153a27, type: 3}
+    view: 0
+    gripPixel: {x: 27.39, y: 33.44}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: c933ca31f329a834f9fd9c5b5be1b8e3, type: 3}
+    view: 0
+    gripPixel: {x: 26.17, y: 31.97}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: af5c976bdf5d1594f958c83f2b5f74bf, type: 3}
+    view: 0
+    gripPixel: {x: 20.5, y: 30.9}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 97c37a04cd0fb3c4a91979c64d56ebd6, type: 3}
+    view: 0
+    gripPixel: {x: 28.06, y: 32.81}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: 49dcbff00a2ada84a8ba85675b7937fc, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: bbff64896142c1e418305868b0e6d74f, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 1000ff77ee1df9b47891fae913bbd096, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: d4f0d00440fbd26409614576b9e68a33, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 7a94425fedf185c4683f6a5ffe219975, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 97a480eeed054da4a9c2b3c4a32fd63b, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: de94e93fc3fe167468c64bc381e633e5, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: baa4684da02a4cf4b8fb969cd6528f0a, type: 3}
+    view: 1
+    gripPixel: {x: 43, y: 38}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 66d5992138a810946b326d34c717fcd7, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 32}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: eb48b8568443817468376f169f9136fa, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 4d8688fa64838784cb9202f6a4b1d719, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 699b08cda0d8a2344b3ad8b2b4801447, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 0cfa2e61be1c93341863674e4ab87e74, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 30}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: e89dabb74606c7e498ecfa503fed4702, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 4d31587ec96d3314c96de00c9f093535, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 053ef907896809247ae19ec634295902, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: a2586487046ae0d4988a8b79bb9c9702, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 32}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 6e3664e08b1aec84bb3e5d3cecd28865, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 30e31f0390b406b4184afead1ce3558c, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: d147b628b69754147a8f0451b59977a6, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: a89376fb4c3470d409fe96810844446b, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 30}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 2044d257839bb954bb5cd4f2e8e9970a, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: a7b9345efbaed4846917d86541db5623, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 18d657a3eaa53934d8cda34a118536a8, type: 3}
+    view: 2
+    gripPixel: {x: 46.5, y: 31}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: 8ce3297e20907bd4a828637cfd260c46, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 32}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 9e8122694ca37aa4ca3d9a4c8f056ca1, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: ba6359a4814ec224880d003e70a59d41, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: f3e3690ca645dd046b67b8ddcd70d72b, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: bae1839c9fa9f3f439a04c20749e778d, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 30}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: d1b4b9632237b3a439cb01adb712a802, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 180419745cc01ab43b80516cf2d6aa36, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 4d4ef89cea3a7324d89038bfe3da593e, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 5270c83858f87b14a8c5b6f3456b58c8, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 32}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 38ec80550e9f4ee42a4d9405a46123c2, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: c6907ef61971fba4cb16c5cc4477cf9b, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 2ff43bb854ca28c4c848d0d0340c1179, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: df876a7335985b040bc939387972f539, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 30}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: f01462ceb38a1fa4286987a078d9362b, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: 55c4f1d827690aa49a732af22d0e5ca6, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: a9f283f6bece67c408a2d3cb69325bde, type: 3}
+    view: 3
+    gripPixel: {x: 17.5, y: 31}
+    weaponAngle: 20
+  attackDown:
+  - sprite: {fileID: 21300000, guid: 844ee6074dcca4340b3a2fc9d9e7c91d, type: 3}
+    view: 0
+    gripPixel: {x: 21.62, y: 43}
+    weaponAngle: 165
+  - sprite: {fileID: 21300000, guid: d5f023a1be925bb41a38274715f5ef5b, type: 3}
+    view: 0
+    gripPixel: {x: 24.4, y: 27}
+    weaponAngle: 45
+  - sprite: {fileID: 21300000, guid: 6bee2a85c831d084f81eec99606cb600, type: 3}
+    view: 0
+    gripPixel: {x: 41.33, y: 27.06}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: 153cd2866b1de5c408da9d397d530d25, type: 3}
+    view: 0
+    gripPixel: {x: 8.5, y: 27.8}
+    weaponAngle: 125
+  - sprite: {fileID: 21300000, guid: 76e3637ff12f27949bb1f823f760701a, type: 3}
+    view: 0
+    gripPixel: {x: 30, y: 39}
+    weaponAngle: 170
+  - sprite: {fileID: 21300000, guid: c942c3ee568be8542a25982befc17e7d, type: 3}
+    view: 0
+    gripPixel: {x: 23.62, y: 43}
+    weaponAngle: 165
+  attackUp:
+  - sprite: {fileID: 21300000, guid: b152b1721b263404a9219de5e166e2f8, type: 3}
+    view: 1
+    gripPixel: {x: 42.67, y: 41.33}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: c98eee0fe59642047978f4a57f35423b, type: 3}
+    view: 1
+    gripPixel: {x: 43.79, y: 21.5}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: 51b3e691c13350042ad20f774c24905c, type: 3}
+    view: 1
+    gripPixel: {x: 43.5, y: 6.33}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: ddfb8ed4937d39b4aba17d1352b36f2c, type: 3}
+    view: 1
+    gripPixel: {x: 38.7, y: 6.1}
+    weaponAngle: 35
+  - sprite: {fileID: 21300000, guid: 66958f8109432424caa0d828735e715a, type: 3}
+    view: 1
+    gripPixel: {x: 45.64, y: 36.07}
+    weaponAngle: 70
+  - sprite: {fileID: 21300000, guid: 9e041ef485485c045884195b5ffbd33c, type: 3}
+    view: 1
+    gripPixel: {x: 42.38, y: 40.38}
+    weaponAngle: -20
+  attackRight:
+  - sprite: {fileID: 21300000, guid: c4b03d3e47035fb4081fe0199581f4e2, type: 3}
+    view: 2
+    gripPixel: {x: 41.17, y: 34.06}
+    weaponAngle: -25
+  - sprite: {fileID: 21300000, guid: 47e5e264c08bac94ab2d6005158ac88b, type: 3}
+    view: 2
+    gripPixel: {x: 37.5, y: 19.5}
+    weaponAngle: 65
+  - sprite: {fileID: 21300000, guid: 9e696996a4753894cb9c8e53b89a39c0, type: 3}
+    view: 2
+    gripPixel: {x: 56, y: 23}
+    weaponAngle: 20
+  - sprite: {fileID: 21300000, guid: c26a66b1fc8fe4c48ada1f44acc08fbf, type: 3}
+    view: 2
+    gripPixel: {x: 58.83, y: 24.25}
+    weaponAngle: -90
+  - sprite: {fileID: 21300000, guid: bcb9292b338df214298383bcaf4004c9, type: 3}
+    view: 2
+    gripPixel: {x: 38.32, y: 36.05}
+    weaponAngle: -130
+  - sprite: {fileID: 21300000, guid: 817b99d30a972904283a5786ffb69d8b, type: 3}
+    view: 2
+    gripPixel: {x: 41.4, y: 34.3}
+    weaponAngle: -25
+  attackLeft:
+  - sprite: {fileID: 21300000, guid: da804dc5308e9314e8382f4ea0c49bf3, type: 3}
+    view: 3
+    gripPixel: {x: 22.83, y: 34.06}
+    weaponAngle: 25
+  - sprite: {fileID: 21300000, guid: 4cf2169d456bc69469c4c8cb0152c1bd, type: 3}
+    view: 3
+    gripPixel: {x: 26.5, y: 19.5}
+    weaponAngle: -65
+  - sprite: {fileID: 21300000, guid: d81a01b877921f2469ebc506e0cc3fe0, type: 3}
+    view: 3
+    gripPixel: {x: 8, y: 23}
+    weaponAngle: -20
+  - sprite: {fileID: 21300000, guid: b1ba035556aa8f647a80c9ffdd183152, type: 3}
+    view: 3
+    gripPixel: {x: 5.17, y: 24.25}
+    weaponAngle: 90
+  - sprite: {fileID: 21300000, guid: 890d856094dd0c64db32af517633702e, type: 3}
+    view: 3
+    gripPixel: {x: 25.68, y: 36.05}
+    weaponAngle: 130
+  - sprite: {fileID: 21300000, guid: f350d32cd9e574943bb3e58cfa97a707, type: 3}
+    view: 3
+    gripPixel: {x: 22.6, y: 34.3}
+    weaponAngle: 25

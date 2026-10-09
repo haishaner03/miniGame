@@ -15,18 +15,22 @@ namespace Flower
         public string Effect { get; private set; }
         public float Value { get; private set; }
         public int MaxStacks { get; private set; }
+        public string Branch { get; private set; } = "Common";
+        public string RequiredEffect { get; private set; } = string.Empty;
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columns = dataRowString.Split(DataTableExtension.DataSplitSeparators);
-            if (columns.Length != 8)
-                throw new FormatException("RunUpgrade requires 8 tab-separated columns.");
+            if (columns.Length != 8 && columns.Length != 10)
+                throw new FormatException("RunUpgrade requires 8 or 10 tab-separated columns.");
             id = int.Parse(columns[1], CultureInfo.InvariantCulture);
             Name = columns[3];
             Description = columns[4];
             Effect = columns[5];
             Value = float.Parse(columns[6], CultureInfo.InvariantCulture);
             MaxStacks = int.Parse(columns[7], CultureInfo.InvariantCulture);
+            Branch = columns.Length == 10 ? columns[8] : "Common";
+            RequiredEffect = columns.Length == 10 ? columns[9] : string.Empty;
             Validate();
             return true;
         }
@@ -42,6 +46,8 @@ namespace Flower
                 Effect = reader.ReadString();
                 Value = reader.ReadSingle();
                 MaxStacks = reader.Read7BitEncodedInt32();
+                Branch = stream.Position < stream.Length ? reader.ReadString() : "Common";
+                RequiredEffect = stream.Position < stream.Length ? reader.ReadString() : string.Empty;
             }
             Validate();
             return true;
@@ -56,9 +62,15 @@ namespace Flower
             {
                 case "Damage": case "Range": case "AttackSpeed": case "MoveSpeed":
                 case "MaxHealth": case "DashCooldown": case "DashDistance": case "LifeSteal":
+                case "DamagePercent": case "FreezeChance": case "BurnChance": case "Heal": case "Weapon":
+                case "Knockback":
+                case "ComboDamage": case "FreezeDuration": case "FrozenDamage": case "Shatter":
+                case "FrostSpread": case "BurnDamage": case "BurnDuration": case "BurnExplosion": case "BurnSpread":
                     break;
                 default: throw new FormatException("Unknown RunUpgrade effect: " + Effect);
             }
+            if (Branch != "Common" && Branch != "Quick" && Branch != "Frost" && Branch != "Fire")
+                throw new FormatException("Unknown upgrade branch: " + Branch);
         }
     }
 }
