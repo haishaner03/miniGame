@@ -1,0 +1,125 @@
+ui_battle_goldpig.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+bizi
+  rotate: false
+  xy: 1, 151
+  size: 59, 50
+  orig: 59, 50
+  offset: 0, 0
+  index: -1
+chui
+  rotate: false
+  xy: 1, 95
+  size: 43, 54
+  orig: 45, 56
+  offset: 1, 1
+  index: -1
+er1
+  rotate: false
+  xy: 312, 386
+  size: 39, 34
+  orig: 39, 34
+  offset: 0, 0
+  index: -1
+qipao
+  rotate: true
+  xy: 1, 203
+  size: 153, 84
+  orig: 153, 84
+  offset: 0, 0
+  index: -1
+shenti
+  rotate: false
+  xy: 139, 373
+  size: 120, 101
+  orig: 120, 101
+  offset: 0, 0
+  index: -1
+tou
+  rotate: false
+  xy: 1, 358
+  size: 136, 116
+  orig: 136, 116
+  offset: 0, 0
+  index: -1
+tui1
+  rotate: false
+  xy: 1, 42
+  size: 34, 51
+  orig: 34, 51
+  offset: 0, 0
+  index: -1
+tui2
+  rotate: false
+  xy: 311, 422
+  size: 40, 52
+  orig: 40, 52
+  offset: 0, 0
+  index: -1
+tui3
+  rotate: false
+  xy: 353, 429
+  size: 37, 45
+  orig: 37, 45
+  offset: 0, 0
+  index: -1
+wei
+  rotate: false
+  xy: 261, 422
+  size: 48, 52
+  orig: 48, 52
+  offset: 0, 0
+  index: -1
+xx1
+  rotate: false
+  xy: 392, 434
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+xx2
+  rotate: false
+  xy: 434, 434
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+xx3
+  rotate: false
+  xy: 87, 255
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+yan1
+  rotate: true
+  xy: 139, 362
+  size: 9, 20
+  orig: 9, 20
+  offset: 0, 0
+  index: -1
+yan2
+  rotate: false
+  xy: 62, 181
+  size: 9, 20
+  orig: 9, 20
+  offset: 0, 0
+  index: -1
+zuanshi
+  rotate: true
+  xy: 261, 377
+  size: 43, 49
+  orig: 43, 49
+  offset: 0, 0
+  index: -1
+zui
+  rotate: true
+  xy: 87, 282
+  size: 74, 31
+  orig: 74, 31
+  offset: 0, 0
+  index: -1
+

@@ -1,0 +1,181 @@
+m20036.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+eye_xuanyun
+  rotate: false
+  xy: 160, 330
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: true
+  xy: 318, 151
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_1
+  rotate: false
+  xy: 159, 89
+  size: 77, 61
+  orig: 79, 63
+  offset: 1, 1
+  index: -1
+hand_2
+  rotate: false
+  xy: 157, 47
+  size: 49, 40
+  orig: 51, 42
+  offset: 1, 1
+  index: -1
+hand_3
+  rotate: false
+  xy: 2, 8
+  size: 72, 36
+  orig: 74, 38
+  offset: 1, 1
+  index: -1
+head_01
+  rotate: false
+  xy: 2, 46
+  size: 153, 73
+  orig: 155, 75
+  offset: 1, 1
+  index: -1
+head_02
+  rotate: false
+  xy: 2, 121
+  size: 155, 73
+  orig: 155, 73
+  offset: 0, 0
+  index: -1
+head_03
+  rotate: false
+  xy: 189, 328
+  size: 127, 91
+  orig: 127, 91
+  offset: 0, 0
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 137, 26
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+hit_yan2
+  rotate: false
+  xy: 238, 60
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+hit_yan3
+  rotate: false
+  xy: 208, 59
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: true
+  xy: 446, 380
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+leg_l
+  rotate: true
+  xy: 238, 82
+  size: 68, 73
+  orig: 68, 73
+  offset: 0, 0
+  index: -1
+leg_r
+  rotate: false
+  xy: 313, 76
+  size: 68, 73
+  orig: 68, 73
+  offset: 0, 0
+  index: -1
+pelvis
+  rotate: false
+  xy: 351, 459
+  size: 159, 51
+  orig: 161, 53
+  offset: 1, 1
+  index: -1
+pelvis_1
+  rotate: false
+  xy: 240, 152
+  size: 76, 69
+  orig: 76, 69
+  offset: 0, 0
+  index: -1
+spine
+  rotate: false
+  xy: 2, 196
+  size: 156, 154
+  orig: 156, 154
+  offset: 0, 0
+  index: -1
+upperarm_L_01
+  rotate: true
+  xy: 351, 388
+  size: 69, 93
+  orig: 71, 95
+  offset: 1, 1
+  index: -1
+upperarm_L_02
+  rotate: false
+  xy: 160, 152
+  size: 78, 70
+  orig: 80, 72
+  offset: 1, 1
+  index: -1
+upperarm_r_01
+  rotate: false
+  xy: 271, 223
+  size: 88, 103
+  orig: 90, 105
+  offset: 1, 1
+  index: -1
+upperarm_r_02
+  rotate: false
+  xy: 160, 224
+  size: 109, 102
+  orig: 109, 102
+  offset: 0, 0
+  index: -1
+weapon_1
+  rotate: false
+  xy: 189, 421
+  size: 160, 89
+  orig: 160, 89
+  offset: 0, 0
+  index: -1
+weiba
+  rotate: false
+  xy: 2, 352
+  size: 185, 158
+  orig: 185, 158
+  offset: 0, 0
+  index: -1
+yachi
+  rotate: false
+  xy: 76, 12
+  size: 59, 32
+  orig: 72, 33
+  offset: 13, 0
+  index: -1
+yingzi
+  rotate: true
+  xy: 318, 336
+  size: 83, 19
+  orig: 83, 19
+  offset: 0, 0
+  index: -1
+

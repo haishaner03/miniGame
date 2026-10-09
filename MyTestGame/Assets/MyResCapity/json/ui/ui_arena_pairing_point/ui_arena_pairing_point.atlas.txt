@@ -1,0 +1,13 @@
+ui_arena_pairing_point.png
+size: 32, 32
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+dian
+  rotate: false
+  xy: 2, 2
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+

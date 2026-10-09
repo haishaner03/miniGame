@@ -1,0 +1,146 @@
+m10058.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+clothes
+  rotate: false
+  xy: 2, 177
+  size: 86, 63
+  orig: 86, 63
+  offset: 0, 0
+  index: -1
+eye
+  rotate: false
+  xy: 489, 463
+  size: 20, 46
+  orig: 20, 46
+  offset: 0, 0
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 144, 246
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: false
+  xy: 417, 456
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_L
+  rotate: true
+  xy: 2, 15
+  size: 40, 34
+  orig: 40, 34
+  offset: 0, 0
+  index: -1
+hand_R
+  rotate: true
+  xy: 196, 275
+  size: 37, 32
+  orig: 37, 32
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 242
+  size: 140, 134
+  orig: 140, 134
+  offset: 0, 0
+  index: -1
+hit_yan3
+  rotate: false
+  xy: 268, 348
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: false
+  xy: 144, 314
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+leg_L
+  rotate: false
+  xy: 417, 409
+  size: 41, 45
+  orig: 41, 45
+  offset: 0, 0
+  index: -1
+leg_R
+  rotate: false
+  xy: 2, 106
+  size: 38, 48
+  orig: 38, 48
+  offset: 0, 0
+  index: -1
+spine
+  rotate: false
+  xy: 295, 398
+  size: 120, 111
+  orig: 120, 111
+  offset: 0, 0
+  index: -1
+upperarm_L_1
+  rotate: false
+  xy: 144, 268
+  size: 50, 44
+  orig: 50, 44
+  offset: 0, 0
+  index: -1
+upperarm_L_2
+  rotate: false
+  xy: 460, 416
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+upperarm_L_3
+  rotate: false
+  xy: 223, 331
+  size: 43, 45
+  orig: 43, 45
+  offset: 0, 0
+  index: -1
+upperarm_R_1
+  rotate: true
+  xy: 90, 185
+  size: 55, 44
+  orig: 55, 44
+  offset: 0, 0
+  index: -1
+upperarm_R_2
+  rotate: false
+  xy: 2, 57
+  size: 34, 47
+  orig: 34, 47
+  offset: 0, 0
+  index: -1
+upperarm_R_3
+  rotate: false
+  xy: 42, 113
+  size: 43, 41
+  orig: 43, 41
+  offset: 0, 0
+  index: -1
+weapon_1
+  rotate: false
+  xy: 2, 378
+  size: 291, 131
+  orig: 291, 131
+  offset: 0, 0
+  index: -1
+yingzi
+  rotate: false
+  xy: 2, 156
+  size: 83, 19
+  orig: 83, 19
+  offset: 0, 0
+  index: -1
+

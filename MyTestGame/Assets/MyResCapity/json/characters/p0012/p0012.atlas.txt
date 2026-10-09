@@ -1,0 +1,174 @@
+p0012.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+eye_L
+  rotate: true
+  xy: 2, 4
+  size: 13, 25
+  orig: 15, 27
+  offset: 1, 1
+  index: -1
+eye_R
+  rotate: false
+  xy: 257, 278
+  size: 12, 25
+  orig: 14, 27
+  offset: 1, 1
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 486, 486
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: false
+  xy: 206, 305
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_L
+  rotate: false
+  xy: 438, 445
+  size: 35, 36
+  orig: 37, 38
+  offset: 1, 1
+  index: -1
+hand_R
+  rotate: false
+  xy: 85, 143
+  size: 36, 33
+  orig: 38, 35
+  offset: 1, 1
+  index: -1
+head_1
+  rotate: false
+  xy: 191, 233
+  size: 64, 70
+  orig: 64, 70
+  offset: 0, 0
+  index: -1
+head_2
+  rotate: false
+  xy: 206, 435
+  size: 135, 73
+  orig: 137, 75
+  offset: 1, 1
+  index: -1
+head_3
+  rotate: false
+  xy: 2, 19
+  size: 85, 62
+  orig: 87, 64
+  offset: 1, 1
+  index: -1
+head_4
+  rotate: true
+  xy: 2, 83
+  size: 94, 81
+  orig: 96, 83
+  offset: 1, 1
+  index: -1
+head_5
+  rotate: false
+  xy: 89, 207
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 123, 158
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+hit_yan2
+  rotate: false
+  xy: 191, 211
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: true
+  xy: 287, 356
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+leg_L
+  rotate: false
+  xy: 278, 287
+  size: 67, 67
+  orig: 67, 67
+  offset: 0, 0
+  index: -1
+leg_R
+  rotate: false
+  xy: 351, 368
+  size: 67, 67
+  orig: 67, 67
+  offset: 0, 0
+  index: -1
+spine_1
+  rotate: false
+  xy: 206, 360
+  size: 79, 73
+  orig: 79, 73
+  offset: 0, 0
+  index: -1
+upperarm_L_01
+  rotate: false
+  xy: 401, 442
+  size: 35, 39
+  orig: 37, 41
+  offset: 1, 1
+  index: -1
+upperarm_L_02
+  rotate: true
+  xy: 89, 178
+  size: 27, 41
+  orig: 29, 43
+  offset: 1, 1
+  index: -1
+upperarm_R_01
+  rotate: true
+  xy: 343, 437
+  size: 44, 56
+  orig: 46, 58
+  offset: 1, 1
+  index: -1
+weapon_1
+  rotate: false
+  xy: 2, 179
+  size: 85, 128
+  orig: 87, 130
+  offset: 1, 1
+  index: -1
+xuying
+  rotate: false
+  xy: 2, 309
+  size: 202, 199
+  orig: 202, 199
+  offset: 0, 0
+  index: -1
+yinying
+  rotate: false
+  xy: 343, 483
+  size: 141, 25
+  orig: 141, 25
+  offset: 0, 0
+  index: -1
+zui1
+  rotate: false
+  xy: 132, 178
+  size: 29, 27
+  orig: 29, 27
+  offset: 0, 0
+  index: -1
+

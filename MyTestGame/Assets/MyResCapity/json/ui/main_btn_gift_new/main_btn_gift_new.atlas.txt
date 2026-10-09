@@ -1,0 +1,69 @@
+main_btn_gift_new.png
+size: 128, 128
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+aixin
+  rotate: false
+  xy: 74, 50
+  size: 33, 31
+  orig: 35, 33
+  offset: 1, 1
+  index: -1
+hua
+  rotate: false
+  xy: 1, 56
+  size: 71, 71
+  orig: 73, 73
+  offset: 1, 1
+  index: -1
+lian
+  rotate: false
+  xy: 74, 83
+  size: 49, 44
+  orig: 51, 46
+  offset: 1, 1
+  index: -1
+xx1
+  rotate: false
+  xy: 65, 11
+  size: 16, 15
+  orig: 18, 17
+  offset: 1, 1
+  index: -1
+xx2
+  rotate: false
+  xy: 65, 28
+  size: 17, 20
+  orig: 19, 22
+  offset: 1, 1
+  index: -1
+xx3
+  rotate: false
+  xy: 109, 60
+  size: 17, 21
+  orig: 19, 23
+  offset: 1, 1
+  index: -1
+yan1
+  rotate: false
+  xy: 84, 32
+  size: 9, 16
+  orig: 11, 18
+  offset: 1, 1
+  index: -1
+yan2
+  rotate: true
+  xy: 65, 1
+  size: 8, 16
+  orig: 10, 18
+  offset: 1, 1
+  index: -1
+ye
+  rotate: false
+  xy: 1, 10
+  size: 62, 44
+  orig: 62, 44
+  offset: 0, 0
+  index: -1
+

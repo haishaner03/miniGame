@@ -1,0 +1,174 @@
+m20017.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+clothes
+  rotate: false
+  xy: 128, 454
+  size: 137, 56
+  orig: 137, 56
+  offset: 0, 0
+  index: -1
+eye_1_L
+  rotate: true
+  xy: 109, 257
+  size: 23, 22
+  orig: 25, 24
+  offset: 1, 1
+  index: -1
+eye_1_R
+  rotate: true
+  xy: 247, 429
+  size: 23, 22
+  orig: 25, 24
+  offset: 1, 1
+  index: -1
+eye_L
+  rotate: false
+  xy: 2, 2
+  size: 15, 10
+  orig: 17, 12
+  offset: 1, 1
+  index: -1
+eye_R
+  rotate: false
+  xy: 420, 459
+  size: 14, 13
+  orig: 16, 15
+  offset: 1, 1
+  index: -1
+eye_xuanyun
+  rotate: false
+  xy: 247, 405
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+gutou
+  rotate: false
+  xy: 348, 457
+  size: 70, 53
+  orig: 70, 53
+  offset: 0, 0
+  index: -1
+hand_L
+  rotate: false
+  xy: 109, 225
+  size: 30, 30
+  orig: 32, 32
+  offset: 1, 1
+  index: -1
+hand_R
+  rotate: false
+  xy: 185, 354
+  size: 30, 30
+  orig: 32, 32
+  offset: 1, 1
+  index: -1
+head_1
+  rotate: false
+  xy: 2, 78
+  size: 78, 62
+  orig: 80, 64
+  offset: 1, 1
+  index: -1
+head_2
+  rotate: false
+  xy: 2, 377
+  size: 124, 133
+  orig: 124, 133
+  offset: 0, 0
+  index: -1
+head_3
+  rotate: false
+  xy: 206, 392
+  size: 39, 60
+  orig: 41, 62
+  offset: 1, 1
+  index: -1
+head_4
+  rotate: true
+  xy: 2, 223
+  size: 152, 105
+  orig: 154, 107
+  offset: 1, 1
+  index: -1
+head_5
+  rotate: false
+  xy: 133, 278
+  size: 39, 55
+  orig: 41, 57
+  offset: 1, 1
+  index: -1
+hit_yan1
+  rotate: false
+  xy: 82, 122
+  size: 16, 18
+  orig: 16, 18
+  offset: 0, 0
+  index: -1
+hit_yan2
+  rotate: false
+  xy: 247, 383
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+hit_yan3
+  rotate: false
+  xy: 217, 362
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+kulou
+  rotate: false
+  xy: 2, 14
+  size: 77, 62
+  orig: 77, 63
+  offset: 0, 1
+  index: -1
+pelvis
+  rotate: false
+  xy: 420, 474
+  size: 76, 36
+  orig: 78, 38
+  offset: 1, 1
+  index: -1
+spine
+  rotate: false
+  xy: 2, 142
+  size: 97, 79
+  orig: 99, 81
+  offset: 1, 1
+  index: -1
+upperarm_L_01
+  rotate: true
+  xy: 267, 457
+  size: 53, 79
+  orig: 53, 79
+  offset: 0, 0
+  index: -1
+upperarm_R_1
+  rotate: true
+  xy: 128, 386
+  size: 66, 76
+  orig: 66, 76
+  offset: 0, 0
+  index: -1
+weapon_1
+  rotate: false
+  xy: 133, 335
+  size: 50, 49
+  orig: 52, 51
+  offset: 1, 1
+  index: -1
+yingzi
+  rotate: true
+  xy: 109, 282
+  size: 93, 22
+  orig: 93, 22
+  offset: 0, 0
+  index: -1
+

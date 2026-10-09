@@ -1,0 +1,27 @@
+ui_battle_obstacle_firesnake.png
+size: 256, 256
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+hong1
+  rotate: false
+  xy: 81, 108
+  size: 49, 48
+  orig: 51, 50
+  offset: 1, 1
+  index: -1
+hong2
+  rotate: false
+  xy: 2, 91
+  size: 77, 65
+  orig: 77, 65
+  offset: 0, 0
+  index: -1
+hong3
+  rotate: true
+  xy: 2, 2
+  size: 87, 47
+  orig: 87, 47
+  offset: 0, 0
+  index: -1
+
