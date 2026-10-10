@@ -168,7 +168,7 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
 
     private bool IsAttackPressed()
     {
-        if (allowMouseLeftButton && Input.GetMouseButtonDown(0))
+        if (allowMouseLeftButton && Input.GetMouseButton(0))
         {
             pendingAttackDirection = GetMouseWorldDirection();
             return true;
@@ -193,7 +193,17 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
         IsAttacking = true;
         attackElapsed = 0f;
         hitApplied = false;
-        nextAttackTime = Time.time + Mathf.Max(0.05f, cooldown);
+
+        // 应用动态攻速加成（连斩狂热、寒霜动能）
+        float dynamicCooldown = cooldown;
+        var combatEffects = RunState.Instance != null ? RunState.Instance.GetComponent<RunCombatEffects>() : null;
+        if (combatEffects != null)
+        {
+            float bonus = combatEffects.GetAttackSpeedBonus();
+            dynamicCooldown = cooldown / (1f + bonus);
+        }
+
+        nextAttackTime = Time.time + Mathf.Max(0.05f, dynamicCooldown);
         randomSwingOffset = Random.Range(-14f, 14f);
         randomSweep = equipped != null ? equipped.arcDegrees : 120f;
         randomRadiusScale = Random.Range(0.94f, 1.08f);

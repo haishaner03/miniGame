@@ -24,7 +24,7 @@ public sealed class RoomEncounterController : MonoBehaviour
     {
         run = state; spawner = roomSpawner;
         IsBoss = run.RoomNumber == run.RoomCount;
-        IsRequired = IsBoss || run.RoomNumber == run.Config.eliteRoomNumber;
+        IsRequired = IsBoss || (run.Config.requireEliteEncounter && run.RoomNumber == run.Config.eliteRoomNumber);
         Stage = IsRequired ? EncounterStage.Waiting : EncounterStage.None;
         nav = FindFirstObjectByType<ZombieGridPathfinder>();
     }

@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 3248198967203256288}
   - component: {fileID: 380257897640971798}
   - component: {fileID: 4436865595977528901}
+  - component: {fileID: 1876904816921868695}
+  - component: {fileID: 8701840392930882376}
   m_Layer: 0
   m_Name: ZombieEliteHunter
   m_TagString: Untagged
@@ -87,8 +89,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6001
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1bdb313460d98a846ab27ea9feeebcd2, type: 3}
-  m_Color: {r: 0.94, g: 0.8, b: 0.42, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 8891bbaf698f27c4e84d4bb367f72b93, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,7 +98,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &8423391606572553577
 Rigidbody2D:
   serializedVersion: 5
@@ -158,8 +160,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.19047621
+  m_Offset: {x: 0, y: -0.114285715}
+  m_Radius: 0.17142859
 --- !u!114 &8483082660045671864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +172,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8acc6bf3fd18aaf428ebfb72593b33b3, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieChaser
   archetype: 2
   hitFlashDuration: 0.08
@@ -189,26 +191,42 @@ MonoBehaviour:
   attackDistance: 0.8
   attackCooldown: 1.1
   attackDamage: 26
-  animationFps: 9
+  animationFps: 12
   maxHealth: 1000
   knockbackDamping: 12
   useGridPathfinding: 1
   pathRefreshInterval: 0.35
   freezeDurationMultiplier: 0.55
+  freezeKnockbackDuration: 0.12
   receivedKnockbackMultiplier: 0.4
   spriteRenderer: {fileID: 5820531535023963348}
   walkFrames:
-  - {fileID: 21300000, guid: 1bdb313460d98a846ab27ea9feeebcd2, type: 3}
+  - {fileID: 21300000, guid: 6bc742f0f33d3444891c89d72acf564b, type: 3}
+  - {fileID: 21300000, guid: f733bf41571c1a64faf7bdc095381649, type: 3}
+  - {fileID: 21300000, guid: b1ff905581e2d604484f38699e7f90f4, type: 3}
+  - {fileID: 21300000, guid: 76a6f6ef70ecd1744882bf432dca1748, type: 3}
+  - {fileID: 21300000, guid: bacbd846abf1351459edbfadcee71cc7, type: 3}
+  - {fileID: 21300000, guid: d9eb3f312899f8f48b9b461e8c65ee9c, type: 3}
+  - {fileID: 21300000, guid: 1dcc41ea9b3458f4bb1e61dd9ca1d06a, type: 3}
+  - {fileID: 21300000, guid: e890a2e4b3fdaee45b6a57d1361f34dc, type: 3}
   attackFrames:
-  - {fileID: 21300000, guid: 1bdb313460d98a846ab27ea9feeebcd2, type: 3}
+  - {fileID: 21300000, guid: 40fd2c2a5754d5c4e899a3009a4fc9d2, type: 3}
+  - {fileID: 21300000, guid: 958a05a4be588c24aa2723281ed84e19, type: 3}
+  - {fileID: 21300000, guid: 97cffc3d708e08242b45d7505ca4ec5b, type: 3}
+  - {fileID: 21300000, guid: 8d04d8d4a72d5604db4f2e1d7a3d11fd, type: 3}
+  - {fileID: 21300000, guid: dd15c86f03e766f47a0009471652bd76, type: 3}
+  - {fileID: 21300000, guid: 210f461ce60bb044093f9aca058bb839, type: 3}
+  - {fileID: 21300000, guid: 9b93e7d71611eff469e9477901467596, type: 3}
+  - {fileID: 21300000, guid: a5fcefbc61aea31489fa628763f3d5c0, type: 3}
   deathFrames:
-  - {fileID: 21300000, guid: 946ee6205ab52f34c93243b17c5faa5e, type: 3}
-  - {fileID: 21300000, guid: 275e4355a58348c44beb6267e80d6cf6, type: 3}
-  - {fileID: 21300000, guid: eca852b6ec3d25b48b2fb59279056d53, type: 3}
+  - {fileID: 21300000, guid: aedf54cae29ff1a459d114a95df5eac4, type: 3}
+  - {fileID: 21300000, guid: f516bb6fded6b854abc8fcca0ae46099, type: 3}
+  - {fileID: 21300000, guid: c268f4223dd94bd4bafa1caf828c6291, type: 3}
+  - {fileID: 21300000, guid: 5f48040afc7c8954fbd80882a4763340, type: 3}
   destroyAfterDeath: 1
   deathDestroyDelay: 0.15
-  attackScalePulse: 0.12
-  attackTint: {r: 1, g: 0.45, b: 0.45, a: 1}
+  attackScalePulse: 0
+  attackTint: {r: 1, g: 1, b: 1, a: 1}
   aggroRadius: 5.5
   loseTargetRadius: 8.5
   idleWander: 0
@@ -229,7 +247,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a36afbcb73729b5489ea0a6ed1a8a08b, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::SurvivorDepthSort
   groundOffsetY: 0
   orderOffset: 1
@@ -243,16 +261,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d3e8ce035b7b744483b79caf560f21f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WorldHealthBar
-  width: 0.95
+  width: 0.75
   height: 0.075
   zombieHeight: 0.04
   zombieOutlinePadding: 0.02
-  offsetY: 0.72
+  offsetY: 0.691
   hideWhenDead: 1
   fillColor: {r: 0.3, g: 1, b: 0.35, a: 1}
-  zombieFillColor: {r: 1, g: 0.2, b: 0.16, a: 1}
+  zombieFillColor: {r: 1, g: 0.65, b: 0.2, a: 1}
 --- !u!114 &4436865595977528901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +281,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a88b0065b0847374a8d68957caa7702c, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieChampion
   isBoss: 0
   displayName: "\u730E\u98DF\u8005"
@@ -276,3 +294,40 @@ MonoBehaviour:
   actionCooldown: 2.7
   summonCount: 3
   maxSummonedAlive: 6
+--- !u!95 &1876904816921868695
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994269687398861871}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d791dec7d9f831341909bb1c5cd68e23, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage:
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8701840392930882376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994269687398861871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 570753b27b421984bafe2832a57ebbb0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieDirectionalAnimator
+  attackDuration: 0.6666667
+  attackHitTime: 0.25
+  deathDuration: 0.4

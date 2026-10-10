@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3723641468613660381}
   - component: {fileID: 3081410434513459962}
   - component: {fileID: 6282378901456732192}
+  - component: {fileID: 759147400213363175}
+  - component: {fileID: 1703739296415587347}
   m_Layer: 0
   m_Name: ZombieFast
   m_TagString: Untagged
@@ -32,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
+  m_LocalScale: {x: 0.95, y: 0.95, z: 0.95}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,8 +88,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 6001
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1bdb313460d98a846ab27ea9feeebcd2, type: 3}
-  m_Color: {r: 0.75, g: 1, b: 0.7, a: 1}
+  m_Sprite: {fileID: 21300000, guid: bb3f5fe58e92f8c4c82fbb7daf2de32c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,7 +97,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &7682885297073772775
 Rigidbody2D:
   serializedVersion: 5
@@ -157,8 +159,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.12}
-  m_Radius: 0.22
+  m_Offset: {x: 0, y: -0.12631579}
+  m_Radius: 0.18947369
 --- !u!114 &3723641468613660381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +171,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8acc6bf3fd18aaf428ebfb72593b33b3, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ZombieChaser
   archetype: 1
   hitFlashDuration: 0.08
@@ -193,33 +195,36 @@ MonoBehaviour:
   knockbackDamping: 12
   useGridPathfinding: 1
   pathRefreshInterval: 0.35
+  freezeDurationMultiplier: 1
+  receivedKnockbackMultiplier: 1
   spriteRenderer: {fileID: 1923168086048325814}
   walkFrames:
-  - {fileID: 21300000, guid: ad8847ada3dfdb94aa079e4a23204495, type: 3}
-  - {fileID: 21300000, guid: e8ba471fa2ed90a4086f48c6dacf9ec2, type: 3}
-  - {fileID: 21300000, guid: efb9837454053b74094bc3e694094c08, type: 3}
-  - {fileID: 21300000, guid: fafc69da26107f74caf5f3e532951cf4, type: 3}
-  - {fileID: 21300000, guid: 18b81956d39184644831a02d6af09378, type: 3}
-  - {fileID: 21300000, guid: ca2cfd8951af3514c9365eb922fca5ec, type: 3}
-  - {fileID: 21300000, guid: 9bdedf720fbe3e14a82db79fb0b064cf, type: 3}
-  - {fileID: 21300000, guid: 73320f83fc6885a4b9c889e8275fe28b, type: 3}
+  - {fileID: 21300000, guid: e1ea3848614b7664a9563cdda85aadb6, type: 3}
+  - {fileID: 21300000, guid: 75dfc5c3fb920134d91ef7fd3dd6a9e6, type: 3}
+  - {fileID: 21300000, guid: 12b6a3c873d6f864c9cc22a755900595, type: 3}
+  - {fileID: 21300000, guid: 2adc5182d64cdbe41adff728261509c0, type: 3}
+  - {fileID: 21300000, guid: 42093f2ce4d15294d93f536e0f461a7d, type: 3}
+  - {fileID: 21300000, guid: bb8d3a1ebea0aee4abc5caa3cb5ebd49, type: 3}
+  - {fileID: 21300000, guid: bb4e01f01381a404aa06776fe983f308, type: 3}
+  - {fileID: 21300000, guid: aba4963864b7c484787a827ff4a5c9a5, type: 3}
   attackFrames:
-  - {fileID: 21300000, guid: ad8847ada3dfdb94aa079e4a23204495, type: 3}
-  - {fileID: 21300000, guid: e8ba471fa2ed90a4086f48c6dacf9ec2, type: 3}
-  - {fileID: 21300000, guid: efb9837454053b74094bc3e694094c08, type: 3}
-  - {fileID: 21300000, guid: fafc69da26107f74caf5f3e532951cf4, type: 3}
-  - {fileID: 21300000, guid: 18b81956d39184644831a02d6af09378, type: 3}
-  - {fileID: 21300000, guid: ca2cfd8951af3514c9365eb922fca5ec, type: 3}
-  - {fileID: 21300000, guid: 9bdedf720fbe3e14a82db79fb0b064cf, type: 3}
-  - {fileID: 21300000, guid: 73320f83fc6885a4b9c889e8275fe28b, type: 3}
+  - {fileID: 21300000, guid: f077c0fb854796b4d93f55c8558887b0, type: 3}
+  - {fileID: 21300000, guid: 9b17ccc4e98d32a4aaa1a5f5025c569c, type: 3}
+  - {fileID: 21300000, guid: a677c80cd9bf70041978704ad0fcd691, type: 3}
+  - {fileID: 21300000, guid: d42cff29ff001084780b2c771b130567, type: 3}
+  - {fileID: 21300000, guid: c4a85eba6202d854f8d6e67da50e61e2, type: 3}
+  - {fileID: 21300000, guid: a59de5b87a4df2943a600f03fd259b5e, type: 3}
+  - {fileID: 21300000, guid: a755a511b91fdfd469df918398bbfdf0, type: 3}
+  - {fileID: 21300000, guid: 52711d36573a56d41b3be51d079b70ca, type: 3}
   deathFrames:
-  - {fileID: 21300000, guid: 946ee6205ab52f34c93243b17c5faa5e, type: 3}
-  - {fileID: 21300000, guid: 275e4355a58348c44beb6267e80d6cf6, type: 3}
-  - {fileID: 21300000, guid: eca852b6ec3d25b48b2fb59279056d53, type: 3}
+  - {fileID: 21300000, guid: 7acd7f55d95c14942a7203078ad42273, type: 3}
+  - {fileID: 21300000, guid: 72f5d8b45ec981f49baedf56f9010996, type: 3}
+  - {fileID: 21300000, guid: 489085ba71df88d43861d06c9a35a438, type: 3}
+  - {fileID: 21300000, guid: 98be7aca43e48934f96d6530a3df073e, type: 3}
   destroyAfterDeath: 1
   deathDestroyDelay: 0.15
-  attackScalePulse: 0.12
-  attackTint: {r: 1, g: 0.45, b: 0.45, a: 1}
+  attackScalePulse: 0
+  attackTint: {r: 1, g: 1, b: 1, a: 1}
   aggroRadius: 5.5
   loseTargetRadius: 8.5
   idleWander: 1
@@ -240,7 +245,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a36afbcb73729b5489ea0a6ed1a8a08b, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::SurvivorDepthSort
   groundOffsetY: 0
   orderOffset: 1
@@ -254,13 +259,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d3e8ce035b7b744483b79caf560f21f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::WorldHealthBar
-  width: 0.62
+  width: 0.54
   height: 0.075
   zombieHeight: 0.035
   zombieOutlinePadding: 0.02
-  offsetY: 0.52
+  offsetY: 0.629
   hideWhenDead: 1
   fillColor: {r: 0.3, g: 1, b: 0.35, a: 1}
   zombieFillColor: {r: 1, g: 0.2, b: 0.16, a: 1}
+--- !u!95 &759147400213363175
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90344962722602306}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0d87fd8e2ff188943be612784fd496da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage:
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1703739296415587347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90344962722602306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 570753b27b421984bafe2832a57ebbb0, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieDirectionalAnimator
+  attackDuration: 0.6666667
+  attackHitTime: 0.25
+  deathDuration: 0.4

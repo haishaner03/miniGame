@@ -28,6 +28,11 @@ public sealed class ZombieSpawner : MonoBehaviour
 
     private readonly List<GameObject> alive = new List<GameObject>();
     private readonly Queue<GameObject> pooledZombies = new Queue<GameObject>();
+    private readonly Queue<GameObject> pooledElites = new Queue<GameObject>();
+    private GameObject elitePrefab;
+    private float eliteChance;
+    private float eliteHealthMultiplier = 2.5f;
+    private int ordinaryBaseHealth = 200;
     private float nextSpawnTime;
     private float nextWaveTime;
     private readonly HashSet<string> triggeredWaves = new HashSet<string>();
@@ -57,7 +62,7 @@ public sealed class ZombieSpawner : MonoBehaviour
     }
 
     public int ActiveCount => alive.Count;
-    public int PooledCount => pooledZombies.Count;
+    public int PooledCount => pooledZombies.Count + pooledElites.Count;
     private float runWaveMultiplier = 1f;
     private float runHealthMultiplier = 1f;
     private float runVariantChance;
@@ -75,22 +80,31 @@ public sealed class ZombieSpawner : MonoBehaviour
     {
         isRunRoom = true;
         isFirstRoom = run.RoomIndex == 0;
+        elitePrefab = run.Config.eliteEncounterPrefab;
+        var champion = elitePrefab != null ? elitePrefab.GetComponent<ZombieChampion>() : null;
+        eliteChance = champion != null && !champion.isBoss ? Mathf.Clamp01(run.Config.ambientEliteChance) : 0f;
+        eliteHealthMultiplier = Mathf.Max(1f, run.Config.ambientEliteHealthMultiplier);
+        var ordinary = zombiePrefab != null ? zombiePrefab.GetComponent<ZombieChaser>() : null;
+        ordinaryBaseHealth = ordinary != null ? Mathf.Max(1, ordinary.maxHealth) : 200;
+        float roomDensity = run.RoomIndex == 1 ? Mathf.Clamp(run.Config.secondRoomPopulationMultiplier, .1f, 1f) : 1f;
         firstRoomHealth = run.Config.firstRoomZombieHealth;
-        runWaveMultiplier = 1f + run.RoomIndex * run.Config.enemiesPerRoom;
+        runWaveMultiplier = (1f + run.RoomIndex * run.Config.enemiesPerRoom) * roomDensity;
         runHealthMultiplier = 1f + run.RoomIndex * run.Config.healthPerRoom;
         runVariantChance = Mathf.Clamp(run.Config.initialVariantChance +
             run.RoomIndex * run.Config.variantChancePerRoom, 0f, 0.65f);
         float population = isFirstRoom ? run.Config.firstRoomPopulationMultiplier : runWaveMultiplier;
-        initialSpawnCount = isFirstRoom ? Mathf.Max(1, Mathf.RoundToInt(run.Config.initialWanderers * population))
-            : Mathf.CeilToInt(run.Config.initialWanderers * population);
+        initialSpawnCount = Mathf.Max(1, Mathf.RoundToInt(run.Config.initialWanderers * population));
         moveSpeedMultiplier = run.Config.zombieMoveSpeedMultiplier;
-        maxAlive = run.Config.maxLivingZombies;
+        maxAlive = Mathf.Max(1, Mathf.RoundToInt(run.Config.maxLivingZombies * roomDensity));
         poolPrewarm = Mathf.Max(poolPrewarm, Mathf.Min(maxAlive, initialSpawnCount + run.Config.hordeCount.y));
         reinforcementDelay = run.Config.reinforcementDelay;
         reinforcementCount = run.Config.reinforcementCount;
         if (isFirstRoom)
             reinforcementCount = new Vector2Int(Mathf.Max(1, Mathf.RoundToInt(reinforcementCount.x * population)),
                 Mathf.Max(1, Mathf.RoundToInt(reinforcementCount.y * population)));
+        else if (roomDensity < 1f)
+            reinforcementCount = new Vector2Int(Mathf.Max(1, Mathf.RoundToInt(reinforcementCount.x * roomDensity)),
+                Mathf.Max(1, Mathf.CeilToInt(reinforcementCount.y * roomDensity)));
         waveDelayMin = run.Config.hordeDelay.x;
         waveDelayMax = run.Config.hordeDelay.y;
         waveCountMin = Mathf.Max(1, Mathf.CeilToInt(run.Config.hordeCount.x * population));
@@ -166,19 +180,21 @@ public sealed class ZombieSpawner : MonoBehaviour
         ResolvePlayer();
         Vector3 position;
         if (!TrySpawnPosition(overridePoints, out position)) return null;
-        GameObject instance = GetZombieFromPool();
+        // Boss summons remain ordinary adds; all other sources can mix in elites.
+        bool spawnElite = isRunRoom && !encounterAdd && eliteChance > 0f && Random.value < eliteChance;
+        GameObject instance = GetZombieFromPool(spawnElite);
         if (instance == null)
             return null;
 
         instance.transform.SetPositionAndRotation(position, Quaternion.identity);
-        instance.name = "Zombie_" + alive.Count.ToString("00");
+        instance.name = (spawnElite ? "EliteHunter_" : "Zombie_") + alive.Count.ToString("00");
         ZombieChaser chaser = instance.GetComponent<ZombieChaser>();
         if (chaser != null)
         {
             chaser.Died -= OnZombieDied;
             chaser.Died += OnZombieDied;
             chaser.SetPoolReleaseCallback(useObjectPool ? ReleaseZombie : null);
-            if (isRunRoom)
+            if (isRunRoom && !spawnElite)
             {
                 chaser.archetype = Random.value < runVariantChance
                     ? (ZombieChaser.ZombieArchetype)Random.Range(1, 4)
@@ -196,6 +212,12 @@ public sealed class ZombieSpawner : MonoBehaviour
             {
                 int minimum = Mathf.Max(1, firstRoomHealth.x);
                 chaser.SetSpawnHealth(Random.Range(minimum, Mathf.Max(minimum, firstRoomHealth.y) + 1));
+            }
+            if (spawnElite)
+            {
+                int ordinaryHealth = isFirstRoom ? chaser.CurrentMaxHealth : Mathf.RoundToInt(ordinaryBaseHealth * runHealthMultiplier);
+                chaser.SetSpawnHealth(Mathf.RoundToInt(ordinaryHealth * eliteHealthMultiplier));
+                chaser.Champion.InitializeAmbient(player != null ? player.GetComponentInParent<SurvivorHealth>() : null, this);
             }
             if (isRunRoom && !generatingWanderers) chaser.ForceAggro();
         }
@@ -445,11 +467,13 @@ public sealed class ZombieSpawner : MonoBehaviour
             return;
 
         int count = Mathf.Max(0, Mathf.Min(poolPrewarm, Mathf.Max(maxAlive, initialSpawnCount)));
+        int eliteCount = Mathf.RoundToInt(count * eliteChance);
         for (int i = 0; i < count; i++)
         {
-            GameObject instance = CreatePooledZombie();
+            bool elite = i < eliteCount;
+            GameObject instance = CreatePooledZombie(elite);
             if (instance != null)
-                pooledZombies.Enqueue(instance);
+                (elite ? pooledElites : pooledZombies).Enqueue(instance);
         }
     }
 
@@ -460,28 +484,30 @@ public sealed class ZombieSpawner : MonoBehaviour
         nextWaveTime = Time.time + Random.Range(min, max);
     }
 
-    private GameObject GetZombieFromPool()
+    private GameObject GetZombieFromPool(bool elite)
     {
+        var prefab = elite ? elitePrefab : zombiePrefab;
         if (!useObjectPool)
         {
-            GameObject created = Instantiate(zombiePrefab, transform);
+            GameObject created = Instantiate(prefab, transform);
             created.SetActive(false);
             return created;
         }
 
-        while (pooledZombies.Count > 0)
+        var pool = elite ? pooledElites : pooledZombies;
+        while (pool.Count > 0)
         {
-            GameObject pooled = pooledZombies.Dequeue();
+            GameObject pooled = pool.Dequeue();
             if (pooled != null)
                 return pooled;
         }
 
-        return CreatePooledZombie();
+        return CreatePooledZombie(elite);
     }
 
-    private GameObject CreatePooledZombie()
+    private GameObject CreatePooledZombie(bool elite)
     {
-        GameObject instance = Instantiate(zombiePrefab, transform);
+        GameObject instance = Instantiate(elite ? elitePrefab : zombiePrefab, transform);
         instance.SetActive(false);
         return instance;
     }
@@ -501,7 +527,7 @@ public sealed class ZombieSpawner : MonoBehaviour
 
         instance.SetActive(false);
         instance.transform.SetParent(transform, false);
-        pooledZombies.Enqueue(instance);
+        (chaser.Champion != null ? pooledElites : pooledZombies).Enqueue(instance);
     }
 
     private void OnDrawGizmosSelected()

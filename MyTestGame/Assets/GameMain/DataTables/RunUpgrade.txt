@@ -2,23 +2,51 @@
 #	Id		Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect
 #	int		string	string	string	float	int	string	string
 #	Id	Notes	Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect
-	1		强击	近战伤害 +15%，最多 4 层。	DamagePercent	0.15	4	Common	
-	2		横扫	近战范围 +15%，最多 3 层。	Range	0.15	3	Common	
-	4		轻足	移动速度 +10%，最多 3 层。	MoveSpeed	0.10	3	Common	
-	5		活力	最大生命 +20，并恢复 20 点生命，最多 3 层。	MaxHealth	20	3	Common	
-	9		重击	击退力度 +25%，最多 3 层。	Knockback	0.25	3	Common	
-	10		疾刃	攻击动作与冷却缩短 10%，最多 3 层。	AttackSpeed	0.10	3	Quick	
-	11		灵巧冲刺	冲刺冷却缩短 12%，最多 3 层。	DashCooldown	0.12	3	Quick	
-	12		长跃	冲刺距离 +15%，最多 2 层，遇障碍仍会停下。	DashDistance	0.15	2	Quick	
+	1		强击	每层近战伤害 +15%，最多 10 层；满层伤害为基础值的 2.5 倍。	DamagePercent	0.15	10	Common
+	2		横扫	近战范围 +15%，最多 3 层。	Range	0.15	3	Common
+	4		轻足	移动速度 +10%，最多 3 层。	MoveSpeed	0.10	3	Common
+	5		活力	最大生命 +20，并恢复 20 点生命，最多 3 层。	MaxHealth	20	3	Common
+	9		重击	击退力度 +25%，最多 3 层。	Knockback	0.25	3	Common
+	10		疾刃	每层攻击速度 +15%，同步加快攻击动作，最多 15 层；满层攻速为基础值的 3.25 倍。	AttackSpeed	0.15	15	Quick
+	11		灵巧冲刺	冲刺冷却缩短 12%，最多 3 层。	DashCooldown	0.12	3	Quick
+	12		长跃	冲刺距离 +15%，最多 2 层，遇障碍仍会停下。	DashDistance	0.15	2	Quick
 	13		饮血	按近战实际伤害恢复 3% 生命；每次挥砍最多回血 6 点。	LifeSteal	0.03	3	Quick	AttackSpeed
 	14		三连斩	连续命中的第 3 次挥砍伤害 +45%；超过 2 秒未命中会重置。	ComboDamage	0.45	2	Quick	AttackSpeed
-	6		寒刃	近战有 15% 概率冰冻目标 1.8 秒，每层 +15%。	FreezeChance	0.15	4	Frost	
+	6		寒刃	近战有 15% 概率冰冻目标 1.8 秒，每层 +15%。	FreezeChance	0.15	4	Frost
 	15		深寒	冰冻持续时间 +0.4 秒，最多 3 层。	FreezeDuration	0.4	3	Frost	FreezeChance
 	16		破冰	对已冰冻目标的近战伤害 +30%，最多 2 层。	FrozenDamage	0.30	2	Frost	FreezeChance
 	17		碎冰冲击	击杀冰冻目标时，碎冰对附近敌人造成近战伤害的 40%。	Shatter	0.40	2	Frost	FreezeChance
 	18		霜冻传导	近战命中已冰冻目标，有 25% 概率冰冻附近最多 2 个敌人。	FrostSpread	0.25	2	Frost	FreezeChance
-	7		灼刃	近战有 20% 概率点燃 3 秒，每秒造成近战伤害的 25%。	BurnChance	0.20	4	Fire	
+	7		灼刃	近战有 20% 概率点燃 3 秒，每秒造成近战伤害的 25%。	BurnChance	0.20	4	Fire
 	19		烈焰	燃烧每秒伤害增加基础值的 35%，最多 3 层。	BurnDamage	0.35	3	Fire	BurnChance
 	20		余烬	燃烧持续时间 +1 秒，最多 3 层。	BurnDuration	1	3	Fire	BurnChance
 	21		殉爆	击杀燃烧目标时引爆，造成近战伤害的 45%，并点燃附近敌人。	BurnExplosion	0.45	2	Fire	BurnChance
 	22		火种扩散	近战命中已燃烧目标，有 25% 概率点燃附近最多 2 个敌人。	BurnSpread	0.25	2	Fire	BurnChance
+	23		坚韧	冲刺后 2 秒内受到的伤害减少 30%。	DashArmor	0.30	2	Common
+	24		战斗节奏	每 5 次近战命中，下一次伤害 +40%。	RhythmBoost	0.40	3	Common
+	25		急救训练	生命低于 30% 时，每秒回复 2 点生命。	LowHealthRegen	2	2	Common
+	26		破釜沉舟	生命低于 25% 时，伤害 +40%。	LowHealthDamage	0.40	1	Common
+	27		收割者	击杀精英或 Boss 时，立即回复 30 点生命。	EliteKillHeal	30	2	Common
+	28		影舞	冲刺期间免疫伤害，冲刺后 1 秒内无法攻击。	DashInvincible	1	1	Quick
+	29		连斩狂热	连续命中 5 次后，攻击速度 +25%，持续 4 秒。	ComboFrenzy	0.25	2	Quick	AttackSpeed
+	30		幻影	每次冲刺在原地留下残影，对接触敌人造成 50% 近战伤害。	DashEcho	0.50	2	Quick
+	31		风刃	移动速度每 +10%，近战范围 +5%。	SpeedRange	0.05	3	Quick	MoveSpeed
+	32		无影手	攻击速度达到 +100% 后，每次攻击有 20% 概率打出双倍伤害。	HyperStrike	0.20	1	Quick	AttackSpeed
+	33		极寒领域	每个冰冻敌人，近战范围 +3%。	FrostAura	0.03	2	Frost	FreezeChance
+	34		冰盾	场上有冰冻敌人时，受到伤害减少 25%。	FrostShield	0.25	2	Frost	FreezeChance
+	35		冰川之力	对冰冻敌人的击退力度 +50%。	FrostKnockback	0.50	2	Frost	FreezeChance
+	36		寒霜动能	每冰冻一个敌人，攻击速度 +8%，持续 6 秒，最多叠 5 层。	FrostMomentum	0.08	2	Frost	FreezeChance
+	37		凛冬之怒	冰冻 3 个或更多敌人时，近战范围 +30%。	FrostRangeBoost	0.30	1	Frost	FreezeChance
+	38		业火缠身	每个燃烧敌人，移动速度 +4%。	BurnHaste	0.04	3	Fire	BurnChance
+	39		炼狱步伐	燃烧敌人死亡时，留下持续 3 秒的火焰区域，每秒造成 20% 近战伤害。	BurnZone	0.20	2	Fire	BurnChance
+	40		烈焰护体	每个燃烧敌人，受到伤害减少 5%。	BurnArmor	0.05	2	Fire	BurnChance
+	41		灼心	燃烧敌人有 25% 概率受到双倍伤害。	BurnCrit	0.25	2	Fire	BurnChance
+	42		焚尽	燃烧敌人生命低于 30% 时，直接击杀。	BurnExecute	1.00	1	Fire	BurnChance
+	43		冰火之心	同时拥有冰冻和燃烧概率时，击杀冰冻或燃烧敌人触发冰火爆炸，造成近战伤害的 100%。	FrostfireBurst	1.00	1	Common	FreezeChance
+	44		温差冲击	同时冰冻和燃烧的敌人，受到伤害 +100%。	ThermalShock	1.00	2	Common	FreezeChance
+	45		急冻加速	移动速度 +50% 后，冰冻概率额外 +15%。	HasteFreeze	0.15	2	Frost	MoveSpeed
+	46		焚心加速	移动速度 +50% 后，燃烧概率额外 +20%。	HasteBurn	0.20	2	Fire	MoveSpeed
+	47		双元素精通	同时拥有冰冻和燃烧概率时，近战范围 +20%，伤害 +15%。	DualElement	0.15	2	Common	FreezeChance
+	48		狂战士契约	近战伤害 +60%，最大生命 -30。	BerserkerPact	1	1	Common
+	49		玻璃大炮	近战伤害 +80%，最大生命 -50%。	GlassCannon	1	1	Common
+	50		血之契约	每次近战额外造成 35% 伤害，但每次命中扣除 2 点自身生命。	BloodPact	1	3	Common

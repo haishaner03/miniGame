@@ -66,10 +66,17 @@ namespace Flower
                 case "Knockback":
                 case "ComboDamage": case "FreezeDuration": case "FrozenDamage": case "Shatter":
                 case "FrostSpread": case "BurnDamage": case "BurnDuration": case "BurnExplosion": case "BurnSpread":
+                case "DashArmor": case "RhythmBoost": case "LowHealthRegen": case "LowHealthDamage":
+                case "EliteKillHeal": case "DashInvincible": case "DashEcho": case "SpeedRange":
+                case "HyperStrike": case "ComboFrenzy":
+                case "FrostAura": case "FrostShield": case "FrostKnockback": case "FrostMomentum": case "FrostRangeBoost":
+                case "BurnHaste": case "BurnZone": case "BurnArmor": case "BurnCrit": case "BurnExecute":
+                case "FrostfireBurst": case "ThermalShock": case "HasteFreeze": case "HasteBurn": case "DualElement":
+                case "BerserkerPact": case "GlassCannon": case "BloodPact":
                     break;
                 default: throw new FormatException("Unknown RunUpgrade effect: " + Effect);
             }
-            if (Branch != "Common" && Branch != "Quick" && Branch != "Frost" && Branch != "Fire")
+            if (Branch != "Common" && Branch != "Quick" && Branch != "Frost" && Branch != "Fire" && Branch != "Gamble")
                 throw new FormatException("Unknown upgrade branch: " + Branch);
         }
     }

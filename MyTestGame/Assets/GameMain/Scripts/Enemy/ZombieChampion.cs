@@ -19,6 +19,7 @@ public sealed class ZombieChampion : MonoBehaviour
     public int maxSummonedAlive = 6;
     public ActionState State { get; private set; } = ActionState.Arrival;
     public bool IsEnraged { get; private set; }
+    public bool IsAmbientElite { get; private set; }
     public bool IsCharging => State == ActionState.Charging && Health != null && !Health.IsFrozen;
     public bool IsArriving => State == ActionState.Arrival;
     public bool TelegraphVisible => warning != null && warning.enabled;
@@ -57,10 +58,30 @@ public sealed class ZombieChampion : MonoBehaviour
 
     public void Initialize(SurvivorHealth target, ZombieSpawner source)
     {
-        player = target; spawner = source; nav = FindFirstObjectByType<ZombieGridPathfinder>();
+        ResetBehaviour(target, source, false);
         Health.OnSpawnedFromPool(target.transform); Health.ForceAggro();
-        State = ActionState.Arrival; elapsed = 0; nextAction = Time.time + 1.8f;
+    }
+
+    public void InitializeAmbient(SurvivorHealth target, ZombieSpawner source)
+    {
+        // The spawner already reset health, difficulty and movement speed.
+        ResetBehaviour(target, source, true);
+    }
+
+    private void ResetBehaviour(SurvivorHealth target, ZombieSpawner source, bool ambient)
+    {
+        player = target; spawner = source; nav = FindFirstObjectByType<ZombieGridPathfinder>();
+        IsAmbientElite = ambient;
+        IsEnraged = false;
+        State = ambient ? ActionState.Pursuit : ActionState.Arrival;
+        elapsed = traveled = 0f;
+        chargeHit = false;
+        actionNumber = 0;
+        lockedDirection = warningOrigin = Vector2.zero;
+        nextAction = Time.time + 1.8f;
         nextSummon = Time.time + 9f;
+        HideWarning();
+        if (halo != null) halo.enabled = true;
     }
 
     // Called by ZombieChaser after status damage, before normal chase / melee.
@@ -71,6 +92,12 @@ public sealed class ZombieChampion : MonoBehaviour
         { HideWarning(); Health.HoldForSpecial(false); return true; }
         DrawCircle(halo, (Vector2)transform.position, isBoss ? .58f : .44f, new Color(1f,isBoss?.22f:.7f,.12f,.7f));
         if (Health.IsFrozen) { Health.HoldForSpecial(false); return true; }
+        if (IsAmbientElite && !Health.HasAggro)
+        {
+            HideWarning();
+            if (State != ActionState.Pursuit) SetState(ActionState.Pursuit);
+            return false;
+        }
         elapsed += delta;
         if (State == ActionState.Arrival)
         {
@@ -179,7 +206,7 @@ public sealed class ZombieChampion : MonoBehaviour
     {
         lockedDirection = ((Vector2)player.transform.position - (Vector2)transform.position).normalized;
         if (lockedDirection.sqrMagnitude < .01f) lockedDirection = Vector2.down;
-        Health.spriteRenderer.flipX = lockedDirection.x < 0;
+        Health.FaceDirection(lockedDirection);
     }
     private void Summon()
     {

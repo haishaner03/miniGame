@@ -31,13 +31,15 @@ public sealed class LevelFlowController : MonoBehaviour
     [SerializeField] private bool disableSpawnerRespawn = true;
     [SerializeField] private float nextSceneDelay = 0.75f;
     [SerializeField] private bool showDebugOverlay = true;
+    [Tooltip("勾选时，区域波次也属于出口解锁条件；关闭后仅判断击杀目标与精英/Boss遭遇。")]
+    [SerializeField] private bool requireRegionalWaves = true;
     [Tooltip("击杀目标和这些区域波次全部完成后解锁出口。为空时自动查找本场景区域触发器。")]
     [SerializeField] private ZombieWaveTrigger[] requiredWaves;
 
     public FlowState State { get; private set; } = FlowState.Waiting;
     public bool ExitUnlocked { get; private set; }
     public string NextScenePath => nextScenePath;
-    public int TotalObjectiveWaves => requiredWaves == null ? 0 : requiredWaves.Length;
+    public int TotalObjectiveWaves => !requireRegionalWaves || requiredWaves == null ? 0 : requiredWaves.Length;
     public int CompletedObjectiveWaves => ClearedWaveCount();
     public int RemainingEnemies => zombieSpawner != null ? zombieSpawner.ActiveCount : 0;
     public int RequiredKills
@@ -47,7 +49,7 @@ public sealed class LevelFlowController : MonoBehaviour
             var run = RunState.Instance;
             if (run == null) return 0;
             if (run.RoomNumber == run.RoomCount) return run.Config.bossPreparationKills;
-            if (run.RoomNumber == run.Config.eliteRoomNumber) return run.Config.elitePreparationKills;
+            if (run.Config.requireEliteEncounter && run.RoomNumber == run.Config.eliteRoomNumber) return run.Config.elitePreparationKills;
             return run.Config.roomKillTarget + run.RoomIndex * 15;
         }
     }
@@ -136,7 +138,7 @@ public sealed class LevelFlowController : MonoBehaviour
     private int ClearedWaveCount()
     {
         int count = 0;
-        if (requiredWaves == null)
+        if (!requireRegionalWaves || requiredWaves == null)
             return 0;
         for (int i = 0; i < requiredWaves.Length; i++)
         {
@@ -148,7 +150,7 @@ public sealed class LevelFlowController : MonoBehaviour
 
     private bool AllRequiredWavesCleared()
     {
-        if (requiredWaves == null || requiredWaves.Length == 0)
+        if (!requireRegionalWaves || requiredWaves == null || requiredWaves.Length == 0)
             return true;
         for (int i = 0; i < requiredWaves.Length; i++)
         {
@@ -293,7 +295,7 @@ public sealed class LevelFlowController : MonoBehaviour
             return;
 
         string objective = ExitUnlocked ? "出口已解锁，前往出口门" : "清理街区中的丧尸";
-        if (!ExitUnlocked && requiredWaves != null && requiredWaves.Length > 0)
+        if (!ExitUnlocked && TotalObjectiveWaves > 0)
             objective = "推进街区 " + ClearedWaveCount() + "/" + requiredWaves.Length + "，清理区域波次";
         GUI.Label(new Rect(18f, 18f, 500f, 24f), "关卡状态: " + State + "  |  " + objective);
     }

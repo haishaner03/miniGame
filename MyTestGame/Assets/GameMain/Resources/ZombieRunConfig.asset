@@ -30,6 +30,9 @@ MonoBehaviour:
   bossEncounterPrefab: {fileID: 3892269961145252800, guid: ae05ac95900beaf4580ac6bbfdb06406,
     type: 3}
   eliteRoomNumber: 3
+  requireEliteEncounter: 0
+  ambientEliteChance: 0.09090909
+  ambientEliteHealthMultiplier: 2.5
   elitePreparationKills: 35
   bossPreparationKills: 25
   eliteEncounterExperience: 120
@@ -47,6 +50,7 @@ MonoBehaviour:
   baseFreezeDuration: 1.8
   initialWanderers: 40
   firstRoomPopulationMultiplier: 0.7
+  secondRoomPopulationMultiplier: 0.75
   zombieMoveSpeedMultiplier: {x: 0.8, y: 1.2}
   maxLivingZombies: 100
   reinforcementDelay: {x: 2, y: 4}

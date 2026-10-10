@@ -137,6 +137,11 @@ public sealed class SurvivorDash : MonoBehaviour
             movementWasEnabled = movement.enabled;
             movement.enabled = false;
         }
+
+        // 通知战斗效果系统
+        var combatEffects = RunState.Instance != null ? RunState.Instance.GetComponent<RunCombatEffects>() : null;
+        if (combatEffects != null)
+            combatEffects.OnDashStart();
     }
 
     private void EndDash()

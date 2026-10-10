@@ -342,7 +342,13 @@ public sealed class RunState : MonoBehaviour
         if (Phase != RunPhase.Playing) return;
         Kills++;
         RoomKills++;
-        if (elite) EliteKills++;
+        if (elite)
+        {
+            EliteKills++;
+            // 通知战斗效果系统精英击杀
+            if (CombatEffects != null)
+                CombatEffects.OnEliteKill();
+        }
     }
 
     public void RecordDamageDealt(int amount)

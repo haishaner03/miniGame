@@ -116,6 +116,14 @@ public sealed class SurvivorHealth : MonoBehaviour
         if (damage <= 0 || IsDead || IsGameOver || Time.timeScale <= 0f || Time.time < invulnerableUntil)
             return;
 
+        // 应用减伤
+        var combatEffects = RunState.Instance != null ? RunState.Instance.GetComponent<RunCombatEffects>() : null;
+        if (combatEffects != null)
+        {
+            float reduction = combatEffects.GetDamageReduction();
+            damage = Mathf.RoundToInt(damage * (1f - reduction));
+        }
+
         if (knockbackForce > 0.01f)
         {
             Vector2 direction = hitDirection.sqrMagnitude > 0.001f ? hitDirection.normalized : Vector2.down;
@@ -157,6 +165,11 @@ public sealed class SurvivorHealth : MonoBehaviour
         IsDead = true;
         DeathCount++;
         PlayerDied?.Invoke(DeathCount);
+
+        // 炼狱步伐：死亡时点燃周围敌人
+        var combatEffects = RunState.Instance != null ? RunState.Instance.CombatEffects : null;
+        if (combatEffects != null)
+            combatEffects.OnPlayerDeath(transform.position);
 
         if (movement != null)
             movement.enabled = false;

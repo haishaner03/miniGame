@@ -28463,6 +28463,7 @@ MonoBehaviour:
   disableSpawnerRespawn: 1
   nextSceneDelay: 0.75
   showDebugOverlay: 1
+  requireRegionalWaves: 1
   requiredWaves: []
 --- !u!4 &1071333641
 Transform:
@@ -77784,12 +77785,12 @@ PrefabInstance:
     - target: {fileID: 8682119591922742192, guid: 28a31fa98028f344dbc6a600a9127550,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8682119591922742192, guid: 28a31fa98028f344dbc6a600a9127550,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8682119591922742192, guid: 28a31fa98028f344dbc6a600a9127550,
         type: 3}

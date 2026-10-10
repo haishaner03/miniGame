@@ -19,6 +19,11 @@ public sealed class ZombieRunConfig : ScriptableObject
     [Header("精英与最终 Boss")]
     public GameObject eliteEncounterPrefab;
     public GameObject bossEncounterPrefab;
+    public bool requireEliteEncounter;
+    [Tooltip("各房间普通刷怪槽位替换为精英的概率；1/11 对应约每 10 只普通丧尸 1 只精英。")]
+    [Range(0f, 1f)] public float ambientEliteChance = 1f / 11f;
+    [Tooltip("随机精英的生命为本房普通丧尸基准生命的倍数，不使用 Boss 遭遇生命。")]
+    [Min(1f)] public float ambientEliteHealthMultiplier = 2.5f;
     [Min(2)] public int eliteRoomNumber = 3;
     [Min(1)] public int elitePreparationKills = 35;
     [Min(1)] public int bossPreparationKills = 25;
@@ -38,6 +43,8 @@ public sealed class ZombieRunConfig : ScriptableObject
     [Min(1)] public int initialWanderers = 40;
     [Tooltip("第一房间游荡敌人、普通增援和定时大波的人数倍率；区域目标波次不受影响。")]
     [Range(0.1f, 1f)] public float firstRoomPopulationMultiplier = .7f;
+    [Tooltip("第二房间初始敌人、增援、区域波次和存活上限的数量倍率。")]
+    [Range(0.1f, 1f)] public float secondRoomPopulationMultiplier = .75f;
     [Tooltip("每次生成普通丧尸时，在其类型速度基础上随机一次；对象池复用会重新抽取。")]
     public Vector2 zombieMoveSpeedMultiplier = new Vector2(.8f, 1.2f);
     [Min(1)] public int maxLivingZombies = 100;
