@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: an isolated environmental ground decal sprite sheet for a top-down pixel-art zombie survival game, no scene illustration.
+Generate a clean 1024x1024 atlas divided into exactly THREE columns and THREE rows of equal square cells. Each cell contains exactly one isolated decal; no shared ground rectangle. Keep every object well inside its own cell, generous margins. Uniform pure vivid magenta #ff00ff outside and between all subjects, including holes. No text, no labels, no letters, no grid lines, no drop shadows.
+Style: richly textured, crisp pixel-art matching abandoned gray-brown brick buildings, muted charcoal asphalt, faded olive vegetation and rusty amber metal. Limited earthy palette, readable pixel clusters. The objects must be flat on the street, seen from straight overhead, parallel orthographic projection, no perspective slope. Appropriate for a small game character approximately one grid unit tall; these details stay small. Do not draw buildings, cars, trees, people, zombies or large objects.
+Cell order left to right, then top to bottom:
+1. Small circular rusty iron manhole cover, recessed concentric rings and hatch pattern, no ground surrounding it.
+2. Narrow rectangular gutter drain grate with dark parallel slots and worn metal border.
+3. Irregular flat dark oil stain with broken edges and subtle brown-green sheen; low contrast, no outline, no raised depth, no pavement background.
+4. Two thin curved worn tire skid marks, black scuffed rubber, fragmented worn edges, a fairly open delicate pair of curves, no vehicle, no background.
+5. Small cluster of discarded cream paper scraps, crumpled paper and two tiny dirty cardboard scraps, scattered naturally with gaps between.
+6. Scattered dry ochre leaves and tiny faded olive grass fragments lying flat, irregular cluster, avoid flower shapes.
+7. Sparse broken gray concrete chips and a few little brick fragments lying flat on ground, no big boulder.
+8. Thin branching dark asphalt crack network, jagged broken lines with tiny chipped edges, transparent gaps, no rectangular surrounding asphalt.
+9. A few small rusted flattened cans and a broken green bottle, sparse litter, no upright bin, no food, no labels.
+Important: these are ground DECALS with irregular cutout silhouettes suitable for compositing over existing game tilemaps. All negative spaces must be solid chroma magenta. Do not include any gray square canvas or road surface behind a decal. Every cell is a separate item. Keep colors subtle so enemies and the player remain readable.

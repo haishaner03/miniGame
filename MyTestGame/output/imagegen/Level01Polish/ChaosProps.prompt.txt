@@ -1,0 +1,17 @@
+Use case: stylized-concept
+Asset type: nine isolated environment sprites for an orthographic front-facing top-down pixel-art zombie survival game.
+Make a 1024x1024 sprite atlas in EXACTLY 3 columns x 3 rows, equal square cells. One complete isolated object per cell, generous margin, all background and gaps pure chroma-key magenta #ff00ff. No grid lines, no captions, no readable writing. No rectangular ground patches or big cast shadows beneath objects.
+Style: detailed readable pixel clusters, abandoned gritty urban neighborhood, muted olive, rust brown, dark charcoal, dusty tan. Rich material texture with crisp silhouettes, same coherent pixel density. Elevated front view with a little visible top surface, almost no side face, orthographic rather than isometric. These are game objects, not realistic photographs and not a scene.
+Top row left to right:
+1. A heap of five bulging tied black garbage bags with one torn bag spilling crumpled paper, greasy dark plastic highlights, squat compact silhouette.
+2. Low pile of broken concrete masonry, red brick fragments and a few large angular gray stones, irregular crumbling heap.
+3. A slender old iron street lamp with small warm amber lantern, worn metal post, little concrete base. Entire pole visible from base to lamp, upright vertical, no electric cables.
+Middle row:
+4. A bent damaged street lamp, narrow rusty pole tilted slightly, broken hanging lampshade, little visible base, entire object in cell.
+5. Abandoned rust-green wheeled dumpster with open crooked lid, a few trash bags inside, damaged metal panels, no branding, clear front and top.
+6. A small heap of discarded worn car tires, one sideways tire and three stacked tires with coarse rubber texture, no car, no tall tower.
+Bottom row:
+7. A shredded weathered rust-red hanging cloth banner, wide horizontal ragged rectangle, loose drooping central fabric, holes and frayed edges, NO writing, no pole, isolated cutout suitable to hang above a shop front.
+8. A broken olive-and-beige striped shop awning with torn hanging fabric and rusty short metal bracket, wide horizontal front-facing accessory, no shop walls, no ground.
+9. A collapsed small outdoor merchandise display: wooden fruit crates with spoiled produce scraps, crushed cardboard boxes and a broken shopping basket, squat irregular heap, no signs.
+Keep magenta outside objects and in every open space. No humans, no zombies, no buildings. Match the same warm-dirty textures as a neglected brick convenience store. Each object should be readable at its eventual small game resolution.

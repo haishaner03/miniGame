@@ -1,0 +1,8 @@
+Use case: stylized-concept.
+Asset type: idle and death supplementary sprite sheet for the EXACT elite Hunter zombie in reference images.
+Keep the broad adult infected rescue worker, ashen grey skin, short black hair, burnt-orange heavy padded jacket, dark shoulder pads and gloves, charcoal trousers, thick black boots. Exact same anatomy, pixel cluster size and scale as reference 1. Jacket back has a worn pale horizontal reflective stripe. Crisp pixel art only.
+Exactly 1024x1024, four columns by four rows, 256x256 cells, pure flat #ff00ff background, no shadows, no grid, no labels.
+Rows 1-3: four consecutive non-gory DEATH frames per direction. D0 recoils still upright; D1 knees buckle, body tilts; D2 falls with connected bent limbs; D3 lies motionless fully visible on side. Fixed drawing scale throughout: do not shrink fallen body. Stable cell ground anchor x128 y226. Full body stays inside cell with empty margins.
+Row1: Down/front. Row2: Up/back. Row3: Right/side profile.
+Row4: four IDLE sprites, in order Down, Up, Right, Down. Same guarded relaxed neutral stance as attack start/end, two feet planted, broad shoulders, arms lowered and slightly bent. No stepping. Fixed scale and boot soles y226.
+No gore, no severed limbs, no scenery, no lettering, no magenta clothing, no weapons. 16 sprites in total.

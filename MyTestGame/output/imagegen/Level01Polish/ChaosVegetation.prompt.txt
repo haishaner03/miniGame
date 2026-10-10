@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: nine isolated dense weeds, bushes and ground-story props for a gritty top-down pixel-art zombie survival game.
+Create a 1024x1024 atlas divided in exactly THREE columns and THREE rows of equal square cells. One isolated cluster per cell, complete silhouette, clear space around each. Flat pure vivid magenta #ff00ff background and gaps, no captions, no lines, no ground rectangles, no baked broad shadows.
+Style: crisp detailed pixel-art matching abandoned gray-brown brick buildings, dirty asphalt and dark olive grass. Muted green, yellow-olive, dry brown, rusty ochre, gray. Elevated orthographic view facing the front, NOT diagonal isometric. Ground objects viewed more from above; tall foliage has visible top and small front face. Readable organic shapes; avoid saturated bright foliage.
+Cell order:
+1. Dense scruffy low olive shrub with many irregular leaves, dead brown stems and an asymmetric leafy silhouette, no pot.
+2. Wider overgrown dark-green bramble bush with thin brown thorn branches and trailing ivy, organic broken edge, no flower, no pot.
+3. A cluster of tall coarse dry grass and thin yellow-green weeds with scattered upright reeds, several uneven tufts together, no ground chunk.
+4. Four small low creeping weed tufts with a little moss and tiny dry leaves between, irregular spread suitable for sidewalk cracks, no soil rectangle.
+5. Dried rusty brown brush bush with bare twigs, dead curled leaves and wispy grass, low organic silhouette.
+6. A ragged heap of wet paper, leaves, plastic bottles and small broken cardboard lying FLAT on ground, dark muted rubbish, no upright bin.
+7. One abandoned humanoid zombie corpse lying face down on the ground, tattered olive shirt and worn brown trousers, full adult body horizontal across the cell, desaturated gray skin, no graphic wounds, no exposed organs, no gore, small dark dried stain only, viewed from above.
+8. Another abandoned adult humanoid corpse lying on one side, old dusty gray work jacket and blue-gray trousers, bent knees and one outstretched arm, full body visible from above, no graphic wounds, no exposed organs, no gore.
+9. A low tangled cluster of broken branches, creeping ivy and discarded brown bottles, flat asymmetrical debris mat, no trunk, no tree canopy.
+All silhouettes need clean magenta around them and in holes so they can be cut out into real transparent sprites. These are urban apocalypse set-dressing assets, not a complete landscape. No readable text.

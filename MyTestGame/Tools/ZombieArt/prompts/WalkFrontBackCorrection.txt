@@ -1,0 +1,16 @@
+Use case: stylized-concept.
+Asset type: CORRECTED production pixel art walk animation sheet for the exact zombie in the references.
+Image 1 is exact character identity: grey-green skin, short dark hair, open tattered olive-grey jacket, dirty beige shirt, ripped charcoal trousers and brown boots. Image 2 shows the same character back view. Match the existing small-pixel clusters and normal adult proportions, head small relative to body, top-down camera 30 degrees. Do not add weapons or accessories.
+IMPORTANT: This sheet contains ONLY walking. A true COMPLETE cycle alternates LEFT leg and RIGHT leg through BOTH planted contacts and the passing poses. The former sheet lacked enough passing poses; make the stride completely readable. Arms swing in opposite phase to legs. All sprites have exactly the same head size, same pelvis scale, same torso horizontal center, and maximum two pixel body bob.
+1024x1024, 4 equal columns x 4 equal rows, each cell 256x256. Pure uniform #ff00ff background, no shadows, grid, lettering, numbers or scenery, each cell holds one full-body character entirely inside its own cell. Hips centered at x128; standing boot soles at y226; character height184px. Crisp pixel art approximately 48x56 logical pixels, scaled nearest-neighbor, no antialiasing.
+TOP TWO ROWS (8 frames left-to-right top-to-bottom): character always DOWN/front facing, face and front of shirt visible, no diagonal turning.
+D0 LEFT foot on ground forward: left boot reaches y226, RIGHT boot back reaches y196, left knee extended, right knee flexed. Right arm forward/left arm back.
+D1 same left foot carries weight, body down a tiny amount, RIGHT heel lifts behind.
+D2 RIGHT leg passing under pelvis: LEFT supporting leg straight, RIGHT knee BENT and lifted, RIGHT boot entirely off ground just BELOW hips; NO two outstretched legs, boots visibly CLOSE together horizontally. Arms pass body.
+D3 RIGHT leg begins extending forward from passing pose, LEFT heel begins to lift.
+D4 RIGHT foot on ground forward: right boot y226, LEFT foot back y196. EXACT counterpart of D0 with legs switched and counter-swing reversed.
+D5 right foot carries weight, LEFT heel lifts behind.
+D6 LEFT leg passing under pelvis: RIGHT supporting leg straight, LEFT knee BENT and lifted, LEFT boot just BELOW hips and off ground, legs visibly close together. EXACT counterpart of D2 with legs switched.
+D7 LEFT leg extends forward ready to loop seamlessly into D0.
+BOTTOM TWO ROWS (8 frames): exactly the SAME cycle UP/back facing, back of hair and jacket visible, NO face/nose/eyes/chest. U0 left foot forward away from camera, right foot behind; U1 down/weight; U2 right knee passing, lifted off ground; U3 right leg extends; U4 right forward away, left behind; U5 down/weight; U6 LEFT knee passing/lifted; U7 LEFT leg extends to return U0.
+Prioritize a correct alternate-leg walk over detail. Do not draw eight separate variations of the SAME front extended leg. D2,D6,U2,U6 have NARROW leg silhouettes and a visibly RAISED BENT knee, in contrast to the contacts. Never run with both feet airborne, no random hopping. Keep torso/hips consistently registered. All 16 full bodies, same outfit, no text.
