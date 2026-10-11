@@ -47,7 +47,9 @@ public static class ZombieProgressionSetup
             config.reinforcementCount = new Vector2Int(3, 6);
             config.hordeDelay = new Vector2(12f, 22f);
             config.hordeCount = new Vector2Int(15, 25);
+            config.secondRoomPopulationMultiplier = .55f;
             config.roomKillTarget = 60;
+            config.roomKillTargets = new[] { 45, 40, 35, 65, 25 };
             EditorUtility.SetDirty(config);
             AssetDatabase.SaveAssets();
             ZombieHudSetup.Build();

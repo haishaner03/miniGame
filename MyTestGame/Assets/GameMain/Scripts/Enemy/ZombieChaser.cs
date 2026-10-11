@@ -12,7 +12,9 @@ public sealed class ZombieChaser : MonoBehaviour
         Standard,
         Fast,
         Tank,
-        Exploder
+        Exploder,
+        Crawler,
+        Scavenger
     }
 
     [Header("敌人类型")]
@@ -24,6 +26,9 @@ public sealed class ZombieChaser : MonoBehaviour
     public int tankHealthMultiplier = 3;
     public int tankAttackDamageBonus = 20;
     public float exploderSpeedMultiplier = 1.1f;
+    public float crawlerSpeedMultiplier = 1.28f;
+    [Range(0.2f, 1f)] public float crawlerHealthMultiplier = 0.72f;
+    [Range(0.5f, 1.25f)] public float scavengerSpeedMultiplier = 0.92f;
     public float explosionRadius = 1.45f;
     public int explosionDamage = 40;
     public float explosionKnockback = 3.5f;
@@ -109,10 +114,16 @@ public Transform target;
             body.constraints |= RigidbodyConstraints2D.FreezePosition;
             freezePositionLocked = true;
         }
-        body.linearVelocity = Vector2.zero;
-        body.angularVelocity = 0f;
+        StopDynamicBodyMotion();
         knockbackVelocity = Vector2.zero;
         desiredVelocity = Vector2.zero;
+    }
+
+    private void StopDynamicBodyMotion()
+    {
+        if (body == null || body.bodyType != RigidbodyType2D.Dynamic) return;
+        body.linearVelocity = Vector2.zero;
+        body.angularVelocity = 0f;
     }
 
     private void ReleaseFrozenPosition()
@@ -121,8 +132,7 @@ public Transform target;
         if (body != null)
         {
             body.constraints = constraintsBeforeFreeze;
-            body.linearVelocity = Vector2.zero;
-            body.angularVelocity = 0f;
+            StopDynamicBodyMotion();
         }
         freezePositionLocked = false;
     }
@@ -553,8 +563,7 @@ private void Update()
         if (body != null)
         {
             body.simulated = true;
-            body.linearVelocity = Vector2.zero;
-            body.angularVelocity = 0f;
+            StopDynamicBodyMotion();
         }
         if (spriteRenderer != null)
         {
@@ -612,14 +621,15 @@ private void Update()
         Died?.Invoke(this);
         if (RunState.Instance != null)
         {
-            bool elite = Champion != null || archetype != ZombieArchetype.Standard;
+            bool champion = Champion != null && Champion.enabled;
+            bool boss = champion && Champion.isBoss;
+            bool elite = champion && !boss;
             RunState.Instance.RecordKill(elite);
-            RunState.Instance.DropExperience(transform.position, elite);
-            if (elite)
-            {
-                int scrap = Champion != null && Champion.isBoss ? RunState.Instance.Config.bossScrapDrop : RunState.Instance.Config.eliteScrapDrop;
-                RunState.Instance.DropScrap(transform.position, scrap);
-            }
+            int bonusExperience = !champion && archetype == ZombieArchetype.Scavenger
+                ? RunState.Instance.Config.normalExperience : 0;
+            RunState.Instance.DropExperience(transform.position, champion, bonusExperience);
+            int scrap = boss ? RunState.Instance.Config.bossScrapDrop : elite ? RunState.Instance.Config.eliteScrapDrop : 0;
+            if (scrap > 0) RunState.Instance.DropScrap(transform.position, scrap);
             RunState.Instance.CombatEffects.EnemyKilled(burstOrigin, frozenOnDeath, burningOnDeath, lastDamageByPlayer);
         }
         frozenUntil = burningUntil = 0f;
@@ -735,6 +745,13 @@ private void Update()
             case ZombieArchetype.Exploder:
                 runtimeMoveSpeed *= Mathf.Max(1f, exploderSpeedMultiplier);
                 runtimeMaxHealth = Mathf.RoundToInt(runtimeMaxHealth * 1.25f);
+                break;
+            case ZombieArchetype.Crawler:
+                runtimeMoveSpeed *= Mathf.Max(1f, crawlerSpeedMultiplier);
+                runtimeMaxHealth = Mathf.Max(1, Mathf.RoundToInt(runtimeMaxHealth * Mathf.Clamp(crawlerHealthMultiplier, 0.2f, 1f)));
+                break;
+            case ZombieArchetype.Scavenger:
+                runtimeMoveSpeed *= Mathf.Clamp(scavengerSpeedMultiplier, 0.5f, 1.25f);
                 break;
         }
     }

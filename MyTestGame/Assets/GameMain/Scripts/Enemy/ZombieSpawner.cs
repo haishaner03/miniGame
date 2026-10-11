@@ -15,6 +15,11 @@ public sealed class ZombieSpawner : MonoBehaviour
     public float spawnJitter = 0.35f;
     public bool spawnOnStart = true;
     public bool respawnAfterDeath = true;
+    [Header("分批涌入")]
+    [Min(1)] public int spawnBatchSize = 4;
+    [Min(0.05f)] public float spawnBatchInterval = 0.7f;
+    [Min(1)] public int reinforcementKillsMin = 2;
+    [Min(1)] public int reinforcementKillsMax = 4;
     [Header("随机大波次")]
     public bool enableTimedWaves = true;
     public float waveDelayMin = 10f;
@@ -83,6 +88,11 @@ public sealed class ZombieSpawner : MonoBehaviour
     private Vector2Int firstRoomHealth;
     private Vector2 reinforcementDelay;
     private Vector2Int reinforcementCount;
+    private int initialSpawnRemaining;
+    private int queuedAmbientSpawns;
+    private int killsTowardReinforcement;
+    private int nextReinforcementKillGoal = 3;
+    private float nextBatchSpawnTime;
     private Vector2 moveSpeedMultiplier = Vector2.one;
     public bool SpawningEnabled => spawningEnabled;
 
@@ -135,12 +145,11 @@ public sealed class ZombieSpawner : MonoBehaviour
             PrewarmPool();
         if (spawnOnStart)
         {
-            generatingWanderers = true;
-            int count = Mathf.Min(initialSpawnCount, maxAlive);
-            for (int i = 0; i < count; i++)
-                SpawnOne();
-            generatingWanderers = false;
+            initialSpawnRemaining = Mathf.Min(initialSpawnCount, maxAlive);
+            nextBatchSpawnTime = Time.time;
+            SpawnInitialBatch();
         }
+        nextReinforcementKillGoal = Random.Range(Mathf.Max(1, reinforcementKillsMin), Mathf.Max(reinforcementKillsMin, reinforcementKillsMax) + 1);
         ScheduleNextReinforcements();
         ScheduleNextWave();
     }
@@ -156,20 +165,38 @@ public sealed class ZombieSpawner : MonoBehaviour
         // queues the missing members instead of silently accepting an empty wave.
         SpawnPendingObjectiveWaves();
 
-        // 普通补怪可以由关卡流程单独关闭，但不影响定时大波。
-        if (respawnAfterDeath && alive.Count < maxAlive && Time.time >= nextSpawnTime)
+        if (initialSpawnRemaining > 0)
         {
-            if (isRunRoom) SpawnWave(Random.Range(reinforcementCount.x, reinforcementCount.y + 1));
-            else SpawnOne();
-            ScheduleNextReinforcements();
+            if (Time.time >= nextBatchSpawnTime) SpawnInitialBatch();
+            return;
         }
 
-        // 定时大波独立于普通补怪规则，按随机时间生成一次。
-        if (enableTimedWaves && Time.time >= nextWaveTime)
+        if (queuedAmbientSpawns > 0 && Time.time >= nextBatchSpawnTime)
+            SpawnQueuedAmbientBatch();
+
+        // Run rooms replenish only after a few kills and a cooldown.
+        if (respawnAfterDeath && alive.Count < maxAlive && Time.time >= nextSpawnTime)
+        {
+            if (isRunRoom && killsTowardReinforcement >= nextReinforcementKillGoal && queuedAmbientSpawns == 0)
+            {
+                QueueAmbientWave(Random.Range(reinforcementCount.x, reinforcementCount.y + 1));
+                killsTowardReinforcement -= nextReinforcementKillGoal;
+                nextReinforcementKillGoal = Random.Range(Mathf.Max(1, reinforcementKillsMin), Mathf.Max(reinforcementKillsMin, reinforcementKillsMax) + 1);
+                ScheduleNextReinforcements();
+            }
+            else if (!isRunRoom)
+            {
+                QueueAmbientWave(1);
+                ScheduleNextReinforcements();
+            }
+        }
+
+        // Timed hordes use the same small-batch cadence.
+        if (enableTimedWaves && Time.time >= nextWaveTime && queuedAmbientSpawns == 0)
         {
             int minCount = Mathf.Max(1, waveCountMin);
             int maxCount = Mathf.Max(minCount, waveCountMax);
-            SpawnWave(Random.Range(minCount, maxCount + 1));
+            QueueAmbientWave(Random.Range(minCount, maxCount + 1));
             ScheduleNextWave();
         }
     }
@@ -207,11 +234,15 @@ public sealed class ZombieSpawner : MonoBehaviour
             chaser.Died -= OnZombieDied;
             chaser.Died += OnZombieDied;
             chaser.SetPoolReleaseCallback(useObjectPool ? ReleaseZombie : null);
-            if (isRunRoom && !spawnElite)
+            if (isRunRoom && !spawnElite && chaser.archetype != ZombieChaser.ZombieArchetype.Crawler &&
+                chaser.archetype != ZombieChaser.ZombieArchetype.Scavenger)
             {
-                chaser.archetype = Random.value < runVariantChance
-                    ? (ZombieChaser.ZombieArchetype)Random.Range(1, 4)
-                    : ZombieChaser.ZombieArchetype.Standard;
+                int typeId = appearance != null ? appearance.OrdinaryTypeId : 1;
+                chaser.archetype = typeId == 4 ? ZombieChaser.ZombieArchetype.Crawler :
+                    typeId == 5 ? ZombieChaser.ZombieArchetype.Scavenger :
+                    Random.value < runVariantChance
+                        ? (ZombieChaser.ZombieArchetype)Random.Range(1, 4)
+                        : ZombieChaser.ZombieArchetype.Standard;
             }
             chaser.OnSpawnedFromPool(player);
             if (isRunRoom) chaser.ApplyRunDifficulty(runHealthMultiplier);
@@ -295,9 +326,13 @@ public sealed class ZombieSpawner : MonoBehaviour
 
     private void SpawnPendingObjectiveWaves()
     {
+        if (initialSpawnRemaining > 0 || queuedAmbientSpawns > 0 || Time.time < nextBatchSpawnTime)
+            return;
+
+        int spawnedThisBatch = 0;
         foreach (var wave in objectiveWaves.Values)
         {
-            while (wave.pending > 0 && alive.Count < maxAlive)
+            while (wave.pending > 0 && alive.Count < maxAlive && spawnedThisBatch < Mathf.Max(1, spawnBatchSize))
             {
                 GameObject instance = SpawnOne(wave.points);
                 if (instance == null) break;
@@ -305,15 +340,57 @@ public sealed class ZombieSpawner : MonoBehaviour
                 if (zombie == null) break;
                 wave.living.Add(zombie);
                 wave.pending--;
+                spawnedThisBatch++;
             }
+            if (spawnedThisBatch >= Mathf.Max(1, spawnBatchSize)) break;
         }
+        if (spawnedThisBatch > 0) nextBatchSpawnTime = Time.time + Mathf.Max(0.05f, spawnBatchInterval);
     }
 
     private void OnZombieDied(ZombieChaser zombie)
     {
         // Death animation may still be playing, but this member is already defeated.
-        alive.Remove(zombie.gameObject);
+        bool wasAlive = alive.Remove(zombie.gameObject);
+        if (wasAlive && isRunRoom) killsTowardReinforcement++;
         foreach (var wave in objectiveWaves.Values) wave.living.Remove(zombie);
+    }
+
+    private void SpawnInitialBatch()
+    {
+        if (initialSpawnRemaining <= 0) return;
+        generatingWanderers = true;
+        int count = Mathf.Min(Mathf.Max(1, spawnBatchSize), initialSpawnRemaining);
+        int spawned = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if (SpawnOne() == null) break;
+            initialSpawnRemaining--;
+            spawned++;
+        }
+        generatingWanderers = false;
+        nextBatchSpawnTime = Time.time + (spawned > 0 ? Mathf.Max(0.05f, spawnBatchInterval) : 0.5f);
+    }
+
+    private void QueueAmbientWave(int count)
+    {
+        queuedAmbientSpawns = Mathf.Min(Mathf.Max(1, maxAlive * 2), queuedAmbientSpawns + Mathf.Max(1, count));
+        if (queuedAmbientSpawns > 0 && Time.time >= nextBatchSpawnTime)
+            nextBatchSpawnTime = Time.time;
+    }
+
+    private void SpawnQueuedAmbientBatch()
+    {
+        int capacity = Mathf.Max(0, maxAlive - alive.Count);
+        int target = Mathf.Min(Mathf.Max(1, spawnBatchSize), Mathf.Min(queuedAmbientSpawns, capacity));
+        int spawned = 0;
+        for (int i = 0; i < target; i++)
+        {
+            if (SpawnOne() == null) break;
+            queuedAmbientSpawns--;
+            spawned++;
+        }
+        if (spawned > 0) nextBatchSpawnTime = Time.time + Mathf.Max(0.05f, spawnBatchInterval);
+        else if (capacity > 0) nextBatchSpawnTime = Time.time + 0.5f;
     }
 
     public int SpawnWave(int count)
@@ -383,13 +460,17 @@ public sealed class ZombieSpawner : MonoBehaviour
             }
         }
         alive.Clear();
+        initialSpawnRemaining = 0;
+        queuedAmbientSpawns = 0;
+        killsTowardReinforcement = 0;
 
         if (zombiePrefab == null)
             return;
 
-        int count = Mathf.Min(initialSpawnCount, maxAlive);
-        for (int i = 0; i < count; i++)
-            SpawnOne();
+        initialSpawnRemaining = Mathf.Min(initialSpawnCount, maxAlive);
+        nextBatchSpawnTime = Time.time;
+        SpawnInitialBatch();
+        nextReinforcementKillGoal = Random.Range(Mathf.Max(1, reinforcementKillsMin), Mathf.Max(reinforcementKillsMin, reinforcementKillsMax) + 1);
         nextSpawnTime = Time.time + Mathf.Max(0.1f, spawnInterval);
         ScheduleNextWave();
         triggeredWaves.Clear();

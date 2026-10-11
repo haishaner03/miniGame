@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Flower;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -46,12 +47,21 @@ public static class ZombieRunVerification
             var melee = hp.GetComponent<SurvivorMeleeAttack>();
             if (step == 0)
             {
-                Check(run.Level == 1 && run.Experience == 0 && hp.CurrentHealth == 100 && melee.Damage == 80, "initial level/HP/damage");
-                Check(spawner.ActiveCount == Mathf.RoundToInt(run.Config.initialWanderers * run.Config.firstRoomPopulationMultiplier) && spawner.maxAlive == 100, "reduced first-room population");
+                int expectedStartingHealth = Mathf.RoundToInt(100 * run.StartingHealthMultiplier);
+                Check(run.Level == 1 && run.Experience == 0 && hp.CurrentHealth == expectedStartingHealth &&
+                      hp.MaxHealth == expectedStartingHealth && melee.Damage == 80, "initial level/HP/damage");
+                Check(spawner.ActiveCount > 0 && spawner.ActiveCount <= spawner.spawnBatchSize && spawner.maxAlive == 100,
+                    "first-room wanderers enter in a small opening batch");
                 var initialZombies = UnityEngine.Object.FindObjectsByType<ZombieChaser>(FindObjectsSortMode.None);
-                Check(initialZombies.All(z => z.CurrentMaxHealth >= 80 && z.CurrentMaxHealth <= 140), "first-room zombies take one or two base hits");
-                Check(initialZombies.All(z => z.GetComponentsInChildren<UnityEngine.UI.Image>().First(image => image.name == "Fill").rectTransform.rect.height <= 0.0351f), "thin zombie UGUI bars");
+                Check(initialZombies.Where(z => z.Champion == null).All(z => z.CurrentMaxHealth >= 80 && z.CurrentMaxHealth <= 140),
+                    "first-room ordinary zombies take one or two base hits");
+                Check(initialZombies.Where(z => z.Champion == null).All(z =>
+                    z.GetComponentsInChildren<UnityEngine.UI.Image>().First(image => image.name == "Fill").rectTransform.rect.height <= 0.0351f),
+                    "thin ordinary zombie UGUI bars");
+                Check(run.CurrentRoom.RequiredKills == 45, "room one uses its configured clear target");
                 initialCount = spawner.ActiveCount;
+                foreach (var zombie in initialZombies.Where(z => z.Champion == null).Take(initialCount).ToArray())
+                    zombie.Die();
                 route = run.Rooms.ToArray();
                 Check(route.Zip(route.Skip(1), (a, b) => a != b).All(x => x), "no adjacent duplicate rooms");
                 Protect(hp);
@@ -60,11 +70,22 @@ public static class ZombieRunVerification
             }
             if (step == 1)
             {
-                Check(spawner.ActiveCount > initialCount && spawner.ActiveCount <= 100, "timed reinforcements");
+                Check(spawner.ActiveCount > initialCount && spawner.ActiveCount <= 100, "kill-triggered reinforcements arrive in batches");
                 var zombies = UnityEngine.Object.FindObjectsByType<ZombieChaser>(FindObjectsSortMode.None);
                 Check(zombies.Any(z => (bool)Field("persistentAggro", typeof(ZombieChaser)).GetValue(z)), "reinforcements retain aggro");
                 spawner.SetSpawningEnabled(false);
                 foreach (var z in zombies) { z.enabled = false; z.GetComponent<Rigidbody2D>().simulated = false; }
+                int eliteKillsBefore = run.EliteKills;
+                var fastVariant = UnityEngine.Object.Instantiate(spawner.zombiePrefab).GetComponent<ZombieChaser>();
+                fastVariant.archetype = ZombieChaser.ZombieArchetype.Fast;
+                fastVariant.transform.position = new Vector3(160, 160);
+                fastVariant.OnSpawnedFromPool(hp.transform);
+                fastVariant.Die();
+                Check(run.EliteKills == eliteKillsBefore && pool.ActiveCount == 1 &&
+                      pool.GetComponentsInChildren<ExperiencePickup>().Single().Value == run.Config.normalExperience,
+                    "ordinary fast variant gives normal XP and is not counted as elite");
+                UnityEngine.Object.Destroy(fastVariant.gameObject);
+                pool.ClearDrops();
                 int created = pool.CreatedCount;
                 zombies.First(z => z.archetype == ZombieChaser.ZombieArchetype.Standard).TakeDamage(9999);
                 Check(pool.ActiveCount == 1 && run.Experience == 0 && pool.CreatedCount == created, "kill drops pooled XP without instant collection");
@@ -99,15 +120,30 @@ public static class ZombieRunVerification
             }
             if (step == 30)
             {
-                Choose(run, hp, run.OfferedUpgrades[0].Id);
-                for (int i = 0; i < 150 && (run.Upgrades.Any(u => run.StackCount(u.Id) == 0) || run.StackCount(6) < 4 || run.StackCount(7) < 4); i++)
+                Choose(run, hp, run.OfferedUpgrades.First(u => u.Effect != "ConvertFreezeToBurn").Id);
+                var meleeUpgrades = run.Upgrades.Where(u => u.Branch != "Bow" && u.Effect != "ConvertFreezeToBurn").ToArray();
+                for (int i = 0; i < 150 && (meleeUpgrades.Any(u => run.StackCount(u.Id) == 0) || run.StackCount(6) < 4 || run.StackCount(7) < 4); i++)
                 {
                     run.GainExperience(run.ExperienceToNextLevel - run.Experience);
-                    var reward = run.OfferedUpgrades.OrderBy(u => run.StackCount(u.Id) == 0 ? 0 : (u.Id == 6 || u.Id == 7 ? 1 : 2)).First();
+                    var reward = run.OfferedUpgrades.Where(u => u.Effect != "ConvertFreezeToBurn")
+                        .OrderBy(u => run.StackCount(u.Id) == 0 ? 0 : (u.Id == 6 || u.Id == 7 ? 1 : 2)).First();
                     Choose(run, hp, reward.Id);
                 }
-                Check(run.Upgrades.All(u => run.StackCount(u.Id) > 0), "all reward types selected");
+                Check(meleeUpgrades.All(u => run.StackCount(u.Id) > 0), "all eligible melee rewards selected");
                 Check(run.StackCount(6) == 4 && run.StackCount(7) == 4, "elemental stack caps");
+                var conversion = run.Upgrades.First(u => u.Effect == "ConvertFreezeToBurn");
+                Check(run.HasDualElementBuild && run.IsUpgradeEligible(conversion), "dual-element build can choose conversion");
+                var offered = (System.Collections.Generic.List<DRRunUpgrade>)Field("offered", typeof(RunState)).GetValue(run);
+                offered.Clear(); offered.Add(conversion);
+                Field("pendingLevelRewards", typeof(RunState)).SetValue(run, 1);
+                typeof(RunState).GetProperty("Phase").SetValue(run, RunState.RunPhase.ChoosingUpgrade);
+                Check(run.ChooseUpgrade(conversion.Id), "conversion card accepted");
+                Check(run.FreezeConvertedToBurn && !run.HasDualElementBuild &&
+                      !run.IsUpgradeEligible(run.Upgrades.First(u => u.Effect == "ThermalShock")),
+                    "conversion disables dual-element-only cards");
+                Check(run.EffectTotal("FrostKnockback") > 0 &&
+                      RunUpgradePresentation.Description(run.GetUpgrade(35), false, true).Contains("燃烧目标"),
+                    "converted frost cards describe their live effect");
                 int before = run.Level;
                 run.GainExperience(run.ExperienceToNextLevel - run.Experience + run.ExperienceToNextLevel + run.Config.experienceGrowthPerLevel);
                 Check(run.Level == before + 2 && run.Experience == 0, "overflow two levels");
@@ -154,6 +190,8 @@ public static class ZombieRunVerification
             {
                 Check(combatTarget.CurrentHealth < combatHP && combatTarget.IsBurning, "actual melee damage and burn proc");
                 Check(((Vector2)Field("knockbackVelocity", typeof(ZombieChaser)).GetValue(combatTarget)).magnitude > 0f, "melee applies knockback");
+                Check(Mathf.Approximately(run.CombatEffects.GetKnockbackMultiplier(combatTarget),
+                    1f + run.EffectTotal("FrostKnockback")), "converted frost knockback applies to burning target");
                 combatTarget.ApplyFreeze(1.2f);
                 Check(combatTarget.IsFrozen, "freeze active");
                 combatHP = combatTarget.CurrentHealth;
@@ -192,6 +230,9 @@ public static class ZombieRunVerification
                 Check(SceneManager.GetActiveScene().path == route[run.RoomIndex], "route scene loaded");
                 Check(run.Level == level && run.TotalExperience == totalXP + 30 && pool.ActiveCount == 0, "XP persists across rooms");
                 Check(melee.Damage == damage && Mathf.Approximately(hp.GetComponent<SurvivorMovement>().MoveSpeed, speed) && hp.MaxHealth == maximum, "stats persist without compounding");
+                if (run.RoomNumber == 2)
+                    Check(run.CurrentRoom.RequiredKills == 40 && spawner.initialSpawnCount == 26,
+                        "room two has a lower population and its own clear target");
                 Protect(hp);
                 ClearObjective(run, spawner);
                 step++;
@@ -219,7 +260,9 @@ public static class ZombieRunVerification
             }
             if (step == 9)
             {
-                Check(run.Level == 1 && run.TotalExperience == 0 && run.UpgradeStacks.Count == 0 && hp.CurrentHealth == 100, "new run reset");
+                int expectedStartingHealth = Mathf.RoundToInt(100 * run.StartingHealthMultiplier);
+                Check(run.Level == 1 && run.TotalExperience == 0 && run.UpgradeStacks.Count == 0 &&
+                      hp.CurrentHealth == expectedStartingHealth && hp.MaxHealth == expectedStartingHealth, "new run reset");
                 run.GainExperience(80);
                 Check(firstChoices.SequenceEqual(run.OfferedUpgrades.Select(u => u.Id)), "reproducible rewards");
                 run.ChooseUpgrade(run.OfferedUpgrades[0].Id);
@@ -241,9 +284,16 @@ public static class ZombieRunVerification
         int previous = hp.CurrentHealth, maximum = hp.MaxHealth;
         float oldSpeed = hp.GetComponent<SurvivorMovement>().MoveSpeed;
         Check(run.ChooseUpgrade(id), "reward accepted " + id);
-        Check(hp.GetComponent<SurvivorMeleeAttack>().Damage == Mathf.RoundToInt(80 * (1 + run.EffectTotal("DamagePercent")) * (run.UsesHeavyWeapon ? 1.25f : 1)), "percentage and weapon damage");
+        var melee = hp.GetComponent<SurvivorMeleeAttack>();
+        var weapon = melee.GetWeaponDefinition(run.StartingWeapon);
+        float gamble = run.EffectTotal("BerserkerPact") * .6f + run.EffectTotal("GlassCannon") * .8f + run.EffectTotal("BloodPact") * .35f;
+        float dual = run.HasDualElementBuild ? run.EffectTotal("DualElement") : 0f;
+        int expectedDamage = Mathf.RoundToInt(((weapon != null ? weapon.damage : 80) + run.EffectTotal("Damage")) *
+                                              (1f + run.EffectTotal("DamagePercent") + gamble + dual + run.EffectTotal("BowDamage")));
+        Check(melee.Damage == expectedDamage, "upgrade damage effects are applied");
         Check(Mathf.Approximately(hp.GetComponent<SurvivorMeleeAttack>().KnockbackMultiplier, 1f + run.EffectTotal("Knockback")), "knockback upgrade multiplier");
-        if (reward.Effect == "MaxHealth") Check(hp.MaxHealth == maximum + 20 && hp.CurrentHealth == previous + 20, "max HP and heal");
+        if (reward.Effect == "MaxHealth") Check(hp.MaxHealth > maximum && hp.CurrentHealth == Mathf.Min(previous + 20, hp.MaxHealth), "max HP and heal");
+        if (reward.Effect == "GlassCannon") Check(hp.MaxHealth < maximum && hp.MaxHealth > 0, "glass cannon sacrifices max HP");
         if (reward.Effect == "Heal") Check(hp.CurrentHealth == Mathf.Min(maximum, previous + 35), "immediate heal");
         if (reward.Effect == "MoveSpeed") Check(hp.GetComponent<SurvivorMovement>().MoveSpeed > oldSpeed, "speed upgrade");
     }
@@ -267,7 +317,7 @@ public static class ZombieRunVerification
     private static void Protect(SurvivorHealth hp) { Field("invulnerableUntil", typeof(SurvivorHealth)).SetValue(hp, float.MaxValue); }
     private static void Move(SurvivorHealth hp, Vector3 p) { hp.transform.position = p; hp.GetComponent<Rigidbody2D>().position = p; Physics2D.SyncTransforms(); }
     private static void Wait(double delay) { nextTick = EditorApplication.timeSinceStartup + delay; }
-    private static void Capture(string name) { ScreenCapture.CaptureScreenshot("D:/UnityProject/miniGame/MyTestGame/output/imagegen/" + name + ".png"); }
+    private static void Capture(string name) { ScreenCapture.CaptureScreenshot(Application.temporaryCachePath + "/" + name + ".png"); }
     private static void Check(bool condition, string name) { if (!condition) throw new Exception(name); assertions++; }
     private static void Finish(string result)
     {

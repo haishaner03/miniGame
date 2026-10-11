@@ -63,7 +63,8 @@ public sealed class SurvivorArrowProjectile : MonoBehaviour
             int distanceDamage = Mathf.RoundToInt(damage * (1f + distanceBonus * Mathf.Clamp01((traveled + hitBuffer[i].distance) / 4f)));
             int targetDamage = effects != null ? effects.PrepareHit(zombie, distanceDamage) : distanceDamage;
             int before = zombie.CurrentHealth;
-            zombie.TakeDamage(targetDamage, direction, knockback, true);
+            float targetKnockback = knockback * (effects != null ? effects.GetKnockbackMultiplier(zombie) : 1f);
+            zombie.TakeDamage(targetDamage, direction, targetKnockback, true);
             if (effects != null) effects.CompleteSwing(Mathf.Max(0, before - zombie.CurrentHealth));
             if (remainingPierce <= 0) return true;
             remainingPierce--;

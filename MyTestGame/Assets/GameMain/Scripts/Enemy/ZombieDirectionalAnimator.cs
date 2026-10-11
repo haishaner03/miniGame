@@ -9,7 +9,7 @@ public sealed class ZombieDirectionalAnimator : MonoBehaviour
     public enum Motion { Idle, Walk, Attack, Death }
 
     [Header("普通丧尸外观种类（不改变战斗类型）")]
-    [SerializeField, Range(1, 3)] private int ordinaryTypeId = 1;
+    [SerializeField, Range(1, 5)] private int ordinaryTypeId = 1;
     public int OrdinaryTypeId => ordinaryTypeId;
 
     [SerializeField, Min(.01f)] private float attackDuration = 8f / 12f;

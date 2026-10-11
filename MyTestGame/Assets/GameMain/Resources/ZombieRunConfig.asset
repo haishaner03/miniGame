@@ -27,10 +27,14 @@ MonoBehaviour:
     type: 3}
   arrowProjectilePrefab: {fileID: 7634504482727007228, guid: 04e13e45145603f4cbf600195ca8b996,
     type: 3}
+  hitImpactPrefab: {fileID: 762750138053860682, guid: 66708d57137d72f4e85b9498eac2e5c5,
+    type: 3}
   ordinaryZombiePrefabs:
   - {fileID: 90344962722602306, guid: 90052e92f86d14443a835d4f8dc1fbe5, type: 3}
   - {fileID: 5732831219424642163, guid: e449caf5f5a89f74ea2c286c19279570, type: 3}
   - {fileID: 2215540717137612283, guid: 236d62f6208c3b74d9f1477084507a66, type: 3}
+  - {fileID: 3715724674510535070, guid: 65e0fff082bab6649bbeeec70a14917b, type: 3}
+  - {fileID: 6616099732794886900, guid: a5f41714380114b45ba1864b8f9ad4ec, type: 3}
   eliteEncounterPrefab: {fileID: 5994269687398861871, guid: 7a7113fb9ad29f945a4d5cc13dc99f38,
     type: 3}
   bossEncounterPrefab: {fileID: 3892269961145252800, guid: ae05ac95900beaf4580ac6bbfdb06406,
@@ -47,8 +51,10 @@ MonoBehaviour:
     type: 3}
   healthPickupPrefab: {fileID: 3997671903497163246, guid: e1ef32aa8919b6449943fbd2e7a7e8df,
     type: 3}
-  scrapPickupPrefab: {fileID: 6182452185803271584, guid: 28f210a58e5c6d847918f0a52c31b3d6, type: 3}
-  curseAltarPrefab: {fileID: 1860922764902951165, guid: aa6f0e046900dae46b4a8943fe0b4afc, type: 3}
+  scrapPickupPrefab: {fileID: 6182452185803271584, guid: 28f210a58e5c6d847918f0a52c31b3d6,
+    type: 3}
+  curseAltarPrefab: {fileID: 1860922764902951165, guid: aa6f0e046900dae46b4a8943fe0b4afc,
+    type: 3}
   scrapPoolPrewarm: 24
   eliteScrapDrop: 2
   bossScrapDrop: 8
@@ -61,7 +67,7 @@ MonoBehaviour:
   baseFreezeDuration: 1.8
   initialWanderers: 40
   firstRoomPopulationMultiplier: 0.7
-  secondRoomPopulationMultiplier: 0.75
+  secondRoomPopulationMultiplier: 0.4
   zombieMoveSpeedMultiplier: {x: 0.8, y: 1.2}
   maxLivingZombies: 100
   reinforcementDelay: {x: 2, y: 4}
@@ -69,6 +75,7 @@ MonoBehaviour:
   hordeDelay: {x: 12, y: 22}
   hordeCount: {x: 15, y: 25}
   roomKillTarget: 60
+  roomKillTargets: 2d00000028000000230000004100000019000000
   firstRoomZombieHealth: {x: 80, y: 140}
   enemiesPerRoom: 0.2
   healthPerRoom: 0.05

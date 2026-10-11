@@ -17,6 +17,8 @@ public sealed class ZombieRunConfig : ScriptableObject
     public GameObject battleUiPrefab;
     public GameObject startingWeaponPickerPrefab;
     public GameObject arrowProjectilePrefab;
+    [Header("战斗命中特效")]
+    public GameObject hitImpactPrefab;
     [Header("普通丧尸外观；各自独立的四方向动画")]
     public GameObject[] ordinaryZombiePrefabs;
     [Header("精英与最终 Boss")]
@@ -62,6 +64,8 @@ public sealed class ZombieRunConfig : ScriptableObject
     public Vector2 hordeDelay = new Vector2(12f, 22f);
     public Vector2Int hordeCount = new Vector2Int(15, 25);
     [Min(1)] public int roomKillTarget = 60;
+    [Tooltip("按本局房间顺序设置击杀目标；精英遭遇房和 Boss 房仍分别使用专属准备击杀数。")]
+    public int[] roomKillTargets = { 45, 40, 35, 65, 25 };
     [Tooltip("第一房间所有丧尸的血量范围，基础攻击 80 可在 1–2 刀击杀。")]
     public Vector2Int firstRoomZombieHealth = new Vector2Int(80, 140);
     [Range(0f, 0.5f)] public float enemiesPerRoom = 0.2f;

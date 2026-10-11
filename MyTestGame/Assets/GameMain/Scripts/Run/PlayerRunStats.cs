@@ -38,9 +38,11 @@ public sealed class PlayerRunStats : MonoBehaviour
 
     public void Apply(RunState run, int currentHealth)
     {
-        // 赌博牌：狂战士契约牺牲生命上限换取伤害（玻璃大炮的代价是放弃减伤，不改生命）
-        int healthMod = Mathf.RoundToInt(run.EffectTotal("MaxHealth") - run.EffectTotal("BerserkerPact") * 30f);
-        int maximum = Mathf.RoundToInt((baseHealth * run.StartingHealthMultiplier + healthMod) * run.CurseMaxHealthMultiplier);
+        // 赌博牌：狂战士扣固定生命上限；玻璃大炮牺牲一半生命上限换取伤害。
+        float healthMod = run.EffectTotal("MaxHealth") - run.EffectTotal("BerserkerPact") * 30f;
+        float maximumHealth = (baseHealth * run.StartingHealthMultiplier + healthMod) *
+                              Mathf.Max(.1f, 1f - run.EffectTotal("GlassCannon") * .5f);
+        int maximum = Mathf.RoundToInt(maximumHealth * run.CurseMaxHealthMultiplier);
         health.ConfigureForRun(maximum, currentHealth < 0 ? maximum : currentHealth);
 
         // 移速：固定加成在这里设置；动态加成（极寒领域）由 SurvivorMovement 实时计算
@@ -58,7 +60,7 @@ public sealed class PlayerRunStats : MonoBehaviour
             // 赌博牌伤害加成：狂战士 +60%、玻璃大炮 +80%、血之契约 +35%
             float gambleDamage = run.EffectTotal("BerserkerPact") * 0.6f + run.EffectTotal("GlassCannon") * 0.8f + run.EffectTotal("BloodPact") * 0.35f;
             // 双元素加成
-            float dualBonus = run.EffectTotal("FreezeChance") > 0 && run.EffectTotal("BurnChance") > 0 ? run.EffectTotal("DualElement") : 0f;
+            float dualBonus = run.HasDualElementBuild ? run.EffectTotal("DualElement") : 0f;
 
             float totalDamagePercent = run.EffectTotal("DamagePercent") + gambleDamage + dualBonus + run.EffectTotal("BowDamage");
             int finalDamage = Mathf.RoundToInt((weaponDamage + run.EffectTotal("Damage")) * (1f + totalDamagePercent));
@@ -67,7 +69,7 @@ public sealed class PlayerRunStats : MonoBehaviour
             float speedRangeBonus = run.EffectTotal("MoveSpeed") * run.EffectTotal("SpeedRange");
             float totalRange = run.EffectTotal("Range") + speedRangeBonus;
             // 双元素范围加成
-            if (run.EffectTotal("FreezeChance") > 0 && run.EffectTotal("BurnChance") > 0)
+            if (run.HasDualElementBuild)
                 totalRange += run.EffectTotal("DualElement") * 0.2f / 0.15f; // 按描述是 +20%
             // 动态范围加成（凛冬之怒）由 SurvivorMeleeAttack 在命中检测时实时计算
 

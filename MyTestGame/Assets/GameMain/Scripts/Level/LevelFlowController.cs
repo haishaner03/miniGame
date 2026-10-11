@@ -53,6 +53,9 @@ public sealed class LevelFlowController : MonoBehaviour
             if (run == null) return 0;
             if (run.RoomNumber == run.RoomCount) return run.Config.bossPreparationKills;
             if (run.Config.requireEliteEncounter && run.RoomNumber == run.Config.eliteRoomNumber) return run.Config.elitePreparationKills;
+            int[] targets = run.Config.roomKillTargets;
+            if (targets != null && run.RoomIndex >= 0 && run.RoomIndex < targets.Length && targets[run.RoomIndex] > 0)
+                return targets[run.RoomIndex];
             return run.Config.roomKillTarget + run.RoomIndex * 15;
         }
     }

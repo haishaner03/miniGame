@@ -51,6 +51,8 @@ public sealed class RunState : MonoBehaviour
     public RoomEncounterController Encounter { get; private set; }
     public int ChampionKills { get; private set; }
     public int BossKills { get; private set; }
+    public bool FreezeConvertedToBurn => EffectTotal("ConvertFreezeToBurn") > 0;
+    public bool HasDualElementBuild => !FreezeConvertedToBurn && EffectTotal("FreezeChance") > 0 && EffectTotal("BurnChance") > 0;
     public RoomLayoutVariant RoomLayout { get; private set; }
     public SurvivorArrowPool ArrowPool { get; private set; }
     public IReadOnlyList<DRRunUpgrade> ShopOfferedUpgrades => shopOffered;
@@ -240,7 +242,11 @@ public sealed class RunState : MonoBehaviour
     {
         if (Phase != RunPhase.Playing || player == null || player.IsDead) return;
         ChampionKills++;
-        if (boss) BossKills++;
+        if (boss)
+        {
+            BossKills++;
+            if (CombatEffects != null) CombatEffects.OnEliteKill();
+        }
         // ZombieChaser also drops its normal elite XP after its Died event.
         int total = boss ? Config.bossEncounterExperience : Config.eliteEncounterExperience;
         pickupPool.Drop(position, Mathf.Max(0, total - Config.eliteExperience));
@@ -404,10 +410,10 @@ public sealed class RunState : MonoBehaviour
         return rare;
     }
 
-    public void DropExperience(Vector3 position, bool elite)
+    public void DropExperience(Vector3 position, bool elite, int bonusExperience = 0)
     {
         if (Phase != RunPhase.Playing || player == null || player.IsDead) return;
-        pickupPool.Drop(position, elite ? Config.eliteExperience : Config.normalExperience);
+        pickupPool.Drop(position, (elite ? Config.eliteExperience : Config.normalExperience) + Mathf.Max(0, bonusExperience));
         if (healthPool != null && UnityEngine.Random.value < Config.healthDropChance) healthPool.Drop(position);
     }
 
@@ -572,9 +578,12 @@ public sealed class RunState : MonoBehaviour
         (!UsesBow || upgrade.Branch == "Bow" || upgrade.Branch == "Common" &&
             upgrade.Effect != "Range" && upgrade.Effect != "SpeedRange") &&
         (upgrade.RequiredUnlock != "BowCards" || SurvivorMetaProgress.BowCardsUnlocked) &&
-        (upgrade.Effect != "FrostfireBurn" || EffectTotal("FreezeChance") > 0 && EffectTotal("BurnChance") > 0) &&
+        (!RequiresUnconvertedDualElements(upgrade.Effect) || HasDualElementBuild) &&
         StackCount(upgrade.Id) < upgrade.MaxStacks &&
         (string.IsNullOrEmpty(upgrade.RequiredEffect) || EffectTotal(upgrade.RequiredEffect) > 0);
+
+    private static bool RequiresUnconvertedDualElements(string effect) =>
+        effect == "FrostfireBurn" || effect == "FrostfireBurst" || effect == "ThermalShock" || effect == "DualElement";
     public int BranchStacks(string branch)
     {
         int total = 0;

@@ -260,7 +260,7 @@ public sealed class ZombieRunUI : MonoBehaviour
             choices[i].interactable = available;
             if (!available) continue;
             var upgrade = run.OfferedUpgrades[i];
-            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + (string.IsNullOrEmpty(upgrade.RequiredEffect) ? "" : " · 联动") + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow);
+            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + (string.IsNullOrEmpty(upgrade.RequiredEffect) ? "" : " · 联动") + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow, run.FreezeConvertedToBurn);
             choiceIcons[i].sprite = Icon(RunUpgradePresentation.Icon(upgrade));
             choiceIcons[i].color = RunUpgradePresentation.Color(upgrade.Branch);
         }
@@ -311,7 +311,7 @@ public sealed class ZombieRunUI : MonoBehaviour
             choices[i].interactable = available;
             if (!available) continue;
             var upgrade = cards[i];
-            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow);
+            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow, run.FreezeConvertedToBurn);
             choiceIcons[i].sprite = Icon(RunUpgradePresentation.Icon(upgrade));
             choiceIcons[i].color = RunUpgradePresentation.Color(upgrade.Branch);
         }
@@ -359,7 +359,7 @@ public sealed class ZombieRunUI : MonoBehaviour
             int count = run.StackCount(upgrade.Id);
             if (count == 0) continue;
             buffer.Append('[').Append(RunUpgradePresentation.BranchName(upgrade.Branch)).Append("] ").Append(upgrade.Name).Append(" ×").Append(count);
-            if (descriptions) buffer.Append("  ").Append(RunUpgradePresentation.Description(upgrade, run.UsesBow)).Append('\n');
+            if (descriptions) buffer.Append("  ").Append(RunUpgradePresentation.Description(upgrade, run.UsesBow, run.FreezeConvertedToBurn)).Append('\n');
             else buffer.Append(++shown % 4 == 0 ? "\n" : "    ");
         }
     }

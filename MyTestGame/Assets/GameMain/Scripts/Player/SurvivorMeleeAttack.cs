@@ -329,9 +329,13 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
 
             float knockbackForce = Random.Range(2.2f, 3.1f) * KnockbackMultiplier * WeaponKnockbackMultiplier;
             int targetDamage = effects != null ? effects.PrepareHit(zombie, swingDamage) : swingDamage;
+            if (effects != null) knockbackForce *= effects.GetKnockbackMultiplier(zombie);
             int healthBefore = zombie.CurrentHealth;
             zombie.TakeDamage(targetDamage, facingDirection, knockbackForce, true);
-            actualSwingDamage += healthBefore - zombie.CurrentHealth;
+            int dealtDamage = healthBefore - zombie.CurrentHealth;
+            actualSwingDamage += dealtDamage;
+            if (dealtDamage > 0 && run != null && run.CombatEffects != null)
+                run.CombatEffects.PlayHitImpact(new Vector3(point.x, point.y, zombie.transform.position.z - 0.05f), facingDirection);
         }
         if (effects != null) effects.CompleteSwing(actualSwingDamage);
     }
