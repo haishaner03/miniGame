@@ -615,6 +615,11 @@ private void Update()
             bool elite = Champion != null || archetype != ZombieArchetype.Standard;
             RunState.Instance.RecordKill(elite);
             RunState.Instance.DropExperience(transform.position, elite);
+            if (elite)
+            {
+                int scrap = Champion != null && Champion.isBoss ? RunState.Instance.Config.bossScrapDrop : RunState.Instance.Config.eliteScrapDrop;
+                RunState.Instance.DropScrap(transform.position, scrap);
+            }
             RunState.Instance.CombatEffects.EnemyKilled(burstOrigin, frozenOnDeath, burningOnDeath, lastDamageByPlayer);
         }
         frozenUntil = burningUntil = 0f;

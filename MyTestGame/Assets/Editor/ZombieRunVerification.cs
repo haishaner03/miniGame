@@ -111,6 +111,14 @@ public static class ZombieRunVerification
                 int before = run.Level;
                 run.GainExperience(run.ExperienceToNextLevel - run.Experience + run.ExperienceToNextLevel + run.Config.experienceGrowthPerLevel);
                 Check(run.Level == before + 2 && run.Experience == 0, "overflow two levels");
+                var ui = run.GetComponentInChildren<ZombieRunUI>(true);
+                var choiceButtons = (UnityEngine.UI.Button[])Field("choices", typeof(ZombieRunUI)).GetValue(ui);
+                run.GainScrap(1);
+                ui.ShowRoomRewardShop();
+                Check(choiceButtons.All(button => !button.interactable), "unaffordable shop buttons disabled");
+                ui.ShowChoices();
+                Check(choiceButtons.Select((button, index) => button.interactable == (index < run.OfferedUpgrades.Count)).All(enabled => enabled), "upgrade buttons reset after shop");
+                run.SpendScrap(1);
                 run.ChooseUpgrade(run.OfferedUpgrades[0].Id);
                 Check(run.Phase == RunState.RunPhase.ChoosingUpgrade && Time.timeScale == 0, "second pending choice paused");
                 run.ChooseUpgrade(run.OfferedUpgrades[0].Id);
@@ -169,6 +177,7 @@ public static class ZombieRunVerification
             }
             if (step == 6)
             {
+                if (run.Phase == RunState.RunPhase.RoomReward) run.CloseRoomRewardShop();
                 Check(run.RewardClaimed && run.CurrentRoom.ExitUnlocked && !spawner.SpawningEnabled, "objective unlock stops spawning");
                 Check(run.Phase == RunState.RunPhase.Playing && spawner.SpawnOne() == null, "clear does not grant upgrade or spawn");
                 damage = melee.Damage; speed = hp.GetComponent<SurvivorMovement>().MoveSpeed;
@@ -190,6 +199,7 @@ public static class ZombieRunVerification
             }
             if (step == 8)
             {
+                if (run.Phase == RunState.RunPhase.RoomReward) run.CloseRoomRewardShop();
                 if (run.Encounter != null && run.Encounter.IsRequired && !run.Encounter.IsResolved)
                 {
                     if (run.Encounter.Enemy != null)

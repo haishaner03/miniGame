@@ -47,6 +47,11 @@ MonoBehaviour:
     type: 3}
   healthPickupPrefab: {fileID: 3997671903497163246, guid: e1ef32aa8919b6449943fbd2e7a7e8df,
     type: 3}
+  scrapPickupPrefab: {fileID: 6182452185803271584, guid: 28f210a58e5c6d847918f0a52c31b3d6, type: 3}
+  curseAltarPrefab: {fileID: 1860922764902951165, guid: aa6f0e046900dae46b4a8943fe0b4afc, type: 3}
+  scrapPoolPrewarm: 24
+  eliteScrapDrop: 2
+  bossScrapDrop: 8
   healthDropChance: 0.05
   firstLevelExperience: 80
   experienceGrowthPerLevel: 30

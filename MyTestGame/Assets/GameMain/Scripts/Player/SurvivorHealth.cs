@@ -133,6 +133,8 @@ public sealed class SurvivorHealth : MonoBehaviour
             float reduction = combatEffects.GetDamageReduction();
             damage = Mathf.RoundToInt(damage * (1f - reduction));
         }
+        if (RunState.Instance != null)
+            damage = Mathf.RoundToInt(damage * RunState.Instance.CurseDamageTakenMultiplier);
 
         if (knockbackForce > 0.01f)
         {

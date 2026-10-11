@@ -1,5 +1,6 @@
 using System.Text;
 using System.Collections.Generic;
+using Flower;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -55,6 +56,8 @@ public sealed class ZombieRunUI : MonoBehaviour
     private SurvivorHealth roomCombatPlayer;
     private readonly Collider2D[] nearbyEnemies = new Collider2D[48];
     private readonly StringBuilder buffer = new StringBuilder(512);
+    private enum ChoiceMode { Upgrade, RoomShop, RoomShopCards, CurseCards }
+    private ChoiceMode choiceMode = ChoiceMode.Upgrade;
 
     public void Initialize(RunState state)
     {
@@ -71,8 +74,18 @@ public sealed class ZombieRunUI : MonoBehaviour
             int index = i;
             choices[i].onClick.AddListener(() =>
             {
-                if (index < run.OfferedUpgrades.Count)
+                if (choiceMode == ChoiceMode.Upgrade && index < run.OfferedUpgrades.Count)
                     run.ChooseUpgrade(run.OfferedUpgrades[index].Id);
+                else if (choiceMode == ChoiceMode.RoomShop)
+                {
+                    if (index == 0) run.BuyRoomCard();
+                    else if (index == 1) run.BuyRoomHeal();
+                    else if (index == 2) run.BuyRoomBuff();
+                }
+                else if (choiceMode == ChoiceMode.RoomShopCards && index < run.ShopOfferedUpgrades.Count)
+                    run.ChooseRoomShopCard(run.ShopOfferedUpgrades[index].Id);
+                else if (choiceMode == ChoiceMode.CurseCards && index < run.ShopOfferedUpgrades.Count)
+                    run.ChooseCurseCard(run.ShopOfferedUpgrades[index].Id);
             });
         }
         HideModal();
@@ -132,8 +145,8 @@ public sealed class ZombieRunUI : MonoBehaviour
             "清理街区" + (run.RoomLayout != null ? " · " + run.RoomLayout.VariantName : string.Empty);
         LevelFlowController flow = run.CurrentRoom;
         waveText.text = flow != null && !run.RewardClaimed
-            ? "清理 " + run.RoomKills + "/" + flow.RequiredKills + (flow.TotalObjectiveWaves > 0 ? " · 区域 " + flow.CompletedObjectiveWaves + "/" + flow.TotalObjectiveWaves : string.Empty)
-            : "向下一个房间进发";
+            ? "清理 " + run.RoomKills + "/" + flow.RequiredKills + (flow.TotalObjectiveWaves > 0 ? " · 区域 " + flow.CompletedObjectiveWaves + "/" + flow.TotalObjectiveWaves : string.Empty) + " · 残骸 " + run.Scrap
+            : "向下一个房间进发 · 残骸 " + run.Scrap;
         if (encounterActive && !run.RewardClaimed) waveText.text = encounter.IsBoss ? "最终遭遇 · 留意地面预警" : "精英遭遇 · 留意冲锋预警";
         RefreshEncounter(encounter);
         timeText.text = "生存 " + FormatTime(run.ElapsedSeconds);
@@ -237,19 +250,71 @@ public sealed class ZombieRunUI : MonoBehaviour
 
     public void ShowChoices()
     {
+        choiceMode = ChoiceMode.Upgrade;
         SetModal("升级！选择奖励", "当前等级 " + run.Level + " · 选择一项奖励继续战斗", true, false);
         detail.fontSize = ZombieHudTheme.Body;
         for (int i = 0; i < choices.Length; i++)
         {
             bool available = i < run.OfferedUpgrades.Count;
             choices[i].gameObject.SetActive(available);
+            choices[i].interactable = available;
             if (!available) continue;
             var upgrade = run.OfferedUpgrades[i];
             choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + (string.IsNullOrEmpty(upgrade.RequiredEffect) ? "" : " · 联动") + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow);
             choiceIcons[i].sprite = Icon(RunUpgradePresentation.Icon(upgrade));
             choiceIcons[i].color = RunUpgradePresentation.Color(upgrade.Branch);
         }
-        Select(choices[0]);
+        SelectFirstAvailableChoice();
+    }
+
+    public void ShowRoomRewardShop(string message = null)
+    {
+        choiceMode = ChoiceMode.RoomShop;
+        string curse = string.IsNullOrEmpty(run.ActiveCurseDescription) ? string.Empty : "\n当前诅咒：" + run.ActiveCurseDescription;
+        string suffix = string.IsNullOrEmpty(message) ? string.Empty : "\n\n" + message;
+        SetModal("房间完成 · 残骸兑换", "精英掉落的残骸：" + run.Scrap + curse + suffix, false, false);
+        for (int i = 0; i < choices.Length; i++) choices[i].gameObject.SetActive(true);
+        choiceLabels[0].text = "额外卡牌   · 6 残骸";
+        choiceLabels[1].text = "治疗道具   · 4 残骸";
+        choiceLabels[2].text = "临时强化   · 5 残骸\n30 秒伤害 +25%";
+        choices[0].interactable = run.Scrap >= 6;
+        choices[1].interactable = run.Scrap >= 4 && run.CurrentHealth < run.MaxHealth;
+        choices[2].interactable = run.Scrap >= 5;
+        resume.gameObject.SetActive(true);
+        SelectFirstAvailableChoice();
+    }
+
+    public void ShowRoomShopCardChoices()
+    {
+        choiceMode = ChoiceMode.RoomShopCards;
+        SetModal("额外卡牌", "花费已扣除 · 选择一张加入本局", true, false);
+        PopulateCardChoices(run.ShopOfferedUpgrades);
+        resume.gameObject.SetActive(false);
+        SelectFirstAvailableChoice();
+    }
+
+    public void ShowCurseCardChoices(string curseDescription)
+    {
+        choiceMode = ChoiceMode.CurseCards;
+        SetModal("诅咒圣坛 · 稀有卡", curseDescription + "\n接受代价后选择一张稀有卡", true, false);
+        PopulateCardChoices(run.ShopOfferedUpgrades);
+        resume.gameObject.SetActive(false);
+        SelectFirstAvailableChoice();
+    }
+
+    private void PopulateCardChoices(IReadOnlyList<DRRunUpgrade> cards)
+    {
+        for (int i = 0; i < choices.Length; i++)
+        {
+            bool available = i < cards.Count;
+            choices[i].gameObject.SetActive(available);
+            choices[i].interactable = available;
+            if (!available) continue;
+            var upgrade = cards[i];
+            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow);
+            choiceIcons[i].sprite = Icon(RunUpgradePresentation.Icon(upgrade));
+            choiceIcons[i].color = RunUpgradePresentation.Color(upgrade.Branch);
+        }
     }
 
     public void ShowPause()
@@ -322,6 +387,24 @@ public sealed class ZombieRunUI : MonoBehaviour
         EnsureEventSystem();
     }
     private static void Select(Button button) { if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(button.gameObject); }
+    private void SelectFirstAvailableChoice()
+    {
+        foreach (Button button in choices)
+        {
+            if (button.gameObject.activeInHierarchy && button.interactable)
+            {
+                Select(button);
+                return;
+            }
+        }
+        if (resume.gameObject.activeInHierarchy && resume.interactable)
+        {
+            Select(resume);
+            return;
+        }
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+    }
+
     public void HideModal()
     {
         if (modal != null) modal.SetActive(false);

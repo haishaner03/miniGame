@@ -35,6 +35,12 @@ public sealed class ZombieRunConfig : ScriptableObject
     [Header("经验与升级")]
     public GameObject experiencePickupPrefab;
     public GameObject healthPickupPrefab;
+    [Header("精英残骸与房间奖励")]
+    public GameObject scrapPickupPrefab;
+    public GameObject curseAltarPrefab;
+    [Min(0)] public int scrapPoolPrewarm = 24;
+    [Min(0)] public int eliteScrapDrop = 2;
+    [Min(0)] public int bossScrapDrop = 8;
     [Range(0f, 1f)] public float healthDropChance = .05f;
     [Min(1)] public int firstLevelExperience = 80;
     [Min(1)] public int experienceGrowthPerLevel = 30;

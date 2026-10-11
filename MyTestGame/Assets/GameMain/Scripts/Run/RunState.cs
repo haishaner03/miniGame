@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public sealed class RunState : MonoBehaviour
 {
-    public enum RunPhase { Playing, Paused, ChoosingUpgrade, Loading, Lost, Won }
+    public enum RunPhase { Playing, Paused, ChoosingUpgrade, RoomReward, Loading, Lost, Won }
     public static RunState Instance { get; private set; }
     public ZombieRunConfig Config { get; private set; }
     public RunPhase Phase { get; private set; }
@@ -23,6 +23,8 @@ public sealed class RunState : MonoBehaviour
     public int Experience { get; private set; }
     public int ExperienceToNextLevel => Config.firstLevelExperience + (Level - 1) * Config.experienceGrowthPerLevel;
     public int TotalExperience { get; private set; }
+    public int Scrap { get; private set; }
+    public int ScrapCollected { get; private set; }
     public SurvivorWeaponKind StartingWeapon { get; private set; }
     public bool UsesHeavyWeapon => StartingWeapon == SurvivorWeaponKind.IronBar || StartingWeapon == SurvivorWeaponKind.Hammer;
     public bool UsesBow => StartingWeapon == SurvivorWeaponKind.Bow;
@@ -51,10 +53,17 @@ public sealed class RunState : MonoBehaviour
     public int BossKills { get; private set; }
     public RoomLayoutVariant RoomLayout { get; private set; }
     public SurvivorArrowPool ArrowPool { get; private set; }
+    public IReadOnlyList<DRRunUpgrade> ShopOfferedUpgrades => shopOffered;
+    public bool CurseAltarUsedThisRoom { get; private set; }
+    public string ActiveCurseDescription { get; private set; }
+    public float CurseMaxHealthMultiplier { get; private set; } = 1f;
+    public float CurseMoveSpeedMultiplier { get; private set; } = 1f;
+    public float CurseDamageTakenMultiplier { get; private set; } = 1f;
 
     private readonly List<string> rooms = new List<string>();
     private readonly Dictionary<int, int> stacks = new Dictionary<int, int>();
     private readonly List<DRRunUpgrade> offered = new List<DRRunUpgrade>();
+    private readonly List<DRRunUpgrade> shopOffered = new List<DRRunUpgrade>();
     private DRRunUpgrade[] upgrades;
     private System.Random rewardRandom;
     private SurvivorHealth player;
@@ -65,6 +74,7 @@ public sealed class RunState : MonoBehaviour
     private int pendingLevelRewards;
     private ExperiencePickupPool pickupPool;
     private HealthPickupPool healthPool;
+    private ScrapPickupPool scrapPool;
     private StartingWeaponPicker restartWeaponPicker;
     private string settlementId;
     private bool settlementComplete;
@@ -121,6 +131,8 @@ public sealed class RunState : MonoBehaviour
             healthPool = gameObject.AddComponent<HealthPickupPool>();
             healthPool.Initialize(this);
         }
+        scrapPool = gameObject.AddComponent<ScrapPickupPool>();
+        scrapPool.Initialize(this);
         CombatEffects = gameObject.AddComponent<RunCombatEffects>();
         CombatEffects.Initialize(this);
         ArrowPool = gameObject.AddComponent<SurvivorArrowPool>();
@@ -134,6 +146,7 @@ public sealed class RunState : MonoBehaviour
         UnbindPlayer();
         stacks.Clear();
         offered.Clear();
+        shopOffered.Clear();
         rooms.Clear();
         var pool = new List<string>();
         foreach (string path in Config.roomScenePaths)
@@ -157,12 +170,16 @@ public sealed class RunState : MonoBehaviour
         RoomKills = 0;
         Level = 1;
         Experience = TotalExperience = pendingLevelRewards = 0;
+        Scrap = ScrapCollected = 0;
         pickupPool.ClearDrops();
         ArrowPool.Clear();
         if (healthPool != null) healthPool.Clear();
         EliteKills = DamageDealt = DamageTaken = HealingReceived = 0;
         LifeStealHits = 0;
         ChampionKills = BossKills = 0;
+        CurseAltarUsedThisRoom = false;
+        ActiveCurseDescription = string.Empty;
+        CurseMaxHealthMultiplier = CurseMoveSpeedMultiplier = CurseDamageTakenMultiplier = 1f;
         StartingWeapon = SurvivorWeaponKind.Machete;
         StartingHealthMultiplier = SurvivorMetaProgress.StartingHealthMultiplier;
         ClearedRooms = EarnedSurvivorPoints = 0;
@@ -185,6 +202,7 @@ public sealed class RunState : MonoBehaviour
             throw new InvalidOperationException("Loaded room does not match run route.");
         flow = controller;
         if (healthPool != null) healthPool.Clear();
+        if (scrapPool != null) scrapPool.ClearDrops();
         RoomKills = 0;
         player = health;
         stats = player.GetComponent<PlayerRunStats>();
@@ -205,6 +223,8 @@ public sealed class RunState : MonoBehaviour
         UnityEngine.Random.InitState(unchecked(Seed + RoomIndex * 7919));
         if (spawner != null) spawner.ConfigureForRun(this);
         RewardClaimed = false;
+        CurseAltarUsedThisRoom = false;
+        shopOffered.Clear();
         offered.Clear();
         Phase = RunPhase.Playing;
         ui.HideModal();
@@ -213,6 +233,7 @@ public sealed class RunState : MonoBehaviour
         Encounter = controller.GetComponent<RoomEncounterController>();
         if (Encounter == null) Encounter = controller.gameObject.AddComponent<RoomEncounterController>();
         Encounter.Initialize(this, spawner);
+        SpawnRoomCurseAltar();
     }
 
     public void RewardEncounter(bool boss, Vector3 position)
@@ -258,6 +279,129 @@ public sealed class RunState : MonoBehaviour
         RewardClaimed = true;
         ClearedRooms++;
         flow.ReleaseRunReward();
+        Phase = RunPhase.RoomReward;
+        Pause();
+        ui.ShowRoomRewardShop();
+    }
+
+    public void DropScrap(Vector3 position, int amount)
+    {
+        if (amount <= 0 || Phase != RunPhase.Playing || player == null || player.IsDead) return;
+        if (scrapPool != null) scrapPool.Drop(position, amount);
+    }
+
+    public void GainScrap(int amount)
+    {
+        if (amount <= 0) return;
+        Scrap += amount;
+        ScrapCollected += amount;
+    }
+
+    public bool SpendScrap(int amount)
+    {
+        if (amount <= 0 || Scrap < amount) return false;
+        Scrap -= amount;
+        return true;
+    }
+
+    public void CloseRoomRewardShop()
+    {
+        if (Phase != RunPhase.RoomReward) return;
+        shopOffered.Clear();
+        Phase = RunPhase.Playing;
+        ui.HideModal();
+        Time.timeScale = resumeTimeScale;
+    }
+
+    public bool BuyRoomHeal()
+    {
+        if (Phase != RunPhase.RoomReward || player == null || player.CurrentHealth >= player.MaxHealth || !SpendScrap(4)) return false;
+        player.Heal(35);
+        ui.ShowRoomRewardShop("已使用残骸治疗 +35");
+        return true;
+    }
+
+    public bool BuyRoomBuff()
+    {
+        if (Phase != RunPhase.RoomReward || !SpendScrap(5)) return false;
+        CombatEffects.ActivateScrapBuff(30f, .25f);
+        ui.ShowRoomRewardShop("临时强化已生效：30 秒伤害 +25%");
+        return true;
+    }
+
+    public bool BuyRoomCard()
+    {
+        if (Phase != RunPhase.RoomReward || !SpendScrap(6)) return false;
+        shopOffered.Clear();
+        var eligible = new List<DRRunUpgrade>();
+        foreach (var upgrade in upgrades) if (IsUpgradeEligible(upgrade)) eligible.Add(upgrade);
+        while (shopOffered.Count < 3 && eligible.Count > 0)
+        {
+            var selected = eligible[rewardRandom.Next(eligible.Count)];
+            shopOffered.Add(selected); eligible.Remove(selected);
+        }
+        if (shopOffered.Count == 0) { Scrap += 6; return false; }
+        ui.ShowRoomShopCardChoices();
+        return true;
+    }
+
+    public bool ChooseRoomShopCard(int id)
+    {
+        if (Phase != RunPhase.RoomReward || player == null) return false;
+        var upgrade = shopOffered.Find(choice => choice.Id == id);
+        if (upgrade == null || !IsUpgradeEligible(upgrade)) return false;
+        stacks[id] = StackCount(id) + 1;
+        int health = CurrentHealth + (upgrade.Effect == "MaxHealth" ? Mathf.RoundToInt(upgrade.Value) : 0);
+        stats.Apply(this, health);
+        if (upgrade.Effect == "Heal") player.Heal(Mathf.RoundToInt(upgrade.Value));
+        shopOffered.Clear();
+        ui.ShowRoomRewardShop("额外卡牌已加入本局升级");
+        return true;
+    }
+
+    public bool UseCurseAltar()
+    {
+        if (Phase != RunPhase.Playing || CurseAltarUsedThisRoom || player == null || player.IsDead) return false;
+        var rare = RareEligibleUpgrades();
+        if (rare.Count == 0) return false;
+        CurseAltarUsedThisRoom = true;
+        int curse = rewardRandom.Next(3);
+        if (curse == 0) { CurseMaxHealthMultiplier = .8f; ActiveCurseDescription = "诅咒：最大生命 -20%"; }
+        else if (curse == 1) { CurseMoveSpeedMultiplier = .88f; ActiveCurseDescription = "诅咒：移动速度 -12%"; }
+        else { CurseDamageTakenMultiplier = 1.25f; ActiveCurseDescription = "诅咒：受到伤害 +25%"; }
+        stats.Apply(this, Mathf.Min(CurrentHealth, player.MaxHealth));
+        shopOffered.Clear();
+        while (shopOffered.Count < 3 && rare.Count > 0)
+        {
+            var selected = rare[rewardRandom.Next(rare.Count)];
+            shopOffered.Add(selected); rare.Remove(selected);
+        }
+        Phase = RunPhase.RoomReward;
+        Pause();
+        ui.ShowCurseCardChoices(ActiveCurseDescription);
+        return true;
+    }
+
+    public bool ChooseCurseCard(int id)
+    {
+        if (Phase != RunPhase.RoomReward || player == null) return false;
+        var upgrade = shopOffered.Find(choice => choice.Id == id);
+        if (upgrade == null || !IsUpgradeEligible(upgrade)) return false;
+        stacks[id] = StackCount(id) + 1;
+        int health = CurrentHealth + (upgrade.Effect == "MaxHealth" ? Mathf.RoundToInt(upgrade.Value) : 0);
+        stats.Apply(this, health);
+        if (upgrade.Effect == "Heal") player.Heal(Mathf.RoundToInt(upgrade.Value));
+        shopOffered.Clear();
+        ui.ShowRoomRewardShop("稀有卡牌已获得，诅咒仍在生效");
+        return true;
+    }
+
+    private List<DRRunUpgrade> RareEligibleUpgrades()
+    {
+        var rare = new List<DRRunUpgrade>();
+        foreach (var upgrade in upgrades)
+            if (IsUpgradeEligible(upgrade) && (upgrade.Branch != "Common" || !string.IsNullOrEmpty(upgrade.RequiredEffect))) rare.Add(upgrade);
+        return rare;
     }
 
     public void DropExperience(Vector3 position, bool elite)
@@ -350,6 +494,7 @@ public sealed class RunState : MonoBehaviour
             return false;
         // Bank uncollected ground XP before leaving; overflow rewards are chosen first.
         pickupPool.CollectAll();
+        if (scrapPool != null) scrapPool.CollectAll();
         if (Phase != RunPhase.Playing) return false;
         if (RoomNumber == RoomCount)
         {
@@ -410,6 +555,10 @@ public sealed class RunState : MonoBehaviour
             Phase = RunPhase.Playing;
             Time.timeScale = resumeTimeScale;
             ui.HideModal();
+        }
+        else if (Phase == RunPhase.RoomReward)
+        {
+            CloseRoomRewardShop();
         }
     }
 
@@ -516,6 +665,15 @@ public sealed class RunState : MonoBehaviour
         flow = null;
         Encounter = null;
         RoomLayout = null;
+    }
+
+    private void SpawnRoomCurseAltar()
+    {
+        if (Config.curseAltarPrefab == null || FindFirstObjectByType<CurseAltar>() != null) return;
+        Vector3 position = player != null ? player.transform.position + Vector3.right * 2f : Vector3.zero;
+        if (flow != null && flow.ExitDoor != null) position = flow.ExitDoor.transform.position + Vector3.left * 1.5f + Vector3.up * .65f;
+        var altar = Instantiate(Config.curseAltarPrefab, position, Quaternion.identity);
+        altar.GetComponent<CurseAltar>()?.Initialize(this);
     }
 
     private void OnDestroy()

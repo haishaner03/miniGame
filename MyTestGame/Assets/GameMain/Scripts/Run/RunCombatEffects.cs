@@ -27,6 +27,8 @@ public sealed class RunCombatEffects : MonoBehaviour
     private float frostMomentumUntil = -100f;
     private int frostMomentumStacks;
     private float lowHealthRegenAccumulator; // 低血回复累积器
+    private float scrapDamageBuffUntil = -100f;
+    private float scrapDamageBuffMultiplier = 1f;
     public int PendingBursts => bursts.Count;
     public void Initialize(RunState state) { run = state; }
     public void Clear()
@@ -36,6 +38,8 @@ public sealed class RunCombatEffects : MonoBehaviour
         dashArmorActive = false; lastDashTime = -100f;
         frozenCount = 0; frostMomentumStacks = 0; frostMomentumUntil = -100f;
         lowHealthRegenAccumulator = 0f;
+        scrapDamageBuffUntil = -100f;
+        scrapDamageBuffMultiplier = 1f;
         burnZones.Clear();
         statusScanFrame = -1; burningEnemyCount = 0; frozenEnemyCount = 0;
         foreach (var visual in activeVisuals) { visual.line.gameObject.SetActive(false); idleVisuals.Enqueue(visual.line); }
@@ -45,6 +49,7 @@ public sealed class RunCombatEffects : MonoBehaviour
     {
         if (Time.time - lastHit > 2f) combo = 0;
         float multiplier = 1f;
+        if (Time.time < scrapDamageBuffUntil) multiplier *= scrapDamageBuffMultiplier;
 
         // 三连斩：第3次 +45%
         if (combo % 3 == 2) multiplier += run.EffectTotal("ComboDamage");
@@ -65,6 +70,12 @@ public sealed class RunCombatEffects : MonoBehaviour
             if (Random.value < run.EffectTotal("HyperStrike")) multiplier += 1f;
 
         return Mathf.RoundToInt(damage * multiplier);
+    }
+
+    public void ActivateScrapBuff(float duration, float damageBonus)
+    {
+        scrapDamageBuffUntil = Mathf.Max(scrapDamageBuffUntil, Time.time + Mathf.Max(0f, duration));
+        scrapDamageBuffMultiplier = Mathf.Max(scrapDamageBuffMultiplier, 1f + Mathf.Max(0f, damageBonus));
     }
     public void CompleteSwing(int actualDamage)
     {

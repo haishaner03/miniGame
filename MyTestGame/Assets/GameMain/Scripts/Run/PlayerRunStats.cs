@@ -40,12 +40,12 @@ public sealed class PlayerRunStats : MonoBehaviour
     {
         // 赌博牌：狂战士契约牺牲生命上限换取伤害（玻璃大炮的代价是放弃减伤，不改生命）
         int healthMod = Mathf.RoundToInt(run.EffectTotal("MaxHealth") - run.EffectTotal("BerserkerPact") * 30f);
-        int maximum = Mathf.RoundToInt(baseHealth * run.StartingHealthMultiplier) + healthMod;
+        int maximum = Mathf.RoundToInt((baseHealth * run.StartingHealthMultiplier + healthMod) * run.CurseMaxHealthMultiplier);
         health.ConfigureForRun(maximum, currentHealth < 0 ? maximum : currentHealth);
 
         // 移速：固定加成在这里设置；动态加成（极寒领域）由 SurvivorMovement 实时计算
         if (movement != null)
-            movement.SetMoveSpeed(baseMoveSpeed * (1f + run.EffectTotal("MoveSpeed")));
+            movement.SetMoveSpeed(baseMoveSpeed * (1f + run.EffectTotal("MoveSpeed")) * run.CurseMoveSpeedMultiplier);
 
         if (melee != null)
         {
