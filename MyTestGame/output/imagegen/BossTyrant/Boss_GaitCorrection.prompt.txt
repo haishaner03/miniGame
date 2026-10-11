@@ -1,0 +1,14 @@
+Image1 is the strict identity/style reference for the heavy armored zombie boss. Image2 is the existing default zombie's EXACT eight chronological gait poses and timing reference, not a costume reference.
+Create a production pixel-art animation sheet 1024x1024 on solid pure #ff00ff magenta background. Exactly 8 columns and 4 equally spaced rows, cell128x256. Only 32 sprites. Character height120px or less in each cell, bottom of feet on cell y=224, centered horizontally. No text, grid, shadows or scenery. Retain the precise same gray-green head, red eyes, dark navy armor, rusty orange SINGLE anatomical left shoulder, dark trousers and heavy boots of Image1; NOT switching orange shoulder between anatomical sides over time. Same armor, identity, height and pixel scale across all frames.
+Rows1and2 WALK: Row1 front-facing down. Row2 back-facing up.
+Row3 WALK SIDE: ALL EIGHT characters look toward screen RIGHT, nose on the right, back on left. Pure right-side profile with slight top-down angle, never diagonal. Use Image2 as the eight-step leg/foot choreography. The same anatomical near leg remains nearer/darker boot every frame and swaps fore/aft position over the loop. Row4 CHARGE SIDE: ALL EIGHT look RIGHT; hunched shoulder-first run at a faster pace with the same full leg cycle.
+8 frames left to right:
+0 left leg forward contact/right behind,
+1 left carries weight/right foot leaves ground bending back,
+2 right foot passes supporting left under hips, ankles nearly overlap,
+3 right knee swings forward/left extends behind,
+4 right leg forward contact/left behind (opposite support from0),
+5 right carries weight/left foot leaves ground bending back,
+6 left passes supporting right under hips, ankles nearly overlap,
+7 left knee swings forward/right behind, then smoothly returns0.
+Frames0and4 are opposite legs forward. Frames2and6 are genuinely narrow passing poses, not wide split stances. NO repeated 0/1 pose four times. Do not swap costume/rotate the body to fake alternation. Walk in place; fixed root/foot anchor; max torso bob2px. Slow heavy walk, clear lifted boots, firm planted support foot; natural opposing arm swing. Preserve silhouette cleanly without clipping.

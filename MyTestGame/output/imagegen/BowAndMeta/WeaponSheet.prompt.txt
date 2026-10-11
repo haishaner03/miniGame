@@ -1,0 +1,8 @@
+Use case: stylized-concept
+Asset type: isolated 2D pixel game weapon sprite sheet, zombie survival game.
+Primary request: Three isolated game inventory/equipment sprites on a perfectly flat saturated magenta (#ff00ff) background, for later color-key extraction. A compact hunting recurve bow, a heavy scavenged sledgehammer, and one steel-tipped wooden arrow. One of each only, clearly separated in three vertical equal-width columns on a square canvas. Left column bow, center column hammer, right column arrow.
+Style: polished readable 16-bit pixel art, crisp square pixel clusters, limited muted palette, dark outlines, no smooth anti-aliasing. Same scale language as a 64-pixel-tall survivor sprite. Brown worn wood, olive grip wrap, dull silver steel, warm small highlights, post-apocalyptic equipment.
+Composition: bow upright, ends pointing up and down, curved wooden limb bulging toward the right, taut pale bowstring at the left, dark olive central grip located exactly in the middle of the bow. Hammer upright, head at the top, short simple brown handle below. Arrow horizontal and pointing right, sharp tip at the right, feather fletching at the left. Each sprite wholly inside its own column with large empty margins. Sprite silhouettes must be simple and legible at 64 pixels.
+Lighting: subtle pixel highlights from top left, no cast shadow, no glow, no ground plane.
+Text: no text, labels, letters, UI panels, watermark, border, character, hands, background texture, gradient, or other objects.
+Constraints: strict front/side orthographic inventory cutouts, no perspective distortion; pure magenta background everywhere outside the three objects; not a checkerboard. Exactly three sprites.

@@ -1,0 +1,6 @@
+Asset edit: correct only WalkRight/WalkLeft for ordinary zombie02 (orange maintenance worker) and zombie03 (purple female civilian).
+Reference: default ordinary zombie eight-frame WalkRight gait.
+Preserve all existing character identity, upper-body clothing, head, 80x64 canvas, transparent background,64PPU and common foot anchor.
+Gait: contact(left leading), recoil/passing, crossing under pelvis, right swing, opposite contact(right leading), recoil/passing, crossing, left swing; continuously alternating support foot. Near/far legs differentiated with darker rear shading. Keep natural bent knees, toe lift, both legs attached to same stable pelvis. Gentle vertical torso bob +/-1pixel synchronized with step. Female keeps dark skirt and black leggings; worker keeps charcoal trousers and brown boots.
+Use existing default pixel silhouettes as precise pose reference and manually redraw/recolor the lower-body pixels. Keep consistent character scale and clean transparent edges. Left comes from exact horizontal mirror of finished right. Eight unique images, no duplicate ending frame hold;loop at12fps,8/12second.
+

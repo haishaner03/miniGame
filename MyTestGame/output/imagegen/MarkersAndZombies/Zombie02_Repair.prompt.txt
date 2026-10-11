@@ -1,0 +1,9 @@
+Edit provided maintenance-worker sheet. Preserve exact identity/style: orange reflective vest, olive shirt, dark trousers. Fix structure and directions. EXACT1024x1024,8columns AND8equally spaced rows;each cell128x128. Original accidentally has only7rows: fix. Each sprite centered x64,feet baseline y116 within each cell,pure flat #FF00FF backdrop,no grid/labels.
+R1 y0..127 WALK DOWN8distinct frames alternating left/right leg, two complete steps.
+R2 y128..255 WALK UP8.
+R3 y256..383 WALK RIGHT8. Strict facing RIGHT,nose/toes imageRIGHT. Original incorrectly faced LEFT: correct every side frame.
+R4 y384..511 ATTACK DOWN8, two-hand forward shove:anticipation/contact/recover, no side turning.
+R5 y512..639 ATTACK UP8,two-hand shove away from viewer.
+R6 y640..767 ATTACK RIGHT8,standing two-hand claw lunge toRIGHT:all8frames upright;never merged with death. Last2frames recovery.
+R7 y768..895 DEATH DOWN8:standing impact/stagger/bent knees/collapse/falling/prone/settled/settled. Complete SEPARATE row.
+R8 y896..1023 IDLE:DOWN4breathing frames cols0..3,UP2cols4..5,RIGHT2cols6..7. No text,grid,props,shadow. Exact equal-grid machine-readability takes priority.
