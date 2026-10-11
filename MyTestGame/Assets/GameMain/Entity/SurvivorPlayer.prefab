@@ -274,6 +274,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   knockbackDamping: 18
+  knockbackDuration: 0.3
 --- !u!114 &4612378901456732189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +311,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurvivorMeleeAttack
   machete: {fileID: 11400000, guid: febc13fa471f1b54fa5749e86dde5725, type: 2}
   ironBar: {fileID: 11400000, guid: 14036dbf5778d034d9f91a69008d1417, type: 2}
+  bow: {fileID: 11400000, guid: 56d16e1dee995634f8408cf6ea12a848, type: 2}
+  hammer: {fileID: 11400000, guid: b5a57fad835e11647b3a9b2bf6c086b3, type: 2}
   damage: 80
   damageVariance: 5
   attackDuration: 0.16

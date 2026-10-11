@@ -17,6 +17,7 @@ public sealed class SurvivorWeaponVisual : MonoBehaviour
     private MeleeWeaponDefinition definition;
     private readonly Dictionary<Sprite, SurvivorWeaponPoseLibrary.Pose> poses = new Dictionary<Sprite, SurvivorWeaponPoseLibrary.Pose>();
     private SurvivorWeaponPoseLibrary.Pose[] attack;
+    private Sprite[] bowAttack;
     private bool attacking, animatorWasEnabled;
     private float progress;
     private SurvivorView attackView;
@@ -60,6 +61,7 @@ public sealed class SurvivorWeaponVisual : MonoBehaviour
         if (poseLibrary == null || definition == null) return;
         attackView = SurvivorWeaponPoseLibrary.View(direction);
         attack = poseLibrary.Attack(attackView);
+        bowAttack = definition.kind == SurvivorWeaponKind.Bow ? poseLibrary.BowAttack(attackView) : null;
         if (attack == null || attack.Length == 0) return;
         animatorWasEnabled = animator != null && animator.enabled;
         if (animator != null) animator.enabled = false;
@@ -82,6 +84,8 @@ public sealed class SurvivorWeaponVisual : MonoBehaviour
     {
         if (body == null || definition == null || weaponRenderer == null) return;
         weaponRenderer.enabled = body.enabled && (health == null || !health.IsDead);
+        if (attacking && definition.kind == SurvivorWeaponKind.Bow && bowAttack != null && bowAttack.Length > 0)
+            weaponRenderer.enabled = false;
         if (attacking) ApplyAttack();
         else if (body.sprite != null && poses.TryGetValue(body.sprite, out var pose)) ApplyPose(pose);
         else ApplyFallback();
@@ -89,6 +93,14 @@ public sealed class SurvivorWeaponVisual : MonoBehaviour
 
     private void ApplyAttack()
     {
+        if (definition.kind == SurvivorWeaponKind.Bow && bowAttack != null && bowAttack.Length > 0)
+        {
+            int bowIndex = progress < 0.16f ? 0 : progress < 0.32f ? 1 : progress < 0.48f ? 2 : progress < definition.impactProgress ? 3 : progress < 0.88f ? 4 : 5;
+            AttackFrameIndex = Mathf.Min(bowIndex, bowAttack.Length - 1);
+            body.sprite = bowAttack[AttackFrameIndex];
+            body.flipX = false;
+            return;
+        }
         // Anticipation, impact and recovery land on the same normalized timeline as damage.
         float adjusted = progress <= definition.impactProgress
             ? progress / Mathf.Max(0.01f, definition.impactProgress) * 0.48f
@@ -110,6 +122,11 @@ public sealed class SurvivorWeaponVisual : MonoBehaviour
         Vector2 grip = new Vector2(pose.gripPixel.x - sprite.pivot.x, sprite.rect.height - pose.gripPixel.y - sprite.pivot.y) / sprite.pixelsPerUnit;
         weaponPivot.localPosition = new Vector3(grip.x, grip.y, 0f);
         weaponPivot.localRotation = Quaternion.Euler(0f, 0f, pose.weaponAngle);
+        if (definition.kind == SurvivorWeaponKind.Bow)
+        {
+            // The bow's grip is centered; while walking it is carried upright at the actual hand.
+            weaponPivot.localRotation = Quaternion.identity;
+        }
         weaponRenderer.sortingLayerID = body.sortingLayerID;
         weaponRenderer.sortingOrder = body.sortingOrder + (pose.view == SurvivorView.Up ? -1 : 1);
         weaponRenderer.flipX = pose.view == SurvivorView.Left;

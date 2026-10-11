@@ -1,7 +1,7 @@
 #	Run upgrades
-#	Id		Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect
-#	int		string	string	string	float	int	string	string
-#	Id	Notes	Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect
+#	Id		Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect	RequiredUnlock
+#	int		string	string	string	float	int	string	string	string
+#	Id	Notes	Name	Description	Effect	Value	MaxStacks	Branch	RequiredEffect	RequiredUnlock
 	1		强击	每层近战伤害 +15%，最多 10 层；满层伤害为基础值的 2.5 倍。	DamagePercent	0.15	10	Common
 	2		横扫	近战范围 +15%，最多 3 层。	Range	0.15	3	Common
 	4		轻足	移动速度 +10%，最多 3 层。	MoveSpeed	0.10	3	Common
@@ -27,26 +27,40 @@
 	25		急救训练	生命低于 30% 时，每秒回复 2 点生命。	LowHealthRegen	2	2	Common
 	26		破釜沉舟	生命低于 25% 时，伤害 +40%。	LowHealthDamage	0.40	1	Common
 	27		收割者	击杀精英或 Boss 时，立即回复 30 点生命。	EliteKillHeal	30	2	Common
-	28		影舞	冲刺期间免疫伤害，冲刺后 1 秒内无法攻击。	DashInvincible	1	1	Quick
+	28		影舞	冲刺期间免疫伤害。	DashInvincible	1	1	Quick
 	29		连斩狂热	连续命中 5 次后，攻击速度 +25%，持续 4 秒。	ComboFrenzy	0.25	2	Quick	AttackSpeed
 	30		幻影	每次冲刺在原地留下残影，对接触敌人造成 50% 近战伤害。	DashEcho	0.50	2	Quick
 	31		风刃	移动速度每 +10%，近战范围 +5%。	SpeedRange	0.05	3	Quick	MoveSpeed
 	32		无影手	攻击速度达到 +100% 后，每次攻击有 20% 概率打出双倍伤害。	HyperStrike	0.20	1	Quick	AttackSpeed
-	33		极寒领域	每个冰冻敌人，近战范围 +3%。	FrostAura	0.03	2	Frost	FreezeChance
+	33		极寒领域	每个被冰冻的敌人，移动速度 +4%。	FrostAura	0.04	2	Frost	FreezeChance
 	34		冰盾	场上有冰冻敌人时，受到伤害减少 25%。	FrostShield	0.25	2	Frost	FreezeChance
 	35		冰川之力	对冰冻敌人的击退力度 +50%。	FrostKnockback	0.50	2	Frost	FreezeChance
 	36		寒霜动能	每冰冻一个敌人，攻击速度 +8%，持续 6 秒，最多叠 5 层。	FrostMomentum	0.08	2	Frost	FreezeChance
 	37		凛冬之怒	冰冻 3 个或更多敌人时，近战范围 +30%。	FrostRangeBoost	0.30	1	Frost	FreezeChance
-	38		业火缠身	每个燃烧敌人，移动速度 +4%。	BurnHaste	0.04	3	Fire	BurnChance
+	38		业火缠身	每个燃烧敌人，攻击速度 +4%。	BurnHaste	0.04	3	Fire	BurnChance
 	39		炼狱步伐	燃烧敌人死亡时，留下持续 3 秒的火焰区域，每秒造成 20% 近战伤害。	BurnZone	0.20	2	Fire	BurnChance
 	40		烈焰护体	每个燃烧敌人，受到伤害减少 5%。	BurnArmor	0.05	2	Fire	BurnChance
 	41		灼心	燃烧敌人有 25% 概率受到双倍伤害。	BurnCrit	0.25	2	Fire	BurnChance
 	42		焚尽	燃烧敌人生命低于 30% 时，直接击杀。	BurnExecute	1.00	1	Fire	BurnChance
 	43		冰火之心	同时拥有冰冻和燃烧概率时，击杀冰冻或燃烧敌人触发冰火爆炸，造成近战伤害的 100%。	FrostfireBurst	1.00	1	Common	FreezeChance
 	44		温差冲击	同时冰冻和燃烧的敌人，受到伤害 +100%。	ThermalShock	1.00	2	Common	FreezeChance
-	45		急冻加速	移动速度 +50% 后，冰冻概率额外 +15%。	HasteFreeze	0.15	2	Frost	MoveSpeed
-	46		焚心加速	移动速度 +50% 后，燃烧概率额外 +20%。	HasteBurn	0.20	2	Fire	MoveSpeed
+	45		急冻加速	移动速度加成达到 +20% 后，冰冻概率额外 +15%。	HasteFreeze	0.15	2	Frost	MoveSpeed
+	46		焚心加速	移动速度加成达到 +20% 后，燃烧概率额外 +20%。	HasteBurn	0.20	2	Fire	MoveSpeed
 	47		双元素精通	同时拥有冰冻和燃烧概率时，近战范围 +20%，伤害 +15%。	DualElement	0.15	2	Common	FreezeChance
 	48		狂战士契约	近战伤害 +60%，最大生命 -30。	BerserkerPact	1	1	Common
 	49		玻璃大炮	近战伤害 +80%，最大生命 -50%。	GlassCannon	1	1	Common
 	50		血之契约	每次近战额外造成 35% 伤害，但每次命中扣除 2 点自身生命。	BloodPact	1	3	Common
+	51		霜火引燃	冰冻敌人被点燃时，燃烧每秒伤害 +100%，最多 2 层。	FrostfireBurn	1	2	Common	FreezeChance
+	52		冰焰转换	所有冰冻概率转为燃烧概率，不再触发新的冰冻；冰霜扩散改为燃烧扩散。	ConvertFreezeToBurn	1	1	Common	FreezeChance
+	101		强弓	箭矢伤害 +15%，最多 10 层。	BowDamage	0.15	10	Bow
+	102		快弦	拉弓与射击速度 +15%，最多 12 层。	BowDrawSpeed	0.15	12	Bow
+	103		贯穿箭	基础穿透 1 个敌人，每层额外穿透 1 个敌人，最多 6 层。	BowPierce	1	6	Bow
+	104		长射	箭矢飞行距离 +15%，最多 3 层。	BowRange	0.15	3	Bow
+	105		霜箭	箭矢有 15% 概率冻结目标，最多 4 层。	FreezeChance	0.15	4	Bow
+	106		火箭	箭矢有 20% 概率点燃目标，最多 4 层。	BurnChance	0.20	4	Bow
+	110		散射	每次多射 1 支箭；每增加一支，每支箭伤害减少基础值的 15%，最多 2 层。	BowMultishot	1	2	Bow	BowDrawSpeed	BowCards
+	111		鹰眼	箭矢暴击率 +15%，暴击伤害为 175%，最多 3 层。	BowCrit	0.15	3	Bow	BowDamage	BowCards
+	112		破风	箭矢速度 +20%，飞行距离同步增加，最多 3 层。	BowSpeed	0.20	3	Bow	BowRange	BowCards
+	113		碎霜箭	箭矢对已冻结敌人的伤害 +30%，最多 2 层。	FrozenDamage	0.30	2	Bow	FreezeChance	BowCards
+	114		爆燃箭	击杀燃烧目标时引爆，造成攻击伤害的 45%，并点燃附近敌人。	BurnExplosion	0.45	2	Bow	BurnChance	BowCards
+	115		远猎	箭矢随飞行距离增加伤害，飞行 4 米达到 +40%，最多 2 层。	BowDistanceDamage	0.40	2	Bow	BowPierce	BowCards

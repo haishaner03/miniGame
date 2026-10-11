@@ -25,14 +25,20 @@ MonoBehaviour:
     type: 3}
   startingWeaponPickerPrefab: {fileID: 1652561852119335596, guid: e05648500b017a74c8dc51487233d001,
     type: 3}
+  arrowProjectilePrefab: {fileID: 7634504482727007228, guid: 04e13e45145603f4cbf600195ca8b996,
+    type: 3}
+  ordinaryZombiePrefabs:
+  - {fileID: 90344962722602306, guid: 90052e92f86d14443a835d4f8dc1fbe5, type: 3}
+  - {fileID: 5732831219424642163, guid: e449caf5f5a89f74ea2c286c19279570, type: 3}
+  - {fileID: 2215540717137612283, guid: 236d62f6208c3b74d9f1477084507a66, type: 3}
   eliteEncounterPrefab: {fileID: 5994269687398861871, guid: 7a7113fb9ad29f945a4d5cc13dc99f38,
     type: 3}
   bossEncounterPrefab: {fileID: 3892269961145252800, guid: ae05ac95900beaf4580ac6bbfdb06406,
     type: 3}
-  eliteRoomNumber: 3
-  requireEliteEncounter: 0
+  requireEliteEncounter: 1
   ambientEliteChance: 0.09090909
   ambientEliteHealthMultiplier: 2.5
+  eliteRoomNumber: 3
   elitePreparationKills: 35
   bossPreparationKills: 25
   eliteEncounterExperience: 120

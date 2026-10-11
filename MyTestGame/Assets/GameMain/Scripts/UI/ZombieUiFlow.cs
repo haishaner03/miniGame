@@ -18,6 +18,10 @@ public sealed class ZombieUiFlow : MonoBehaviour
     public Button chapterButton;
     public Button optionsButton;
     public Button quitButton;
+    public Button growthButton;
+    public Text survivorPoints;
+    public GameObject growthShopPrefab;
+    private SurvivorMetaShop growthShop;
 
     [Header("章节按钮")]
     public Button backButton;
@@ -54,6 +58,7 @@ public sealed class ZombieUiFlow : MonoBehaviour
         AddListener(chapterButton, ShowChapters);
         AddListener(optionsButton, OnOptionsClicked);
         AddListener(quitButton, QuitGame);
+        AddListener(growthButton, ShowGrowth);
         AddListener(backButton, ShowMain);
 
         if (chapterButtons == null)
@@ -81,10 +86,23 @@ public sealed class ZombieUiFlow : MonoBehaviour
 
     public void ShowMain()
     {
+        RefreshPoints();
         if (mainPanel != null)
             mainPanel.SetActive(true);
         if (chapterPanel != null)
             chapterPanel.SetActive(false);
+    }
+
+    private void RefreshPoints()
+    {
+        if (survivorPoints != null) survivorPoints.text = "幸存者点数  " + SurvivorMetaProgress.Points;
+    }
+
+    public void ShowGrowth()
+    {
+        if (growthShopPrefab == null) return;
+        if (growthShop == null) growthShop = Instantiate(growthShopPrefab).GetComponent<SurvivorMetaShop>();
+        growthShop.Show(RefreshPoints);
     }
 
     public void ShowChapters()
@@ -126,6 +144,7 @@ public sealed class ZombieUiFlow : MonoBehaviour
     private void OnDestroy()
     {
         if (weaponPicker != null) Destroy(weaponPicker.gameObject);
+        if (growthShop != null) Destroy(growthShop.gameObject);
     }
 
     private void OnOptionsClicked()

@@ -23,8 +23,13 @@ public sealed class RunState : MonoBehaviour
     public int Experience { get; private set; }
     public int ExperienceToNextLevel => Config.firstLevelExperience + (Level - 1) * Config.experienceGrowthPerLevel;
     public int TotalExperience { get; private set; }
-    public bool UsesHeavyWeapon { get; private set; }
-    public string WeaponName => UsesHeavyWeapon ? "铁棍" : "砍刀";
+    public SurvivorWeaponKind StartingWeapon { get; private set; }
+    public bool UsesHeavyWeapon => StartingWeapon == SurvivorWeaponKind.IronBar || StartingWeapon == SurvivorWeaponKind.Hammer;
+    public bool UsesBow => StartingWeapon == SurvivorWeaponKind.Bow;
+    public string WeaponName => UsesBow ? "猎弓" : StartingWeapon == SurvivorWeaponKind.Hammer ? "重锤" : UsesHeavyWeapon ? "铁棍" : "砍刀";
+    public int ClearedRooms { get; private set; }
+    public int EarnedSurvivorPoints { get; private set; }
+    public float StartingHealthMultiplier { get; private set; } = 1f;
     public bool IsChoosingStartingWeapon => restartWeaponPicker != null && restartWeaponPicker.isActiveAndEnabled;
     public bool SuppressPauseInput => IsChoosingStartingWeapon || (restartWeaponPicker != null && restartWeaponPicker.ClosedThisFrame);
     public int EliteKills { get; private set; }
@@ -44,6 +49,8 @@ public sealed class RunState : MonoBehaviour
     public RoomEncounterController Encounter { get; private set; }
     public int ChampionKills { get; private set; }
     public int BossKills { get; private set; }
+    public RoomLayoutVariant RoomLayout { get; private set; }
+    public SurvivorArrowPool ArrowPool { get; private set; }
 
     private readonly List<string> rooms = new List<string>();
     private readonly Dictionary<int, int> stacks = new Dictionary<int, int>();
@@ -59,6 +66,8 @@ public sealed class RunState : MonoBehaviour
     private ExperiencePickupPool pickupPool;
     private HealthPickupPool healthPool;
     private StartingWeaponPicker restartWeaponPicker;
+    private string settlementId;
+    private bool settlementComplete;
 
     public static RunState EnsureForRoom(string scenePath)
     {
@@ -73,11 +82,17 @@ public sealed class RunState : MonoBehaviour
 
     public static void StartNewRun(string firstRoom = null, int? seed = null, bool heavyWeapon = false)
     {
+        StartNewRun(firstRoom, seed, heavyWeapon ? SurvivorWeaponKind.IronBar : SurvivorWeaponKind.Machete);
+    }
+
+    public static void StartNewRun(string firstRoom, int? seed, SurvivorWeaponKind weapon)
+    {
+        if (!SurvivorMetaProgress.IsWeaponUnlocked(weapon)) weapon = SurvivorWeaponKind.Machete;
         RunState run = Instance;
         if (run == null)
             run = new GameObject("ZombieRun").AddComponent<RunState>();
         run.Begin(firstRoom, seed);
-        run.UsesHeavyWeapon = heavyWeapon;
+        run.StartingWeapon = weapon;
         run.Phase = RunPhase.Loading;
         SceneManager.LoadScene(run.rooms[0]);
     }
@@ -108,6 +123,8 @@ public sealed class RunState : MonoBehaviour
         }
         CombatEffects = gameObject.AddComponent<RunCombatEffects>();
         CombatEffects.Initialize(this);
+        ArrowPool = gameObject.AddComponent<SurvivorArrowPool>();
+        ArrowPool.Initialize(Config.arrowProjectilePrefab);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -130,14 +147,9 @@ public sealed class RunState : MonoBehaviour
         if (firstRoom != null && !pool.Contains(firstRoom))
             throw new InvalidOperationException("Unknown starting room: " + firstRoom);
         Seed = seed ?? Guid.NewGuid().GetHashCode();
-        var routeRandom = new System.Random(Seed);
         rewardRandom = new System.Random(unchecked(Seed ^ 0x51A7BEEF));
-        rooms.Add(firstRoom ?? pool[routeRandom.Next(pool.Count)]);
-        while (rooms.Count < Config.roomCount)
-        {
-            var candidates = pool.FindAll(path => path != rooms[rooms.Count - 1]);
-            rooms.Add(candidates[routeRandom.Next(candidates.Count)]);
-        }
+        RunRoomPlanner.BuildRoute(pool, Config.roomCount, firstRoom, Seed, rooms);
+        RoomLayout = null;
         RoomIndex = 0;
         CurrentHealth = -1;
         MaxHealth = 0;
@@ -146,11 +158,16 @@ public sealed class RunState : MonoBehaviour
         Level = 1;
         Experience = TotalExperience = pendingLevelRewards = 0;
         pickupPool.ClearDrops();
+        ArrowPool.Clear();
         if (healthPool != null) healthPool.Clear();
         EliteKills = DamageDealt = DamageTaken = HealingReceived = 0;
         LifeStealHits = 0;
         ChampionKills = BossKills = 0;
-        UsesHeavyWeapon = false;
+        StartingWeapon = SurvivorWeaponKind.Machete;
+        StartingHealthMultiplier = SurvivorMetaProgress.StartingHealthMultiplier;
+        ClearedRooms = EarnedSurvivorPoints = 0;
+        settlementId = Guid.NewGuid().ToString("N");
+        settlementComplete = false;
         if (CombatEffects != null) CombatEffects.Clear();
         ElapsedSeconds = 0f;
         RewardClaimed = false;
@@ -162,6 +179,7 @@ public sealed class RunState : MonoBehaviour
 
     public void BindRoom(LevelFlowController controller, SurvivorHealth health, ZombieSpawner spawner)
     {
+        ArrowPool.Clear();
         UnbindPlayer();
         if (rooms[RoomIndex] != controller.gameObject.scene.path)
             throw new InvalidOperationException("Loaded room does not match run route.");
@@ -175,6 +193,15 @@ public sealed class RunState : MonoBehaviour
         SyncHealth(player.CurrentHealth, player.MaxHealth);
         player.HealthChanged += SyncHealth;
         player.GameOver += OnPlayerGameOver;
+        RoomLayout = controller.GetComponent<RoomLayoutVariant>();
+        if (RoomLayout != null)
+        {
+            int layoutSeed = RunRoomPlanner.LayoutSeed(Seed, rooms[RoomIndex], RoomIndex);
+            int variant = RunRoomPlanner.VariantIndex(Seed, rooms, RoomIndex, RoomLayout.VariantCount);
+            if (!RoomLayout.Apply(layoutSeed, variant, controller, spawner,
+                FindFirstObjectByType<ZombieGridPathfinder>()))
+                throw new InvalidOperationException("Run room has no playable exit route.");
+        }
         UnityEngine.Random.InitState(unchecked(Seed + RoomIndex * 7919));
         if (spawner != null) spawner.ConfigureForRun(this);
         RewardClaimed = false;
@@ -229,6 +256,7 @@ public sealed class RunState : MonoBehaviour
         if (Phase != RunPhase.Playing || RewardClaimed || player == null || player.IsDead)
             return;
         RewardClaimed = true;
+        ClearedRooms++;
         flow.ReleaseRunReward();
     }
 
@@ -261,7 +289,7 @@ public sealed class RunState : MonoBehaviour
         offered.Clear();
         if (stacks.Count == 0)
         {
-            foreach (string effect in new[] { "AttackSpeed", "FreezeChance", "BurnChance" })
+            foreach (string effect in UsesBow ? new[] { "BowDrawSpeed", "BowPierce", "BowDamage" } : new[] { "AttackSpeed", "FreezeChance", "BurnChance" })
             {
                 var entry = eligible.Find(u => u.Effect == effect);
                 if (entry != null) { offered.Add(entry); eligible.Remove(entry); }
@@ -326,6 +354,7 @@ public sealed class RunState : MonoBehaviour
         if (RoomNumber == RoomCount)
         {
             Phase = RunPhase.Won;
+            SettleRun(true);
             Pause();
             ui.ShowResult(true);
             return true;
@@ -390,6 +419,11 @@ public sealed class RunState : MonoBehaviour
     }
 
     public bool IsUpgradeEligible(DRRunUpgrade upgrade) => upgrade != null &&
+        (upgrade.Branch != "Bow" || UsesBow) &&
+        (!UsesBow || upgrade.Branch == "Bow" || upgrade.Branch == "Common" &&
+            upgrade.Effect != "Range" && upgrade.Effect != "SpeedRange") &&
+        (upgrade.RequiredUnlock != "BowCards" || SurvivorMetaProgress.BowCardsUnlocked) &&
+        (upgrade.Effect != "FrostfireBurn" || EffectTotal("FreezeChance") > 0 && EffectTotal("BurnChance") > 0) &&
         StackCount(upgrade.Id) < upgrade.MaxStacks &&
         (string.IsNullOrEmpty(upgrade.RequiredEffect) || EffectTotal(upgrade.RequiredEffect) > 0);
     public int BranchStacks(string branch)
@@ -416,7 +450,7 @@ public sealed class RunState : MonoBehaviour
         if (restartWeaponPicker == null)
             restartWeaponPicker = Instantiate(Config.startingWeaponPickerPrefab, transform).GetComponent<StartingWeaponPicker>();
         restartWeaponPicker.Show(Config.roomScenePaths[0],
-            heavy => StartNewRun(Config.roomScenePaths[0], null, heavy),
+            weapon => StartNewRun(Config.roomScenePaths[0], null, weapon),
             () => { if (resumeOnCancel) TogglePause(); });
     }
 
@@ -443,9 +477,18 @@ public sealed class RunState : MonoBehaviour
     {
         if (Phase == RunPhase.Lost || Phase == RunPhase.Won) return;
         Phase = RunPhase.Lost;
+        SettleRun(false);
         offered.Clear();
         Pause();
         ui.ShowResult(false);
+    }
+
+    private void SettleRun(bool victory)
+    {
+        if (settlementComplete) return;
+        settlementComplete = true;
+        ArrowPool.Clear();
+        EarnedSurvivorPoints = SurvivorMetaProgress.SettleRun(settlementId, ClearedRooms, Kills, victory);
     }
 
     private void Pause()
@@ -472,6 +515,7 @@ public sealed class RunState : MonoBehaviour
         stats = null;
         flow = null;
         Encounter = null;
+        RoomLayout = null;
     }
 
     private void OnDestroy()

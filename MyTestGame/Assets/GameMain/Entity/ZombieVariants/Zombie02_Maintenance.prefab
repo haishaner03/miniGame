@@ -1,0 +1,407 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4788472328303140615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5239741957322919923}
+  - component: {fileID: 7094885174928363735}
+  - component: {fileID: 2261857938117751047}
+  m_Layer: 0
+  m_Name: ProjectileHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5239741957322919923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788472328303140615}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5988691946447059950}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &7094885174928363735
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788472328303140615}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.3}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.64, y: 1.02}
+  m_EdgeRadius: 0
+--- !u!114 &2261857938117751047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788472328303140615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65d3bda222c4264dab59ac46fdc4a13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieProjectileHitbox
+--- !u!1 &5732831219424642163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5988691946447059950}
+  - component: {fileID: 4529656663051958728}
+  - component: {fileID: 5783306904821155920}
+  - component: {fileID: 4791531499720126013}
+  - component: {fileID: 7610828400047354416}
+  - component: {fileID: 3065231380640577689}
+  - component: {fileID: 6681282379937943609}
+  - component: {fileID: 1276455456058421542}
+  - component: {fileID: 8371837371274276319}
+  m_Layer: 0
+  m_Name: Zombie02_Maintenance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5988691946447059950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5239741957322919923}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4529656663051958728
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 6001
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: 21300000, guid: f9d69d6a9076a6c48a3d2818057aa86c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 1
+--- !u!50 &5783306904821155920
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!58 &4791531499720126013
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.12}
+  m_Radius: 0.18
+--- !u!114 &7610828400047354416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8acc6bf3fd18aaf428ebfb72593b33b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieChaser
+  archetype: 0
+  hitFlashDuration: 0.08
+  hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  fastSpeedMultiplier: 1.75
+  tankSpeedMultiplier: 0.62
+  tankHealthMultiplier: 3
+  tankAttackDamageBonus: 20
+  exploderSpeedMultiplier: 1.1
+  explosionRadius: 1.45
+  explosionDamage: 40
+  explosionKnockback: 3.5
+  explodeOnContact: 1
+  target: {fileID: 0}
+  moveSpeed: 1.35
+  attackDistance: 0.8
+  attackCooldown: 1.1
+  attackDamage: 20
+  animationFps: 12
+  maxHealth: 200
+  knockbackDamping: 12
+  useGridPathfinding: 1
+  pathRefreshInterval: 0.35
+  freezeDurationMultiplier: 1
+  freezeKnockbackDuration: 0.12
+  receivedKnockbackMultiplier: 1
+  spriteRenderer: {fileID: 4529656663051958728}
+  walkFrames:
+  - {fileID: 21300000, guid: 9ed3f62bbd241d148993b34af1ce927e, type: 3}
+  - {fileID: 21300000, guid: 79a3b278e6236934987758d1f540cb74, type: 3}
+  - {fileID: 21300000, guid: 93b5f2a201487be459d5474931f9bff8, type: 3}
+  - {fileID: 21300000, guid: 6a747d3f4e541ba47944d46c5c064d09, type: 3}
+  - {fileID: 21300000, guid: aa9e6956dc2c8944b95d79e9522b33f1, type: 3}
+  - {fileID: 21300000, guid: 83a1073619327f24088fdebbc9180f27, type: 3}
+  - {fileID: 21300000, guid: a1c9c76b7340791458c924c20731b9fe, type: 3}
+  - {fileID: 21300000, guid: fcd2a18d5ca097c41814c3ca3a86d52c, type: 3}
+  attackFrames:
+  - {fileID: 21300000, guid: b39b747305396d44b9d632514580f03d, type: 3}
+  - {fileID: 21300000, guid: 5585cbe996dd99e4eadc98c84fafa56c, type: 3}
+  - {fileID: 21300000, guid: cc7919c577b8cf24495895c7c6aee5c3, type: 3}
+  - {fileID: 21300000, guid: ecdd9f9fbf6b0df4a95d48b4004bba04, type: 3}
+  - {fileID: 21300000, guid: 66cac6bd08c99fb41bf51f03e327f11c, type: 3}
+  - {fileID: 21300000, guid: ffae8f1fe35a14145854221f3bc6d0d3, type: 3}
+  - {fileID: 21300000, guid: 2d852e681ffa46645b7afabc30b7231b, type: 3}
+  - {fileID: 21300000, guid: cbdff92af7cd630459915d0ad87d5a1b, type: 3}
+  deathFrames:
+  - {fileID: 21300000, guid: 0899ba9cef506c641ba841d48a3b96c1, type: 3}
+  - {fileID: 21300000, guid: 699056ab5cf0a01439afe89e911dff67, type: 3}
+  - {fileID: 21300000, guid: 8d879c0bc2e3d6146872e0290b103359, type: 3}
+  - {fileID: 21300000, guid: b937d587d2837614c94302eb1b9f8276, type: 3}
+  - {fileID: 21300000, guid: f6268aa63921dd54695e06e6489d432e, type: 3}
+  - {fileID: 21300000, guid: 12fa156439239e24ca2b71a138cec2a2, type: 3}
+  - {fileID: 21300000, guid: 5f28674a95ed7bb46acc76f6f6dcf6ed, type: 3}
+  - {fileID: 21300000, guid: 9a0e5c58720fdde4cb468a3464d992dc, type: 3}
+  destroyAfterDeath: 1
+  deathDestroyDelay: 0.15
+  attackScalePulse: 0
+  attackTint: {r: 1, g: 1, b: 1, a: 1}
+  aggroRadius: 5.5
+  loseTargetRadius: 8.5
+  idleWander: 1
+  idleWanderRadius: 2.2
+  idlePauseMin: 0.8
+  idlePauseMax: 2.4
+  idleSpeedMultiplier: 0.42
+  damageTextPrefab: {fileID: 4754908913029412354, guid: 72f46524f271c824186b39e97a263137,
+    type: 3}
+  damageTextColor: {r: 1, g: 0.82, b: 0.25, a: 1}
+--- !u!114 &3065231380640577689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36afbcb73729b5489ea0a6ed1a8a08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurvivorDepthSort
+  groundOffsetY: 0
+  orderOffset: 1
+--- !u!114 &6681282379937943609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3e8ce035b7b744483b79caf560f21f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldHealthBar
+  width: 0.54
+  height: 0.075
+  zombieHeight: 0.035
+  zombieOutlinePadding: 0.02
+  offsetY: 0.66
+  hideWhenDead: 1
+  fillColor: {r: 0.3, g: 1, b: 0.35, a: 1}
+  zombieFillColor: {r: 1, g: 0.2, b: 0.16, a: 1}
+--- !u!95 &1276455456058421542
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 37e74bdf86cb8d3488e7186a70a0b4df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8371837371274276319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732831219424642163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 570753b27b421984bafe2832a57ebbb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieDirectionalAnimator
+  ordinaryTypeId: 2
+  attackDuration: 0.6666667
+  attackHitTime: 0.33333334
+  attackSpeedMultiplier: 1
+  deathDuration: 0.8

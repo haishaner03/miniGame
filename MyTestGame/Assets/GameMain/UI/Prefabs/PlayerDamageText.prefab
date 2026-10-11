@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FloatingCombatText
   label: {fileID: 0}
-  defaultColor: {r: 1, g: 0.82, b: 0.25, a: 1}
+  defaultColor: {r: 0.9056604, g: 0.7132646, b: 0.10679956, a: 1}
   lifetime: 0.62
   riseSpeed: 0.85
   horizontalJitter: 0.22

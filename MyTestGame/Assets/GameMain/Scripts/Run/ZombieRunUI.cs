@@ -12,6 +12,11 @@ public sealed class ZombieRunUI : MonoBehaviour
     [SerializeField] private Sprite[] icons = new Sprite[17];
     [SerializeField] private RectTransform canvasRect;
     [SerializeField] private Text healthText, roomText, objectiveText, waveText, timeText, killsText;
+    [SerializeField] private RectTransform roomObjectivePanel;
+    [SerializeField] private CanvasGroup roomObjectiveGroup;
+    [SerializeField, Range(0f, 1f)] private float idleRoomOpacity = 0.28f;
+    [SerializeField, Min(1f)] private float combatDetectionRadius = 7f;
+    [SerializeField, Min(0f)] private float combatVisibilityHold = 2.5f;
     [SerializeField] private Image healthFill;
     [SerializeField] private GameObject encounterPanel;
     [SerializeField] private Text encounterName, encounterHealth, encounterAction;
@@ -20,6 +25,8 @@ public sealed class ZombieRunUI : MonoBehaviour
     [SerializeField] private Image experienceFill;
     [SerializeField] private Button pauseButton;
     [SerializeField] private RectTransform upgradeRow, upgradeContent;
+    [SerializeField] private Image upgradeBackground;
+    [SerializeField] private Text upgradeHeader;
     [SerializeField] private GameObject upgradeTemplate;
     [SerializeField] private ScrollRect upgradeScroll;
     [SerializeField] private Text branchSummary;
@@ -44,12 +51,16 @@ public sealed class ZombieRunUI : MonoBehaviour
     private SurvivorDash dash;
     private GameObject ownedEventSystem;
     private float nextRefresh;
+    private float roomCombatUntil;
+    private SurvivorHealth roomCombatPlayer;
+    private readonly Collider2D[] nearbyEnemies = new Collider2D[48];
     private readonly StringBuilder buffer = new StringBuilder(512);
 
     public void Initialize(RunState state)
     {
         run = state;
         if (canvasRect == null) BuildLayout(run.Config.uiFont, icons);
+        ResolvePolishReferences();
         BuildUpgradeWidgets();
         pauseButton.onClick.AddListener(run.TogglePause);
         resume.onClick.AddListener(run.TogglePause);
@@ -88,8 +99,10 @@ public sealed class ZombieRunUI : MonoBehaviour
         }
         UpdateCooldown(meleeMask, meleeStatus, melee != null ? melee.CooldownRemaining : 0f, melee != null ? melee.AttackCooldown : 1f);
         UpdateCooldown(dashMask, dashStatus, dash != null ? dash.CooldownRemaining : 0f, dash != null ? dash.DashCooldown : 1f);
+        RefreshPanelVisibility();
         if (Time.unscaledTime < nextRefresh) return;
         nextRefresh = Time.unscaledTime + 0.1f;
+        CheckRoomCombat();
         RefreshHud();
     }
 
@@ -115,7 +128,8 @@ public sealed class ZombieRunUI : MonoBehaviour
         var encounter = run.Encounter;
         bool encounterActive = encounter != null && encounter.IsRequired && encounter.Stage != RoomEncounterController.EncounterStage.Waiting;
         objectiveText.text = run.RewardClaimed ? "出口已解锁 · 前往安全门" : encounterActive ? "击败" + encounter.EnemyName :
-            encounter != null && encounter.IsRequired ? "清理街区 · " + (encounter.IsBoss ? "决战将至" : "精英将至") : "清理街区";
+            encounter != null && encounter.IsRequired ? "清理街区 · " + (encounter.IsBoss ? "决战将至" : "精英将至") :
+            "清理街区" + (run.RoomLayout != null ? " · " + run.RoomLayout.VariantName : string.Empty);
         LevelFlowController flow = run.CurrentRoom;
         waveText.text = flow != null && !run.RewardClaimed
             ? "清理 " + run.RoomKills + "/" + flow.RequiredKills + (flow.TotalObjectiveWaves > 0 ? " · 区域 " + flow.CompletedObjectiveWaves + "/" + flow.TotalObjectiveWaves : string.Empty)
@@ -126,7 +140,8 @@ public sealed class ZombieRunUI : MonoBehaviour
         killsText.text = "击杀 " + run.Kills;
         pauseButton.interactable = run.Phase == RunState.RunPhase.Playing;
         upgradeHint.gameObject.SetActive(run.UpgradeStacks.Count == 0);
-        branchSummary.text = "快攻 " + run.BranchStacks("Quick") + "   冰冻 " + run.BranchStacks("Frost") + "   燃烧 " + run.BranchStacks("Fire");
+        branchSummary.text = run.UsesBow ? "弓箭 " + run.BranchStacks("Bow") + "   通用 " + run.BranchStacks("Common") :
+            "快攻 " + run.BranchStacks("Quick") + "   冰冻 " + run.BranchStacks("Frost") + "   燃烧 " + run.BranchStacks("Fire");
         int visibleSlot = 0;
         foreach (var widget in upgradeWidgets)
         {
@@ -139,11 +154,54 @@ public sealed class ZombieRunUI : MonoBehaviour
             }
             widget.count.text = "×" + count;
         }
-        upgradeRow.sizeDelta = new Vector2(Mathf.Max(150f, Mathf.Min(560f, canvasRect.rect.width - 240f)), 154f);
+        float upgradeHeight = visibleSlot == 0 ? 76f : visibleSlot == 1 ? 96f : 154f;
+        upgradeRow.sizeDelta = new Vector2(Mathf.Max(150f, Mathf.Min(560f, canvasRect.rect.width - 240f)), upgradeHeight);
         upgradeContent.sizeDelta = new Vector2(Mathf.Max(upgradeScroll.viewport.rect.width, Mathf.Ceil(visibleSlot / 2f) * 64f), 120f);
         upgradeScroll.horizontal = upgradeContent.rect.width > upgradeScroll.viewport.rect.width + 1f;
         if (upgradeScrollHint != null) upgradeScrollHint.gameObject.SetActive(upgradeScroll.horizontal);
         if (modal.activeSelf) window.sizeDelta = new Vector2(Mathf.Min(760f, canvasRect.rect.width - 48f), 600f);
+    }
+
+    private void RefreshPanelVisibility()
+    {
+        if (roomObjectiveGroup == null) return;
+        bool combat = run.Phase == RunState.RunPhase.Playing && !run.RewardClaimed &&
+            !run.IsChoosingStartingWeapon && Time.unscaledTime < roomCombatUntil;
+        float target = combat ? 1f : idleRoomOpacity;
+        if (run.Phase == RunState.RunPhase.Loading || run.Phase == RunState.RunPhase.Won || run.Phase == RunState.RunPhase.Lost)
+            target = 0.12f;
+        roomObjectiveGroup.alpha = Mathf.MoveTowards(roomObjectiveGroup.alpha, target, Time.unscaledDeltaTime * 8f);
+        roomObjectiveGroup.interactable = false;
+        roomObjectiveGroup.blocksRaycasts = false;
+    }
+
+    private void CheckRoomCombat()
+    {
+        // Check at HUD frequency with a reusable buffer, not one scene-wide search per frame.
+        if (roomCombatPlayer != run.Player)
+        {
+            roomCombatPlayer = run.Player;
+            roomCombatUntil = 0f;
+        }
+        if (run.Phase != RunState.RunPhase.Playing || run.RewardClaimed || run.Player == null || run.Player.IsDead)
+            return;
+        bool fighting = melee != null && (melee.IsAttacking || melee.CooldownRemaining > 0f);
+        var encounter = run.Encounter;
+        fighting |= encounter != null && encounter.Enemy != null && !encounter.IsResolved;
+        if (!fighting)
+        {
+            var filter = new ContactFilter2D();
+            filter.NoFilter();
+            int count = Physics2D.OverlapCircle(run.Player.transform.position, combatDetectionRadius, filter, nearbyEnemies);
+            for (int i = 0; i < count; i++)
+            {
+                ZombieChaser enemy = nearbyEnemies[i] != null ? nearbyEnemies[i].GetComponentInParent<ZombieChaser>() : null;
+                if (enemy == null || enemy.CurrentHealth <= 0) continue;
+                fighting = true;
+                break;
+            }
+        }
+        if (fighting) roomCombatUntil = Time.unscaledTime + combatVisibilityHold;
     }
 
     private void RefreshEncounter(RoomEncounterController encounter)
@@ -187,7 +245,7 @@ public sealed class ZombieRunUI : MonoBehaviour
             choices[i].gameObject.SetActive(available);
             if (!available) continue;
             var upgrade = run.OfferedUpgrades[i];
-            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + (string.IsNullOrEmpty(upgrade.RequiredEffect) ? "" : " · 联动") + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + upgrade.Description;
+            choiceLabels[i].text = "[" + RunUpgradePresentation.BranchName(upgrade.Branch) + (string.IsNullOrEmpty(upgrade.RequiredEffect) ? "" : " · 联动") + "] " + upgrade.Name + "   " + (run.StackCount(upgrade.Id) + 1) + "/" + upgrade.MaxStacks + " 层\n" + RunUpgradePresentation.Description(upgrade, run.UsesBow);
             choiceIcons[i].sprite = Icon(RunUpgradePresentation.Icon(upgrade));
             choiceIcons[i].color = RunUpgradePresentation.Color(upgrade.Branch);
         }
@@ -210,7 +268,9 @@ public sealed class ZombieRunUI : MonoBehaviour
     public void ShowResult(bool victory)
     {
         buffer.Clear();
-        buffer.Append("到达房间   ").Append(run.RoomNumber).Append(" / ").Append(run.RoomCount)
+        buffer.Append("幸存者点数  +").Append(run.EarnedSurvivorPoints).Append("    持有 ").Append(SurvivorMetaProgress.Points)
+            .Append("\n通过房间   ").Append(run.ClearedRooms).Append(" / ").Append(run.RoomCount)
+            .Append("    到达房间 ").Append(run.RoomNumber)
             .Append("       生存时间   ").Append(FormatTime(run.ElapsedSeconds))
             .Append("\n总击杀数   ").Append(run.Kills).Append("       精英击杀   ").Append(run.EliteKills)
             .Append("\n造成伤害   ").Append(run.DamageDealt).Append("       受到伤害   ").Append(run.DamageTaken)
@@ -234,7 +294,7 @@ public sealed class ZombieRunUI : MonoBehaviour
             int count = run.StackCount(upgrade.Id);
             if (count == 0) continue;
             buffer.Append('[').Append(RunUpgradePresentation.BranchName(upgrade.Branch)).Append("] ").Append(upgrade.Name).Append(" ×").Append(count);
-            if (descriptions) buffer.Append("  ").Append(upgrade.Description).Append('\n');
+            if (descriptions) buffer.Append("  ").Append(RunUpgradePresentation.Description(upgrade, run.UsesBow)).Append('\n');
             else buffer.Append(++shown % 4 == 0 ? "\n" : "    ");
         }
     }
@@ -303,6 +363,9 @@ public sealed class ZombieRunUI : MonoBehaviour
         weaponText.color = ZombieHudTheme.Muted;
 
         RectTransform objective = Panel("RoomObjective", hud, new Vector2(0.5f, 1f), new Vector2(0f, -edge), new Vector2(348f, 92f));
+        roomObjectivePanel = objective;
+        roomObjectiveGroup = objective.gameObject.AddComponent<CanvasGroup>();
+        roomObjectiveGroup.alpha = 1f;
         Art("RoomIcon", objective, 5, new Vector2(12f, -16f), new Vector2(42f, 42f));
         roomText = Label("Room", objective, "房间 1 / 5", ZombieHudTheme.Heading, new Vector2(64f, -3f), new Vector2(266f, 38f));
         objectiveText = Label("Objective", objective, "清理街区", ZombieHudTheme.Body, new Vector2(64f, -38f), new Vector2(266f, 26f));
@@ -328,8 +391,11 @@ public sealed class ZombieRunUI : MonoBehaviour
         Label("PauseHint", hud, "暂停\nESC", 12, new Vector2(1f, 1f), new Vector2(-edge, -edge - 52f), new Vector2(48f, 40f), TextAnchor.UpperCenter).color = ZombieHudTheme.Muted;
 
         upgradeRow = Rect("UpgradeRow", hud);
-        Place(upgradeRow, Vector2.zero, new Vector2(edge, edge), new Vector2(560f, 154f));
-        Label("Header", upgradeRow, "本局升级", ZombieHudTheme.Small, new Vector2(0f, -2f), new Vector2(85f, 26f)).color = ZombieHudTheme.Muted;
+        Place(upgradeRow, Vector2.zero, new Vector2(edge, edge), new Vector2(560f, 76f));
+        upgradeBackground = Paint(upgradeRow, new Color(0.015f, 0.025f, 0.02f, 0.6f));
+        upgradeHeader = Label("Header", upgradeRow, "本局升级", ZombieHudTheme.Small, new Vector2(0f, -2f), new Vector2(85f, 26f));
+        upgradeHeader.color = ZombieHudTheme.Text;
+        EnsureTextOutline(upgradeHeader, new Color(0f, 0f, 0f, 0.95f), new Vector2(1.5f, -1.5f));
         branchSummary = Label("Branches", upgradeRow, "快攻 0   冰冻 0   燃烧 0", ZombieHudTheme.Small, new Vector2(92f, -2f), new Vector2(430f, 26f));
         branchSummary.color = ZombieHudTheme.Muted;
         upgradeScrollHint = Label("ScrollHint", upgradeRow, "← 拖动或滚轮 →", 11, new Vector2(406f, -2f), new Vector2(154f, 26f), TextAnchor.MiddleRight);
@@ -353,7 +419,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         Label("Name", slot, "强击", 11, new Vector2(0,-33), new Vector2(56,21), TextAnchor.MiddleCenter);
         Label("StackCount", slot, "×1", 12, new Vector2(32,-3), new Vector2(23,25), TextAnchor.MiddleCenter);
         upgradeTemplate = slot.gameObject; upgradeTemplate.SetActive(false);
-        MakeSkill(hud, "Melee", 1, new Vector2(-edge - ZombieHudTheme.SkillSize - 12f, edge), "近战 / 左键", out meleeMask, out meleeStatus);
+        MakeSkill(hud, "Melee", 1, new Vector2(-edge - ZombieHudTheme.SkillSize - 12f, edge), "攻击 / 左键", out meleeMask, out meleeStatus);
         MakeSkill(hud, "Dash", 2, new Vector2(-edge, edge), "冲刺 / 空格", out dashMask, out dashStatus);
 
         RectTransform overlay = Rect("Modal", canvasRect);
@@ -385,6 +451,35 @@ public sealed class ZombieRunUI : MonoBehaviour
         restart = Button("Restart", window, "再来一局", new Vector2(0f, 0f), new Vector2(32f, 28f), new Vector2(340f, 52f));
         menu = Button("MainMenu", window, "返回主菜单", new Vector2(0f, 0f), new Vector2(388f, 28f), new Vector2(340f, 52f));
         modal.SetActive(false);
+    }
+
+    private void ResolvePolishReferences()
+    {
+        if (canvasRect == null) return;
+        if (roomObjectivePanel == null)
+            roomObjectivePanel = canvasRect.Find("HUD/RoomObjective") as RectTransform;
+        if (roomObjectivePanel != null)
+        {
+            roomObjectiveGroup = roomObjectivePanel.GetComponent<CanvasGroup>();
+            if (roomObjectiveGroup == null) roomObjectiveGroup = roomObjectivePanel.gameObject.AddComponent<CanvasGroup>();
+            roomObjectiveGroup.alpha = 1f;
+        }
+        if (upgradeRow != null)
+        {
+            upgradeBackground = upgradeRow.GetComponent<Image>();
+            if (upgradeBackground == null) upgradeBackground = Paint(upgradeRow, new Color(0.015f, 0.025f, 0.02f, 0.6f));
+            upgradeBackground.color = new Color(0.015f, 0.025f, 0.02f, 0.6f);
+            Outline rowOutline = upgradeRow.GetComponent<Outline>();
+            if (rowOutline != null) rowOutline.enabled = false;
+            if (upgradeHeader == null)
+                upgradeHeader = upgradeRow.Find("Header") != null ? upgradeRow.Find("Header").GetComponent<Text>() : null;
+            if (upgradeHeader != null)
+            {
+                upgradeHeader.color = ZombieHudTheme.Text;
+                EnsureTextOutline(upgradeHeader, new Color(0f, 0f, 0f, 0.95f), new Vector2(1.5f, -1.5f));
+            }
+            if (branchSummary != null) EnsureTextOutline(branchSummary, new Color(0f, 0f, 0f, 0.8f), new Vector2(1f, -1f));
+        }
     }
 
     private void BuildUpgradeWidgets()
@@ -452,6 +547,16 @@ public sealed class ZombieRunUI : MonoBehaviour
         image.color = color;
         image.raycastTarget = false;
         return image;
+    }
+
+    private static void EnsureTextOutline(Text label, Color color, Vector2 distance)
+    {
+        if (label == null) return;
+        Outline outline = label.GetComponent<Outline>();
+        if (outline == null) outline = label.gameObject.AddComponent<Outline>();
+        outline.effectColor = color;
+        outline.effectDistance = distance;
+        outline.useGraphicAlpha = true;
     }
     private static RectTransform Box(string name, Transform parent, Vector2 position, Vector2 size, Color color)
     {

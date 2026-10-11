@@ -167,21 +167,21 @@ public static class ZombieEncounterVerification
         while (!Loaded(5)) yield return null;
         Protect(); Check(Run.Encounter.IsBoss && Run.CurrentRoom.RequiredKills == 25,"final room has boss preparation");
         CompletePreparation(); while (Enemy == null) yield return null;
-        Check(Enemy.isBoss && Enemy.Health.CurrentHealth == 3600 && !Run.RewardClaimed,"final boss blocks completion");
+        Check(Enemy.isBoss && Enemy.Health.CurrentHealth == 15000 && !Run.RewardClaimed,"final boss blocks completion");
         ConfigureFixture(Enemy);
         MovePlayer(UnityEngine.Object.FindObjectsByType<SafeDoor>(FindObjectsSortMode.None).First(d=>d.Role==SafeDoor.DoorRole.Start).transform.position);
-        Enemy.Health.TakeDamage(1800);
+        Enemy.Health.TakeDamage(7500);
         while (!Enemy.IsEnraged) yield return null;
         Check(Enemy.IsEnraged && Enemy.State == ZombieChampion.ActionState.Roar,"half HP enters enrage with roar");
-        Check(Spawner.ActiveCount == 3 && !Spawner.SpawningEnabled,"enrage summons without enabling ordinary waves");
+        Check(Spawner.ActiveCount >= 20 && Spawner.ActiveCount <= 30 && !Spawner.SpawningEnabled,"enrage summons a 20-30 add wave without enabling ordinary waves");
         Enemy.Health.TakeDamage(1); until=Time.time+.05f;while(Time.time<until)yield return null;
-        Check(Spawner.ActiveCount == 3,"enrage triggers only once");
+        Check(Spawner.ActiveCount >= 20 && Spawner.ActiveCount <= 30,"enrage triggers only once");
         Set(Enemy,"nextSummon",Time.time - 1); Invoke(Enemy,"SetState",ZombieChampion.ActionState.Pursuit);
-        while (Spawner.ActiveCount < 6) yield return null;
-        Check(Spawner.ActiveCount == 6,"periodic boss summon");
+        while (Spawner.ActiveCount < 40) yield return null;
+        Check(Spawner.ActiveCount >= 40 && Spawner.ActiveCount <= 60,"periodic boss summon");
         Set(Enemy,"nextSummon",Time.time - 1); Invoke(Enemy,"SetState",ZombieChampion.ActionState.Pursuit);
         until=Time.time+.05f;while(Time.time<until)yield return null;
-        Check(Spawner.ActiveCount == 6,"boss summons capped at six alive");
+        Check(Spawner.ActiveCount >= 40 && Spawner.ActiveCount <= 60,"boss summons remain within configured waves");
         foreach (var z in UnityEngine.Object.FindObjectsByType<ZombieChaser>(FindObjectsSortMode.None))
             if (z.Champion == null) { z.enabled=false; z.GetComponent<Rigidbody2D>().simulated=false; }
         Enemy.Health.ApplyFreeze(1);

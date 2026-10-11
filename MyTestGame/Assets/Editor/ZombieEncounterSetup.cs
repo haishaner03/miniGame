@@ -27,20 +27,23 @@ public static class ZombieEncounterSetup
             var zombie=root.GetComponent<ZombieChaser>();
             zombie.archetype=ZombieChaser.ZombieArchetype.Tank;
             zombie.tankHealthMultiplier=1;zombie.tankSpeedMultiplier=1;
-            zombie.maxHealth=boss?3600:1000;
+            zombie.maxHealth=boss?15000:1000;
             zombie.moveSpeed=boss?1.6f:2f;
             zombie.attackDamage=boss?30:26;zombie.tankAttackDamageBonus=0;
             zombie.attackDistance=.8f;zombie.animationFps=9;
+            if(boss)zombie.attackCooldown=.8f;
             zombie.freezeDurationMultiplier=boss?.3f:.55f;
             zombie.receivedKnockbackMultiplier=boss?.15f:.4f;
             zombie.idleWander=false;zombie.destroyAfterDeath=true;
             var renderer=root.GetComponent<SpriteRenderer>();renderer.color=boss?new Color(.95f,.53f,.4f):new Color(.94f,.8f,.42f);
             var collider=root.GetComponent<CircleCollider2D>();collider.offset=Vector2.zero;collider.radius=.2f/root.transform.localScale.x;
             var champion=root.AddComponent<ZombieChampion>();champion.isBoss=boss;champion.displayName=boss?"街区暴君":"猎食者";
-            champion.slamRadius=boss?1.7f:1.15f;champion.warningDuration=boss?.9f:.8f;
+            ZombieProjectileHitbox.Ensure(zombie);
+            champion.slamRadius=boss?1.7f:1.15f;champion.warningDuration=boss?.75f:.8f;
             champion.slamDamage=boss?30:26;champion.chargeDamage=boss?34:28;
-            champion.chargeSpeed=boss?6.5f:7f;champion.chargeDistance=boss?4.5f:4f;
-            champion.actionCooldown=boss?2.5f:2.7f;
+            champion.chargeSpeed=boss?7.5f:7f;champion.chargeDistance=boss?4.5f:4f;
+            champion.actionCooldown=boss?1.8f:2.7f;
+            if(boss){champion.summonCountMin=20;champion.summonCount=30;champion.maxSummonedAlive=90;champion.summonInterval=10f;champion.barrageWarningDuration=.85f;}
             var bar=new SerializedObject(root.GetComponent<WorldHealthBar>());
             bar.FindProperty("width").floatValue=boss?1.25f:.95f;
             bar.FindProperty("offsetY").floatValue=boss?.92f:.72f;

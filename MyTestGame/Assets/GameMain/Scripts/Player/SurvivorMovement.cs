@@ -11,8 +11,10 @@ public class SurvivorMovement : MonoBehaviour
     private string currentAnimation;
 
     private Rigidbody2D rb;
-        private Vector2 knockbackVelocity;
+    private Vector2 knockbackVelocity;
+    private float knockbackUntil;
     [SerializeField] private float knockbackDamping = 18f;
+    [SerializeField, Min(0.02f)] private float knockbackDuration = 0.3f;
 private Vector2 input;
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public float MoveSpeed => moveSpeed;
@@ -122,16 +124,34 @@ private void UpdateAnimation()
 
         public void ApplyKnockback(Vector2 velocity)
     {
-        knockbackVelocity = Vector2.ClampMagnitude(knockbackVelocity + velocity, 8f);
+        // A new accepted hit replaces recoil; it must not bank impulses while disabled.
+        if (!isActiveAndEnabled) return;
+        knockbackVelocity = Vector2.ClampMagnitude(velocity, 8f);
+        knockbackUntil = Time.time + Mathf.Max(0.02f, knockbackDuration);
     }
 
     public void ClearKnockback()
     {
         knockbackVelocity = Vector2.zero;
+        knockbackUntil = 0f;
+        if (rb != null && rb.simulated)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
     }
+
+    private void OnEnable() { ClearKnockback(); }
+    private void OnDisable() { input = Vector2.zero; ClearKnockback(); }
+
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + (input * moveSpeed + knockbackVelocity) * Time.fixedDeltaTime);
-        knockbackVelocity = Vector2.MoveTowards(knockbackVelocity, Vector2.zero, knockbackDamping * Time.fixedDeltaTime);
+        if (Time.time >= knockbackUntil) knockbackVelocity = Vector2.zero;
+        // 动态移速加成（极寒领域）随冰冻敌人数量实时变化
+        float effectiveSpeed = moveSpeed;
+        var effects = RunState.Instance != null ? RunState.Instance.CombatEffects : null;
+        if (effects != null) effectiveSpeed *= 1f + effects.GetMoveSpeedBonus();
+        rb.MovePosition(rb.position + (input * effectiveSpeed + knockbackVelocity) * Time.fixedDeltaTime);
+        knockbackVelocity = Vector2.MoveTowards(knockbackVelocity, Vector2.zero, Mathf.Max(1f, knockbackDamping) * Time.fixedDeltaTime);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class ZombieSpawner : MonoBehaviour
 {
     public GameObject zombiePrefab;
+    public GameObject[] ordinaryZombiePrefabs;
     public Transform player;
     public Transform[] spawnPoints;
     public int initialSpawnCount = 6;
@@ -27,7 +28,8 @@ public sealed class ZombieSpawner : MonoBehaviour
     [SerializeField] private bool spawningEnabled = true;
 
     private readonly List<GameObject> alive = new List<GameObject>();
-    private readonly Queue<GameObject> pooledZombies = new Queue<GameObject>();
+    private readonly Dictionary<GameObject, Queue<GameObject>> ordinaryPools = new Dictionary<GameObject, Queue<GameObject>>();
+    private readonly Dictionary<GameObject, GameObject> ordinarySources = new Dictionary<GameObject, GameObject>();
     private readonly Queue<GameObject> pooledElites = new Queue<GameObject>();
     private GameObject elitePrefab;
     private float eliteChance;
@@ -62,7 +64,15 @@ public sealed class ZombieSpawner : MonoBehaviour
     }
 
     public int ActiveCount => alive.Count;
-    public int PooledCount => pooledZombies.Count + pooledElites.Count;
+    public int PooledCount
+    {
+        get
+        {
+            int total = pooledElites.Count;
+            foreach (var pool in ordinaryPools.Values) total += pool.Count;
+            return total;
+        }
+    }
     private float runWaveMultiplier = 1f;
     private float runHealthMultiplier = 1f;
     private float runVariantChance;
@@ -79,6 +89,8 @@ public sealed class ZombieSpawner : MonoBehaviour
     public void ConfigureForRun(RunState run)
     {
         isRunRoom = true;
+        if (run.Config.ordinaryZombiePrefabs != null && run.Config.ordinaryZombiePrefabs.Length > 0)
+            ordinaryZombiePrefabs = run.Config.ordinaryZombiePrefabs;
         isFirstRoom = run.RoomIndex == 0;
         elitePrefab = run.Config.eliteEncounterPrefab;
         var champion = elitePrefab != null ? elitePrefab.GetComponent<ZombieChampion>() : null;
@@ -187,7 +199,8 @@ public sealed class ZombieSpawner : MonoBehaviour
             return null;
 
         instance.transform.SetPositionAndRotation(position, Quaternion.identity);
-        instance.name = (spawnElite ? "EliteHunter_" : "Zombie_") + alive.Count.ToString("00");
+        var appearance = instance.GetComponent<ZombieDirectionalAnimator>();
+        instance.name = (spawnElite ? "EliteHunter_" : "Zombie_Type" + (appearance != null ? appearance.OrdinaryTypeId : 1) + "_") + alive.Count.ToString("00");
         ZombieChaser chaser = instance.GetComponent<ZombieChaser>();
         if (chaser != null)
         {
@@ -471,9 +484,10 @@ public sealed class ZombieSpawner : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             bool elite = i < eliteCount;
-            GameObject instance = CreatePooledZombie(elite);
+            var prefab = elite ? elitePrefab : OrdinaryPrefab(i - eliteCount);
+            GameObject instance = CreatePooledZombie(elite, prefab);
             if (instance != null)
-                (elite ? pooledElites : pooledZombies).Enqueue(instance);
+                (elite ? pooledElites : OrdinaryPool(prefab)).Enqueue(instance);
         }
     }
 
@@ -486,7 +500,7 @@ public sealed class ZombieSpawner : MonoBehaviour
 
     private GameObject GetZombieFromPool(bool elite)
     {
-        var prefab = elite ? elitePrefab : zombiePrefab;
+        var prefab = elite ? elitePrefab : OrdinaryPrefab(Random.Range(0, OrdinaryVariantCount));
         if (!useObjectPool)
         {
             GameObject created = Instantiate(prefab, transform);
@@ -494,7 +508,7 @@ public sealed class ZombieSpawner : MonoBehaviour
             return created;
         }
 
-        var pool = elite ? pooledElites : pooledZombies;
+        var pool = elite ? pooledElites : OrdinaryPool(prefab);
         while (pool.Count > 0)
         {
             GameObject pooled = pool.Dequeue();
@@ -502,13 +516,34 @@ public sealed class ZombieSpawner : MonoBehaviour
                 return pooled;
         }
 
-        return CreatePooledZombie(elite);
+        return CreatePooledZombie(elite, prefab);
     }
 
-    private GameObject CreatePooledZombie(bool elite)
+    private int OrdinaryVariantCount => ordinaryZombiePrefabs != null && ordinaryZombiePrefabs.Length > 0 ? ordinaryZombiePrefabs.Length : 1;
+
+    private GameObject OrdinaryPrefab(int index)
     {
-        GameObject instance = Instantiate(elite ? elitePrefab : zombiePrefab, transform);
+        if (ordinaryZombiePrefabs == null || ordinaryZombiePrefabs.Length == 0) return zombiePrefab;
+        var prefab = ordinaryZombiePrefabs[Mathf.Abs(index) % ordinaryZombiePrefabs.Length];
+        return prefab != null ? prefab : zombiePrefab;
+    }
+
+    private Queue<GameObject> OrdinaryPool(GameObject prefab)
+    {
+        Queue<GameObject> pool;
+        if (!ordinaryPools.TryGetValue(prefab, out pool))
+        {
+            pool = new Queue<GameObject>();
+            ordinaryPools.Add(prefab, pool);
+        }
+        return pool;
+    }
+
+    private GameObject CreatePooledZombie(bool elite, GameObject prefab)
+    {
+        GameObject instance = Instantiate(prefab, transform);
         instance.SetActive(false);
+        if (!elite) ordinarySources[instance] = prefab;
         return instance;
     }
 
@@ -527,7 +562,13 @@ public sealed class ZombieSpawner : MonoBehaviour
 
         instance.SetActive(false);
         instance.transform.SetParent(transform, false);
-        (chaser.Champion != null ? pooledElites : pooledZombies).Enqueue(instance);
+        if (chaser.Champion != null) pooledElites.Enqueue(instance);
+        else
+        {
+            GameObject source;
+            if (!ordinarySources.TryGetValue(instance, out source)) source = zombiePrefab;
+            OrdinaryPool(source).Enqueue(instance);
+        }
     }
 
     private void OnDrawGizmosSelected()

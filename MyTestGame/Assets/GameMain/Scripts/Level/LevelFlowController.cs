@@ -39,6 +39,9 @@ public sealed class LevelFlowController : MonoBehaviour
     public FlowState State { get; private set; } = FlowState.Waiting;
     public bool ExitUnlocked { get; private set; }
     public string NextScenePath => nextScenePath;
+    public SafeDoor StartDoor => startDoor;
+    public SafeDoor ExitDoor => exitDoor;
+    public bool RequiresRegionalWaves => requireRegionalWaves;
     public int TotalObjectiveWaves => !requireRegionalWaves || requiredWaves == null ? 0 : requiredWaves.Length;
     public int CompletedObjectiveWaves => ClearedWaveCount();
     public int RemainingEnemies => zombieSpawner != null ? zombieSpawner.ActiveCount : 0;
@@ -100,6 +103,23 @@ public sealed class LevelFlowController : MonoBehaviour
 
         if (startDoor != null)
             startDoor.Initialize(this, SafeDoor.DoorRole.Start);
+
+        if (!requireRegionalWaves)
+        {
+            bool openedGate = false;
+            foreach (ZoneGate gate in FindObjectsByType<ZoneGate>(FindObjectsSortMode.None))
+            {
+                if (gate.gameObject.scene != gameObject.scene || gate.IsOpen) continue;
+                gate.OpenImmediately();
+                openedGate = true;
+            }
+            if (openedGate)
+            {
+                Physics2D.SyncTransforms();
+                var navigation = FindFirstObjectByType<ZombieGridPathfinder>();
+                if (navigation != null) navigation.Rebuild();
+            }
+        }
 
         State = autoStart ? FlowState.Playing : FlowState.Waiting;
         if (playerHealth != null)

@@ -21,6 +21,21 @@ public sealed class SurvivorWeaponPoseLibrary : ScriptableObject
     public Pose[] attackUp = new Pose[0];
     public Pose[] attackRight = new Pose[0];
     public Pose[] attackLeft = new Pose[0];
+    public Sprite[] bowAttackDown = new Sprite[0];
+    public Sprite[] bowAttackUp = new Sprite[0];
+    public Sprite[] bowAttackRight = new Sprite[0];
+    public Sprite[] bowAttackLeft = new Sprite[0];
+
+    public Sprite[] BowAttack(SurvivorView view)
+    {
+        switch (view)
+        {
+            case SurvivorView.Up: return bowAttackUp;
+            case SurvivorView.Right: return bowAttackRight;
+            case SurvivorView.Left: return bowAttackLeft;
+            default: return bowAttackDown;
+        }
+    }
 
     public Pose[] Attack(SurvivorView view)
     {

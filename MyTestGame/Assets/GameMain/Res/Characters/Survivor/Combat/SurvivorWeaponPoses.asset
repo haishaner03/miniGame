@@ -433,3 +433,31 @@ MonoBehaviour:
     view: 3
     gripPixel: {x: 22.6, y: 34.3}
     weaponAngle: 25
+  bowAttackDown:
+  - {fileID: 21300000, guid: b840360a321a204408c893a71510bd68, type: 3}
+  - {fileID: 21300000, guid: ae8e118d7524c94499c8f821070653cb, type: 3}
+  - {fileID: 21300000, guid: e0edda6ce9de1c24b8fb162c12bca145, type: 3}
+  - {fileID: 21300000, guid: b4d07c64fc65c4a48a36e5f56b30c92b, type: 3}
+  - {fileID: 21300000, guid: 9bd017770cca2e0468b4cb7f41d2d2d2, type: 3}
+  - {fileID: 21300000, guid: 6e2e26761f4fc954e948dde0d8740eab, type: 3}
+  bowAttackUp:
+  - {fileID: 21300000, guid: d3329be001d8c1f4b9a5556a164738d6, type: 3}
+  - {fileID: 21300000, guid: 9671c0ffdc3e1534a87613cbbd6e611a, type: 3}
+  - {fileID: 21300000, guid: f0cbb9efccf6fa24d8205145eb9ce783, type: 3}
+  - {fileID: 21300000, guid: e3768373171711b43a8b1fa017619c53, type: 3}
+  - {fileID: 21300000, guid: 9f895969881a6834ca6334719ad3e2fa, type: 3}
+  - {fileID: 21300000, guid: 00ba09bec21990c4193d14235cc47d2d, type: 3}
+  bowAttackRight:
+  - {fileID: 21300000, guid: 707596b6985930048b731c7c50257c4d, type: 3}
+  - {fileID: 21300000, guid: f707f4d7ddffb3b42b9950fd5de6fab5, type: 3}
+  - {fileID: 21300000, guid: e4ce02e3d6e07654aa39238153e972c4, type: 3}
+  - {fileID: 21300000, guid: de743fd6aa19abe4fa4c2071fff0d1c8, type: 3}
+  - {fileID: 21300000, guid: 6e9eef29efac9e14ba464cdc8290bc88, type: 3}
+  - {fileID: 21300000, guid: 905400a05fa1f1743aa3cf3ea7a11dce, type: 3}
+  bowAttackLeft:
+  - {fileID: 21300000, guid: d9d0dab2194d72f4695572d8526b0ff5, type: 3}
+  - {fileID: 21300000, guid: 76ac7c8079b400b41ad07ebe2c94587c, type: 3}
+  - {fileID: 21300000, guid: b087f204fad6509478fccbf54f26bfc8, type: 3}
+  - {fileID: 21300000, guid: 2fd12c53d96902848891ae5530216bdb, type: 3}
+  - {fileID: 21300000, guid: b624493b67284b5459cb785a5895def5, type: 3}
+  - {fileID: 21300000, guid: b31d2ee845630b0439147b1fd6cea625, type: 3}

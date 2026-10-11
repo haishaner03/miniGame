@@ -18,6 +18,7 @@ public sealed class SafeDoor : MonoBehaviour
     [SerializeField] private bool locked = true;
     [SerializeField] private Color lockedColor = new Color(1f, 0.35f, 0.25f, 1f);
     [SerializeField] private Color unlockedColor = new Color(0.35f, 1f, 0.55f, 1f);
+    [SerializeField] private SpriteRenderer markerRenderer;
 
     private Collider2D doorCollider;
     private SpriteRenderer spriteRenderer;
@@ -35,7 +36,7 @@ public sealed class SafeDoor : MonoBehaviour
         doorCollider = GetComponent<Collider2D>();
         doorCollider.isTrigger = true;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = markerRenderer != null ? markerRenderer : GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
             baseColor = spriteRenderer.color;
     }

@@ -10,6 +10,8 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
     [Header("可装备武器")]
     [SerializeField] private MeleeWeaponDefinition machete;
     [SerializeField] private MeleeWeaponDefinition ironBar;
+    [SerializeField] private MeleeWeaponDefinition bow;
+    [SerializeField] private MeleeWeaponDefinition hammer;
     private MeleeWeaponDefinition equipped;
     private SurvivorWeaponVisual weaponVisual;
     private bool heavyWeapon;
@@ -22,12 +24,35 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
     public float AttackProgress => Mathf.Clamp01(attackElapsed / Mathf.Max(0.01f, attackDuration));
     public float WeaponKnockbackMultiplier => equipped != null ? equipped.knockbackMultiplier : 1f;
     public MeleeWeaponDefinition GetWeaponDefinition(bool heavy) => heavy ? ironBar : machete;
+    public MeleeWeaponDefinition GetWeaponDefinition(SurvivorWeaponKind kind)
+    {
+        switch (kind)
+        {
+            case SurvivorWeaponKind.Bow: return bow != null ? bow : machete;
+            case SurvivorWeaponKind.Hammer: return hammer != null ? hammer : ironBar;
+            case SurvivorWeaponKind.IronBar: return ironBar;
+            default: return machete;
+        }
+    }
 
     public void EquipWeapon(bool heavy)
     {
         if (IsAttacking) EndAttack();
         heavyWeapon = heavy;
         equipped = GetWeaponDefinition(heavy);
+        ApplyWeaponDefinition();
+    }
+
+    public void EquipWeapon(SurvivorWeaponKind kind)
+    {
+        if (IsAttacking) EndAttack();
+        heavyWeapon = kind == SurvivorWeaponKind.IronBar || kind == SurvivorWeaponKind.Hammer;
+        equipped = GetWeaponDefinition(kind);
+        ApplyWeaponDefinition();
+    }
+
+    private void ApplyWeaponDefinition()
+    {
         if (equipped != null)
         {
             damage = equipped.damage;
@@ -269,14 +294,23 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
         Vector2 origin = AttackOrigin;
         var filter = new ContactFilter2D();
         filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
-        filter.useTriggers = true;
-        int count = Physics2D.OverlapCircle(origin, attackRadius, filter, hitBuffer);
-        hitTargets.Clear();
-        float halfArc = (equipped != null ? equipped.arcDegrees : 120f) * 0.5f;
+        filter.useTriggers = false;
         var run = RunState.Instance;
         var effects = run != null ? run.CombatEffects : null;
+        // 动态范围加成（凛冬之怒）在命中检测时实时计算
+        float hitRadius = effects != null
+            ? attackRadius * (1f + effects.GetMeleeRangeBonus())
+            : attackRadius;
+        int count = Physics2D.OverlapCircle(origin, hitRadius, filter, hitBuffer);
+        hitTargets.Clear();
+        float halfArc = (equipped != null ? equipped.arcDegrees : 120f) * 0.5f;
         int swingDamage = effects != null ? effects.SwingDamage(damage) : damage;
         swingDamage = Mathf.Max(1, swingDamage + Random.Range(-DamageVariance, DamageVariance + 1));
+        if (equipped != null && equipped.kind == SurvivorWeaponKind.Bow)
+        {
+            FireArrows(swingDamage);
+            return;
+        }
         int actualSwingDamage = 0;
         for (int i = 0; i < count; i++)
         {
@@ -300,6 +334,29 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
             actualSwingDamage += healthBefore - zombie.CurrentHealth;
         }
         if (effects != null) effects.CompleteSwing(actualSwingDamage);
+    }
+
+    private void FireArrows(int swingDamage)
+    {
+        RunState run = RunState.Instance;
+        int count = Mathf.Max(1, equipped.projectileCount);
+        if (run != null) count += Mathf.Max(0, Mathf.FloorToInt(run.EffectTotal("BowMultishot")));
+        int pierce = equipped.projectilePierce;
+        if (run != null) pierce += Mathf.FloorToInt(run.EffectTotal("BowPierce"));
+        float spread = count > 1 ? 12f : 0f;
+        if (run == null || run.ArrowPool == null) return;
+        int arrowDamage = Mathf.RoundToInt(swingDamage * Mathf.Max(0.4f, 1f - (count - 1) * 0.15f));
+        bool critical = Random.value < Mathf.Clamp01(run.EffectTotal("BowCrit"));
+        if (critical) arrowDamage = Mathf.RoundToInt(arrowDamage * 1.75f);
+        float speed = equipped.projectileSpeed * (1f + run.EffectTotal("BowSpeed"));
+        float lifetime = equipped.projectileLifetime * (1f + run.EffectTotal("BowRange"));
+        for (int i = 0; i < count; i++)
+        {
+            float angle = (i - (count - 1) * 0.5f) * spread;
+            Vector2 direction = Quaternion.Euler(0f, 0f, angle) * facingDirection;
+            run.ArrowPool.Fire(AttackOrigin, direction, arrowDamage, speed, lifetime,
+                pierce, Random.Range(2.4f, 3.4f) * KnockbackMultiplier, run);
+        }
     }
 
     private bool HasObstacleBetween(Vector2 origin, Vector2 point, ZombieChaser targetZombie)
@@ -353,6 +410,7 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
     {
         if (slash == null)
             return;
+        if (equipped != null && equipped.kind == SurvivorWeaponKind.Bow) { slash.enabled = false; return; }
         float duration = equipped != null ? equipped.trailDuration : 0.07f;
         float local = (attackElapsed - hitTime + duration * 0.25f) / duration;
         slash.enabled = local >= 0f && local < 1f;

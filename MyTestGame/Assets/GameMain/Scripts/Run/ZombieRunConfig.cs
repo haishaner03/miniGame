@@ -16,6 +16,9 @@ public sealed class ZombieRunConfig : ScriptableObject
     public Font uiFont;
     public GameObject battleUiPrefab;
     public GameObject startingWeaponPickerPrefab;
+    public GameObject arrowProjectilePrefab;
+    [Header("普通丧尸外观；各自独立的四方向动画")]
+    public GameObject[] ordinaryZombiePrefabs;
     [Header("精英与最终 Boss")]
     public GameObject eliteEncounterPrefab;
     public GameObject bossEncounterPrefab;

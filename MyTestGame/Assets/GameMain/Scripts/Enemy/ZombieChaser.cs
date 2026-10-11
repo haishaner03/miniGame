@@ -187,6 +187,7 @@ public int CurrentHealth => currentHealth;
         hitCollider = GetComponent<Collider2D>();
         if (spriteRenderer == null)
             spriteRenderer = GetComponent<SpriteRenderer>();
+        ZombieProjectileHitbox.Ensure(this);
 
         body.gravityScale = 0f;
         body.freezeRotation = true;

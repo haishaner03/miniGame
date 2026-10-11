@@ -155,6 +155,7 @@ public static class ZombieDirectionalArtSetup
             data.FindProperty("attackDuration").floatValue = 8f / 12f;
             data.FindProperty("attackHitTime").floatValue = 3f / 12f;
             data.FindProperty("deathDuration").floatValue = 4f / 10f;
+            data.FindProperty("attackSpeedMultiplier").floatValue = path.Contains("Boss") ? 1.35f : 1f;
             data.ApplyModifiedPropertiesWithoutUndo();
             zombie.walkFrames = Frames("Walk", "Down", art);
             zombie.attackFrames = Frames("Attack", "Down", art);

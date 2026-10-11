@@ -167,6 +167,16 @@ public sealed class ZombieGridPathfinder : MonoBehaviour
         return false;
     }
 
+    /// <summary>Copy the current reachable component for one-time room assembly.</summary>
+    public void CopyReachableCells(Vector2 origin, List<Vector2> result)
+    {
+        if (result == null) return;
+        result.Clear();
+        if (!IsWalkablePosition(origin) || !TryFindPath(origin, origin, spawnPath)) return;
+        for (int i = 0; i < visited.Length; i++)
+            if (visited[i]) result.Add(GridToWorld(FromIndex(i)));
+    }
+
     private void VisitNeighbors(
         Vector2Int current,
         Vector2Int[] directions,

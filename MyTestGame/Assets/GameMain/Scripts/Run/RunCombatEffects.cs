@@ -35,6 +35,9 @@ public sealed class RunCombatEffects : MonoBehaviour
         rhythmHits = 0; comboHits = 0; comboFrenzyUntil = -100f;
         dashArmorActive = false; lastDashTime = -100f;
         frozenCount = 0; frostMomentumStacks = 0; frostMomentumUntil = -100f;
+        lowHealthRegenAccumulator = 0f;
+        burnZones.Clear();
+        statusScanFrame = -1; burningEnemyCount = 0; frozenEnemyCount = 0;
         foreach (var visual in activeVisuals) { visual.line.gameObject.SetActive(false); idleVisuals.Enqueue(visual.line); }
         activeVisuals.Clear();
     }
@@ -91,6 +94,7 @@ public sealed class RunCombatEffects : MonoBehaviour
     {
         bool frozen = target.IsFrozen, burning = target.IsBurning;
         int damage = swingDamage;
+        bool convertFreezeToBurn = run.EffectTotal("ConvertFreezeToBurn") > 0;
 
         // 冻伤加成：冰冻敌人 +45% 伤害
         if (frozen) damage = Mathf.RoundToInt(damage * (1f + run.EffectTotal("FrozenDamage")));
@@ -110,9 +114,9 @@ public sealed class RunCombatEffects : MonoBehaviour
         if (burning && run.EffectTotal("BurnExecute") > 0 && target.CurrentHealth < target.CurrentMaxHealth * 0.3f)
             damage = target.CurrentHealth + 100;
 
-        // 应用冰冻概率（急冻加速、疾速冰封联动）
-        float freezeChance = run.EffectTotal("FreezeChance");
-        if (run.EffectTotal("MoveSpeed") > 0.5f) freezeChance += run.EffectTotal("HasteFreeze");
+        // 应用冰冻概率（急冻加速联动：移动速度 ≥ +20% 时生效）
+        float freezeChance = convertFreezeToBurn ? 0f : run.EffectTotal("FreezeChance");
+        if (!convertFreezeToBurn && run.EffectTotal("MoveSpeed") >= 0.2f) freezeChance += run.EffectTotal("HasteFreeze");
         if (Random.value < Mathf.Clamp01(freezeChance))
         {
             target.ApplyFreeze(FreezeDuration);
@@ -124,13 +128,13 @@ public sealed class RunCombatEffects : MonoBehaviour
             }
         }
 
-        // 应用燃烧概率（焚心加速、疾速燃爆联动）
-        float burnChance = run.EffectTotal("BurnChance");
-        if (run.EffectTotal("MoveSpeed") > 0.5f) burnChance += run.EffectTotal("HasteBurn");
+        // 应用燃烧概率（焚心加速联动：移动速度 ≥ +20% 时生效）
+        float burnChance = run.EffectTotal("BurnChance") + (convertFreezeToBurn ? run.EffectTotal("FreezeChance") : 0f);
+        if (run.EffectTotal("MoveSpeed") >= 0.2f) burnChance += run.EffectTotal("HasteBurn");
         if (Random.value < Mathf.Clamp01(burnChance)) Ignite(target);
 
         // 冰霜扩散（击中冰冻敌人时）
-        if (frozen && Random.value < Mathf.Clamp01(run.EffectTotal("FrostSpread"))) Spread(target, true);
+        if (frozen && Random.value < Mathf.Clamp01(run.EffectTotal("FrostSpread"))) Spread(target, !convertFreezeToBurn);
 
         // 燃烧蔓延（击中燃烧敌人时）
         if (burning && Random.value < Mathf.Clamp01(run.EffectTotal("BurnSpread"))) Spread(target, false);
@@ -142,7 +146,10 @@ public sealed class RunCombatEffects : MonoBehaviour
     {
         var melee = run.Player != null ? run.Player.GetComponent<SurvivorMeleeAttack>() : null;
         int baseDamage = melee != null ? melee.Damage : 80;
-        target.ApplyBurn(3f + run.EffectTotal("BurnDuration"), Mathf.Max(1, Mathf.RoundToInt(baseDamage * .25f * (1f + run.EffectTotal("BurnDamage")))));
+        float burnMultiplier = 1f + run.EffectTotal("BurnDamage");
+        // Bridge card: igniting an already frozen target makes its DoT stronger.
+        if (target.IsFrozen) burnMultiplier *= 1f + run.EffectTotal("FrostfireBurn");
+        target.ApplyBurn(3f + run.EffectTotal("BurnDuration"), Mathf.Max(1, Mathf.RoundToInt(baseDamage * .25f * burnMultiplier)));
     }
     private int Nearby(Vector2 origin, float radius)
     {
@@ -187,6 +194,45 @@ public sealed class RunCombatEffects : MonoBehaviour
 
         if (ice || fire || frostfire)
             bursts.Enqueue(new Burst { origin = origin, ice = ice, fire = fire, frostfire = frostfire, depth = processingDepth + 1 });
+
+        // 炼狱步伐：燃烧敌人死亡时留下火焰区域
+        if (burning && run.EffectTotal("BurnZone") > 0)
+            SpawnBurnZone(origin);
+    }
+
+    private struct BurnZone { public Vector2 center; public float until; public float nextTick; }
+    private readonly List<BurnZone> burnZones = new List<BurnZone>();
+
+    private void SpawnBurnZone(Vector2 center)
+    {
+        if (burnZones.Count >= 12) burnZones.RemoveAt(0);
+        burnZones.Add(new BurnZone { center = center, until = Time.time + 3f, nextTick = Time.time + 1f });
+        ShowBurst(center, new Color(1f, .4f, .1f, .5f));
+    }
+
+    private void TickBurnZones()
+    {
+        for (int i = burnZones.Count - 1; i >= 0; i--)
+        {
+            var zone = burnZones[i];
+            if (Time.time > zone.until) { burnZones.RemoveAt(i); continue; }
+            if (Time.time < zone.nextTick) continue;
+            zone.nextTick = Time.time + 1f;
+            burnZones[i] = zone;
+
+            var melee = run.Player != null ? run.Player.GetComponent<SurvivorMeleeAttack>() : null;
+            int baseDamage = melee != null ? melee.Damage : 80;
+            int tickDamage = Mathf.Max(1, Mathf.RoundToInt(baseDamage * run.EffectTotal("BurnZone")));
+
+            int count = Nearby(zone.center, 1.8f);
+            for (int h = 0; h < count; h++)
+            {
+                var target = hits[h] != null ? hits[h].GetComponentInParent<ZombieChaser>() : null;
+                if (target == null || target.CurrentHealth <= 0) continue;
+                Ignite(target);
+                target.TakeDamage(tickDamage, Vector2.zero, 0.5f, true);
+            }
+        }
     }
     private void Update()
     {
@@ -194,6 +240,7 @@ public sealed class RunCombatEffects : MonoBehaviour
 
         TickVisuals();
         TickPassiveEffects();
+        TickBurnZones();
 
         int budget = 12;
         while (bursts.Count > 0 && budget-- > 0)
@@ -306,6 +353,9 @@ public sealed class RunCombatEffects : MonoBehaviour
     // 获取当前减伤（供 SurvivorHealth 调用）
     public float GetDamageReduction()
     {
+        // 玻璃大炮：完全放弃减伤，换取近战伤害 +80%
+        if (run.EffectTotal("GlassCannon") > 0) return 0f;
+
         float reduction = 0f;
         if (dashArmorActive) reduction += run.EffectTotal("DashArmor");
         // 燃烧护甲：每个燃烧敌人减伤 4%
@@ -343,24 +393,6 @@ public sealed class RunCombatEffects : MonoBehaviour
         return bonus;
     }
 
-    // 玩家死亡时触发（炼狱步伐）
-    public void OnPlayerDeath(Vector3 position)
-    {
-        if (run.EffectTotal("BurnZone") > 0)
-        {
-            float range = 4f; // 死亡燃烧范围
-            var colliders = Physics2D.OverlapCircleAll(position, range);
-            foreach (var col in colliders)
-            {
-                var zombie = col.GetComponent<ZombieChaser>();
-                if (zombie != null && !zombie.IsDead)
-                {
-                    ApplyBurn(zombie);
-                }
-            }
-        }
-    }
-
     private void ShowBurst(Vector2 position, Color color)
     {
         if (activeVisuals.Count >= 16) return;
@@ -389,12 +421,35 @@ public sealed class RunCombatEffects : MonoBehaviour
     }
     private void OnDestroy(){if(burstMaterial!=null)Destroy(burstMaterial);}
 
-    private int CountBurningEnemies()
+    // 状态计数按帧缓存：同一帧内多个系统查询只扫描一次
+    private int statusScanFrame = -1;
+    private int burningEnemyCount;
+    private int frozenEnemyCount;
+
+    private void ScanStatusCounts()
     {
-        int count = 0;
+        if (statusScanFrame == Time.frameCount) return;
+        statusScanFrame = Time.frameCount;
+        burningEnemyCount = 0;
+        frozenEnemyCount = 0;
         var enemies = FindObjectsOfType<ZombieChaser>();
         foreach (var enemy in enemies)
-            if (enemy.IsBurning && enemy.CurrentHealth > 0) count++;
-        return count;
+        {
+            if (enemy == null || enemy.CurrentHealth <= 0) continue;
+            if (enemy.IsBurning) burningEnemyCount++;
+            if (enemy.IsFrozen) frozenEnemyCount++;
+        }
+    }
+
+    private int CountBurningEnemies()
+    {
+        ScanStatusCounts();
+        return burningEnemyCount;
+    }
+
+    private int CountFrozenEnemies()
+    {
+        ScanStatusCounts();
+        return frozenEnemyCount;
     }
 }

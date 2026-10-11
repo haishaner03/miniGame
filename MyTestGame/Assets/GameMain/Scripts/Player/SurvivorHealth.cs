@@ -116,8 +116,18 @@ public sealed class SurvivorHealth : MonoBehaviour
         if (damage <= 0 || IsDead || IsGameOver || Time.timeScale <= 0f || Time.time < invulnerableUntil)
             return;
 
+        var combatEffects = RunState.Instance != null ? RunState.Instance.CombatEffects : null;
+
+        // 影舞：冲刺期间免疫伤害
+        var dash = GetComponent<SurvivorDash>();
+        if (dash != null && dash.IsDashing &&
+            RunState.Instance != null && RunState.Instance.EffectTotal("DashInvincible") > 0)
+        {
+            FloatingCombatText.Spawn(damageTextPrefab, transform.position + Vector3.up * 0.58f, "闪避", Color.white);
+            return;
+        }
+
         // 应用减伤
-        var combatEffects = RunState.Instance != null ? RunState.Instance.GetComponent<RunCombatEffects>() : null;
         if (combatEffects != null)
         {
             float reduction = combatEffects.GetDamageReduction();
@@ -165,11 +175,6 @@ public sealed class SurvivorHealth : MonoBehaviour
         IsDead = true;
         DeathCount++;
         PlayerDied?.Invoke(DeathCount);
-
-        // 炼狱步伐：死亡时点燃周围敌人
-        var combatEffects = RunState.Instance != null ? RunState.Instance.CombatEffects : null;
-        if (combatEffects != null)
-            combatEffects.OnPlayerDeath(transform.position);
 
         if (movement != null)
             movement.enabled = false;

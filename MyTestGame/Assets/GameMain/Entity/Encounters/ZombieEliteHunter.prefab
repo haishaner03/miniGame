@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 8483082660045671864}
   - component: {fileID: 3248198967203256288}
   - component: {fileID: 380257897640971798}
-  - component: {fileID: 4436865595977528901}
   - component: {fileID: 1876904816921868695}
   - component: {fileID: 8701840392930882376}
+  - component: {fileID: 4436865595977528901}
   m_Layer: 0
   m_Name: ZombieEliteHunter
   m_TagString: Untagged
@@ -37,7 +37,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.05, y: 1.05, z: 1.05}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4899622430400915651}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5820531535023963348
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8acc6bf3fd18aaf428ebfb72593b33b3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieChaser
   archetype: 2
   hitFlashDuration: 0.08
@@ -247,7 +248,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a36afbcb73729b5489ea0a6ed1a8a08b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurvivorDepthSort
   groundOffsetY: 0
   orderOffset: 1
@@ -261,7 +262,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d3e8ce035b7b744483b79caf560f21f, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldHealthBar
   width: 0.75
   height: 0.075
@@ -271,29 +272,6 @@ MonoBehaviour:
   hideWhenDead: 1
   fillColor: {r: 0.3, g: 1, b: 0.35, a: 1}
   zombieFillColor: {r: 1, g: 0.65, b: 0.2, a: 1}
---- !u!114 &4436865595977528901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994269687398861871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a88b0065b0847374a8d68957caa7702c, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieChampion
-  isBoss: 0
-  displayName: "\u730E\u98DF\u8005"
-  slamRadius: 1.15
-  warningDuration: 0.8
-  chargeSpeed: 7
-  chargeDistance: 4
-  slamDamage: 26
-  chargeDamage: 28
-  actionCooldown: 2.7
-  summonCount: 3
-  maxSummonedAlive: 6
 --- !u!95 &1876904816921868695
 Animator:
   serializedVersion: 7
@@ -311,7 +289,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage:
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -326,8 +304,132 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 570753b27b421984bafe2832a57ebbb0, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieDirectionalAnimator
+  ordinaryTypeId: 1
   attackDuration: 0.6666667
   attackHitTime: 0.25
+  attackSpeedMultiplier: 1
   deathDuration: 0.4
+--- !u!114 &4436865595977528901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994269687398861871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a88b0065b0847374a8d68957caa7702c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieChampion
+  isBoss: 0
+  displayName: "\u730E\u98DF\u8005"
+  slamRadius: 1.15
+  warningDuration: 0.8
+  chargeSpeed: 7
+  chargeDistance: 4
+  slamDamage: 26
+  chargeDamage: 28
+  actionCooldown: 2.7
+  summonCount: 3
+  summonCountMin: 0
+  maxSummonedAlive: 6
+  summonInterval: 12
+  bossRecoveryDuration: 0.65
+  roarDuration: 0.9
+  barrageRadius: 0.65
+  barrageWarningDuration: 1.1
+  barrageDamage: 20
+  fallingDebrisSprite: {fileID: 0}
+--- !u!1 &6134356391764399564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4899622430400915651}
+  - component: {fileID: 8685311552005467134}
+  - component: {fileID: 5192222740871221728}
+  m_Layer: 0
+  m_Name: ProjectileHitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4899622430400915651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134356391764399564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5679601375628050002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &8685311552005467134
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134356391764399564}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.3}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.64, y: 1.02}
+  m_EdgeRadius: 0
+--- !u!114 &5192222740871221728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134356391764399564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65d3bda222c4264dab59ac46fdc4a13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieProjectileHitbox

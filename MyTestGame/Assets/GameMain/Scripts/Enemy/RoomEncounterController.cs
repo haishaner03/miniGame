@@ -12,7 +12,7 @@ public sealed class RoomEncounterController : MonoBehaviour
     public bool IsResolved => !IsRequired || Stage == EncounterStage.Defeated;
     public ZombieChampion Enemy { get; private set; }
     public float DefeatedAt { get; private set; }
-    public string EnemyName => IsBoss ? "街区暴君" : "猎食者";
+    public string EnemyName => Enemy != null ? Enemy.displayName : IsBoss ? "铸路者" : "猎食者";
     private RunState run;
     private ZombieSpawner spawner;
     private ZombieGridPathfinder nav;
@@ -69,13 +69,26 @@ public sealed class RoomEncounterController : MonoBehaviour
             {
                 float angle = i * Mathf.PI * 2f / 24f;
                 Vector2 candidate = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
-                if (!nav.IsWalkablePosition(candidate) || !nav.TryFindPath(candidate, center, spawnRoute)) continue;
+                if (!FitsChampion(candidate) || !nav.TryFindPath(candidate, center, spawnRoute)) continue;
                 position = candidate;
                 return true;
             }
         for (int attempt = 0; attempt < 16; attempt++)
-            if (nav.TryRandomWalkable(center, 2f, out position) && nav.TryFindPath(position, center, spawnRoute)) return true;
+            if (nav.TryRandomWalkable(center, 2f, out position) && FitsChampion(position) && nav.TryFindPath(position, center, spawnRoute)) return true;
         return false;
+    }
+
+    private bool FitsChampion(Vector2 position)
+    {
+        if (!nav.IsWalkablePosition(position)) return false;
+        if (!IsBoss) return true;
+        // A larger visual still needs a valid foot footprint, including beside thin walls.
+        for (int i = 0; i < 8; i++)
+        {
+            float angle = i * Mathf.PI / 4f;
+            if (!nav.IsWalkablePosition(position + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * .3f)) return false;
+        }
+        return true;
     }
 
     private void Update()

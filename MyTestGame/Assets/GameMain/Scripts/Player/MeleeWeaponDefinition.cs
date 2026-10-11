@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Zombie/Melee Weapon")]
 public sealed class MeleeWeaponDefinition : ScriptableObject
 {
+    public SurvivorWeaponKind kind = SurvivorWeaponKind.Machete;
     public string displayName;
     public Sprite sprite;
     [Min(1)] public int damage = 80;
@@ -16,4 +17,12 @@ public sealed class MeleeWeaponDefinition : ScriptableObject
     [Min(0.1f)] public float visualLength = 0.72f;
     public Color trailColor = new Color(0.65f, 0.9f, 1f, 0.9f);
     [Min(0.01f)] public float trailDuration = 0.07f;
+    [Header("远程武器")]
+    public GameObject projectilePrefab;
+    [Min(0.1f)] public float projectileSpeed = 12f;
+    [Min(0.1f)] public float projectileLifetime = 1.4f;
+    [Min(0)] public int projectilePierce;
+    [Min(1)] public int projectileCount = 1;
 }
+
+public enum SurvivorWeaponKind { Machete, IronBar, Bow, Hammer }

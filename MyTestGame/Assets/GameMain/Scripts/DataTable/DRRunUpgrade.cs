@@ -17,20 +17,25 @@ namespace Flower
         public int MaxStacks { get; private set; }
         public string Branch { get; private set; } = "Common";
         public string RequiredEffect { get; private set; } = string.Empty;
+        public string RequiredUnlock { get; private set; } = string.Empty;
 
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columns = dataRowString.Split(DataTableExtension.DataSplitSeparators);
-            if (columns.Length != 8 && columns.Length != 10)
-                throw new FormatException("RunUpgrade requires 8 or 10 tab-separated columns.");
+            // 8 列：无分支字段；9 列：只有分支；10 列：分支 + 前置条件。
+            // 行尾制表符会被 Split 保留为一个空字段，所以 9 列同样合法。
+            if (columns.Length < 8 || columns.Length > 11)
+                throw new FormatException("RunUpgrade requires 8 to 11 tab-separated columns, got " + columns.Length + ".");
             id = int.Parse(columns[1], CultureInfo.InvariantCulture);
             Name = columns[3];
             Description = columns[4];
             Effect = columns[5];
             Value = float.Parse(columns[6], CultureInfo.InvariantCulture);
             MaxStacks = int.Parse(columns[7], CultureInfo.InvariantCulture);
-            Branch = columns.Length == 10 ? columns[8] : "Common";
-            RequiredEffect = columns.Length == 10 ? columns[9] : string.Empty;
+            string branch = columns.Length >= 9 ? columns[8].Trim() : string.Empty;
+            Branch = string.IsNullOrEmpty(branch) ? "Common" : branch;
+            RequiredEffect = columns.Length >= 10 ? columns[9].Trim() : string.Empty;
+            RequiredUnlock = columns.Length >= 11 ? columns[10].Trim() : string.Empty;
             Validate();
             return true;
         }
@@ -48,6 +53,7 @@ namespace Flower
                 MaxStacks = reader.Read7BitEncodedInt32();
                 Branch = stream.Position < stream.Length ? reader.ReadString() : "Common";
                 RequiredEffect = stream.Position < stream.Length ? reader.ReadString() : string.Empty;
+                RequiredUnlock = stream.Position < stream.Length ? reader.ReadString() : string.Empty;
             }
             Validate();
             return true;
@@ -72,12 +78,17 @@ namespace Flower
                 case "FrostAura": case "FrostShield": case "FrostKnockback": case "FrostMomentum": case "FrostRangeBoost":
                 case "BurnHaste": case "BurnZone": case "BurnArmor": case "BurnCrit": case "BurnExecute":
                 case "FrostfireBurst": case "ThermalShock": case "HasteFreeze": case "HasteBurn": case "DualElement":
+                case "FrostfireBurn": case "ConvertFreezeToBurn":
                 case "BerserkerPact": case "GlassCannon": case "BloodPact":
+                case "BowDamage": case "BowDrawSpeed": case "BowPierce": case "BowRange":
+                case "BowMultishot": case "BowCrit": case "BowSpeed": case "BowDistanceDamage":
                     break;
                 default: throw new FormatException("Unknown RunUpgrade effect: " + Effect);
             }
-            if (Branch != "Common" && Branch != "Quick" && Branch != "Frost" && Branch != "Fire" && Branch != "Gamble")
+            if (Branch != "Common" && Branch != "Quick" && Branch != "Frost" && Branch != "Fire" && Branch != "Gamble" && Branch != "Bow")
                 throw new FormatException("Unknown upgrade branch: " + Branch);
+            if (!string.IsNullOrEmpty(RequiredUnlock) && RequiredUnlock != "BowCards")
+                throw new FormatException("Unknown upgrade unlock: " + RequiredUnlock);
         }
     }
 }

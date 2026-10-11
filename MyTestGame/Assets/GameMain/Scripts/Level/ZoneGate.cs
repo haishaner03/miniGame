@@ -34,6 +34,15 @@ public sealed class ZoneGate : MonoBehaviour
             StartCoroutine(OpenRoutine());
     }
 
+    public void OpenImmediately()
+    {
+        StopAllCoroutines();
+        foreach (Collider2D collider in GetComponentsInChildren<Collider2D>(true)) collider.enabled = false;
+        foreach (SpriteRenderer renderer in GetComponentsInChildren<SpriteRenderer>(true)) renderer.enabled = false;
+        IsOpen = true;
+        opening = false;
+    }
+
     private IEnumerator OpenRoutine()
     {
         opening = true;
