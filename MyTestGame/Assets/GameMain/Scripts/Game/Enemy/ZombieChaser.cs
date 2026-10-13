@@ -616,6 +616,8 @@ private void Update()
         currentHealth -= actualDamage;
         ZombieAudioController.Play(Champion != null && Champion.enabled
             ? ZombieAudioCue.ChampionHit : ZombieAudioCue.ZombieHit, transform.position);
+        if (causedByPlayer)
+            ZombieAudioController.Play(ZombieAudioCue.HitImpact, transform.position);
         if (causedByPlayer && RunState.Instance != null)
             RunState.Instance.RecordDamageDealt(actualDamage);
         FloatingCombatText.Spawn(damageTextPrefab, transform.position + Vector3.up * 0.45f, "-" + damage.ToString(), damageTextColor);

@@ -106,6 +106,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExperiencePickup
   visual: {fileID: 3632680584088208862}
   scatterDuration: 0.25
-  magnetRadius: 1.8
   pickupRadius: 0.28
-  magnetSpeed: 8

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 using Flower;
@@ -45,6 +47,7 @@ public sealed class ZombieRunUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI meleeStatus, dashStatus;
     [SerializeField] private GameObject modal;
     [SerializeField] private RectTransform window;
+    private CanvasGroup modalInteractionGroup;
     [SerializeField] private TextMeshProUGUI title, detail;
     [SerializeField] private ScrollRect detailScroll;
     [SerializeField] private Button[] choices = new Button[RunState.UpgradeChoiceCount];
@@ -55,6 +58,7 @@ public sealed class ZombieRunUI : MonoBehaviour
     private SurvivorHealth boundPlayer;
     private SurvivorMeleeAttack melee;
     private SurvivorDash dash;
+    private ZombieBattleMiniMap miniMap;
     private GameObject ownedEventSystem;
     private float nextRefresh;
     private float roomCombatUntil;
@@ -63,39 +67,52 @@ public sealed class ZombieRunUI : MonoBehaviour
     private readonly StringBuilder buffer = new StringBuilder(512);
     private enum ChoiceMode { Upgrade, RoomShop, RoomShopCards, CurseCards }
     private ChoiceMode choiceMode = ChoiceMode.Upgrade;
+    private Coroutine modalAnimation;
+    private bool modalReady;
+    private bool modalClosing;
+    private const float ModalAnimationDuration = 0.2f;
+    private const float ModalStartScale = 0.86f;
 
     public void Initialize(RunState state)
     {
         run = state;
         if (canvasRect == null) BuildLayout(run.Config.uiFont, icons, textFont, chrome);
         ResolvePolishReferences();
+        EnsureModalInteractionGroup();
+        miniMap = GetComponent<ZombieBattleMiniMap>();
+        if (miniMap == null) miniMap = gameObject.AddComponent<ZombieBattleMiniMap>();
+        miniMap.Initialize(run, canvasRect);
         BuildUpgradeWidgets();
         UiButtonSound.Ensure(pauseButton); UiButtonSound.Ensure(resume);
         UiButtonSound.Ensure(restart); UiButtonSound.Ensure(menu);
         pauseButton.onClick.AddListener(run.TogglePause);
-        resume.onClick.AddListener(run.TogglePause);
-        restart.onClick.AddListener(run.RestartRun);
-        menu.onClick.AddListener(run.ReturnToMenu);
         for (int i = 0; i < choices.Length; i++)
         {
             UiButtonSound.Ensure(choices[i]);
             int index = i;
             choices[i].onClick.AddListener(() =>
             {
-                if (choiceMode == ChoiceMode.Upgrade && index < run.OfferedUpgrades.Count)
-                    run.ChooseUpgrade(run.OfferedUpgrades[index].Id);
-                else if (choiceMode == ChoiceMode.RoomShop)
+                if (!modalReady || modalClosing) return;
+                BeginModalClose(() =>
                 {
-                    if (index == 0) run.BuyRoomCard();
-                    else if (index == 1) run.BuyRoomHeal();
-                    else if (index == 2) run.BuyRoomBuff();
-                }
-                else if (choiceMode == ChoiceMode.RoomShopCards && index < run.ShopOfferedUpgrades.Count)
-                    run.ChooseRoomShopCard(run.ShopOfferedUpgrades[index].Id);
-                else if (choiceMode == ChoiceMode.CurseCards && index < run.ShopOfferedUpgrades.Count)
-                    run.ChooseCurseCard(run.ShopOfferedUpgrades[index].Id);
+                    if (choiceMode == ChoiceMode.Upgrade && index < run.OfferedUpgrades.Count)
+                        run.ChooseUpgrade(run.OfferedUpgrades[index].Id);
+                    else if (choiceMode == ChoiceMode.RoomShop)
+                    {
+                        if (index == 0) run.BuyRoomCard();
+                        else if (index == 1) run.BuyRoomHeal();
+                        else if (index == 2) run.BuyRoomBuff();
+                    }
+                    else if (choiceMode == ChoiceMode.RoomShopCards && index < run.ShopOfferedUpgrades.Count)
+                        run.ChooseRoomShopCard(run.ShopOfferedUpgrades[index].Id);
+                    else if (choiceMode == ChoiceMode.CurseCards && index < run.ShopOfferedUpgrades.Count)
+                        run.ChooseCurseCard(run.ShopOfferedUpgrades[index].Id);
+                });
             });
         }
+        resume.onClick.AddListener(() => { if (modalReady && !modalClosing) BeginModalClose(run.TogglePause); });
+        restart.onClick.AddListener(() => { if (modalReady && !modalClosing) BeginModalClose(run.RestartRun); });
+        menu.onClick.AddListener(() => { if (modalReady && !modalClosing) BeginModalClose(run.ReturnToMenu); });
         HideModal();
     }
 
@@ -286,6 +303,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         detail.fontSize = ZombieHudTheme.Body;
         PopulateCardChoices(run.OfferedUpgrades);
         SelectFirstAvailableChoice();
+        StartModalOpen();
     }
 
     public void ShowRoomRewardShop(string message = null)
@@ -314,6 +332,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         choices[2].interactable = run.Scrap >= 5;
         resume.gameObject.SetActive(true);
         SelectFirstAvailableChoice();
+        StartModalOpen();
     }
 
     public void ShowRoomShopCardChoices()
@@ -323,6 +342,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         PopulateCardChoices(run.ShopOfferedUpgrades);
         resume.gameObject.SetActive(false);
         SelectFirstAvailableChoice();
+        StartModalOpen();
     }
 
     public void ShowCurseCardChoices(string curseDescription)
@@ -332,6 +352,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         PopulateCardChoices(run.ShopOfferedUpgrades);
         resume.gameObject.SetActive(false);
         SelectFirstAvailableChoice();
+        StartModalOpen();
     }
 
     private void PopulateCardChoices(IReadOnlyList<DRRunUpgrade> cards)
@@ -363,6 +384,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         detail.fontSize = ZombieHudTheme.Body;
         resume.gameObject.SetActive(true);
         Select(resume);
+        StartModalOpen();
     }
 
     public void ShowResult(bool victory)
@@ -387,6 +409,7 @@ public sealed class ZombieRunUI : MonoBehaviour
         detail.fontSize = ZombieHudTheme.Body;
         title.color = victory ? ZombieHudTheme.Accent : ZombieHudTheme.Critical;
         Select(restart);
+        StartModalOpen();
     }
 
     private void AppendUpgrades(bool descriptions)
@@ -405,6 +428,9 @@ public sealed class ZombieRunUI : MonoBehaviour
 
     private void SetModal(string heading, string description, bool upgrades, bool actions)
     {
+        StopModalAnimation();
+        modalReady = false;
+        modalClosing = false;
         modal.SetActive(true);
         title.text = heading;
         title.color = ZombieHudTheme.Text;
@@ -446,8 +472,92 @@ public sealed class ZombieRunUI : MonoBehaviour
 
     public void HideModal()
     {
+        StopModalAnimation();
+        modalReady = false;
+        modalClosing = false;
+        SetModalInteractable(false);
+        if (window != null) window.localScale = Vector3.one;
         if (modal != null) modal.SetActive(false);
         if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void StartModalOpen()
+    {
+        if (window == null) return;
+        StopModalAnimation();
+        SetModalInteractable(false);
+        modalReady = false;
+        modalClosing = false;
+        window.localScale = Vector3.one * ModalStartScale;
+        modalAnimation = StartCoroutine(AnimateModal(true, null));
+    }
+
+    private void BeginModalClose(Action completed)
+    {
+        if (window == null)
+        {
+            completed?.Invoke();
+            return;
+        }
+        StopModalAnimation();
+        SetModalInteractable(false);
+        modalReady = false;
+        modalClosing = true;
+        modalAnimation = StartCoroutine(AnimateModal(false, completed));
+    }
+
+    private IEnumerator AnimateModal(bool opening, Action completed)
+    {
+        float elapsed = 0f;
+        Vector3 start = opening ? Vector3.one * ModalStartScale : Vector3.one;
+        Vector3 end = opening ? Vector3.one : Vector3.one * ModalStartScale;
+        while (elapsed < ModalAnimationDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / ModalAnimationDuration);
+            t = t * t * (3f - 2f * t);
+            window.localScale = Vector3.LerpUnclamped(start, end, t);
+            yield return null;
+        }
+        window.localScale = end;
+        modalAnimation = null;
+        if (opening)
+        {
+            modalReady = true;
+            modalClosing = false;
+            SetModalInteractable(true);
+            SelectFirstAvailableChoice();
+        }
+        else
+        {
+            modalClosing = false;
+            completed?.Invoke();
+        }
+    }
+
+    private void SetModalInteractable(bool enabled)
+    {
+        if (modalInteractionGroup == null) EnsureModalInteractionGroup();
+        if (modalInteractionGroup == null) return;
+        modalInteractionGroup.interactable = enabled;
+        // The full-screen modal image continues to block clicks from reaching the game.
+        modalInteractionGroup.blocksRaycasts = true;
+    }
+
+    private void EnsureModalInteractionGroup()
+    {
+        if (window == null) return;
+        modalInteractionGroup = window.GetComponent<CanvasGroup>();
+        if (modalInteractionGroup == null) modalInteractionGroup = window.gameObject.AddComponent<CanvasGroup>();
+        modalInteractionGroup.alpha = 1f;
+        modalInteractionGroup.blocksRaycasts = true;
+    }
+
+    private void StopModalAnimation()
+    {
+        if (modalAnimation == null) return;
+        StopCoroutine(modalAnimation);
+        modalAnimation = null;
     }
     public static string FormatTime(float seconds) => Mathf.FloorToInt(seconds / 60f).ToString("00") + ":" + Mathf.FloorToInt(seconds % 60f).ToString("00");
 

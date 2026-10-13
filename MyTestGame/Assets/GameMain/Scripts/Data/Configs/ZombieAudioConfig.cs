@@ -4,7 +4,8 @@ using UnityEngine;
 public enum ZombieAudioCue
 {
     Button, MeleeSwing, HeavySwing, BowShot, ZombieHit, ChampionHit,
-    EliteDeath, BossDeath, PlayerHit
+    EliteDeath, BossDeath, PlayerHit,
+    IronBarSwing, HammerSwing, HitImpact
 }
 
 [CreateAssetMenu(menuName = "Zombie Survivor/Audio Config")]

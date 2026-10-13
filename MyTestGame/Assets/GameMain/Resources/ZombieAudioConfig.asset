@@ -63,10 +63,10 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 7e2c22694ad84303a3e2c935feb4c4d8, type: 3}
     - {fileID: 8300000, guid: 8b3e3307588b4547a68feed166b93080, type: 3}
     - {fileID: 8300000, guid: 43e620ecf3fb483a88a09534956635d3, type: 3}
-    volume: 0.55
+    volume: 0.62
     pitch: {x: 0.9, y: 1.1}
-    minimumInterval: 0.055
-    maximumVoices: 4
+    minimumInterval: 0.035
+    maximumVoices: 6
     priority: 120
   - cue: 5
     clips:
@@ -103,3 +103,32 @@ MonoBehaviour:
     minimumInterval: 0.18
     maximumVoices: 2
     priority: 20
+  - cue: 9
+    clips:
+    - {fileID: 8300000, guid: 7625213b919f4a31b9e88d8716ae5afd, type: 3}
+    - {fileID: 8300000, guid: 1bf7b5a8eb524ad28680ecbc553ccf0d, type: 3}
+    volume: 0.92
+    pitch: {x: 0.94, y: 1.04}
+    minimumInterval: 0.055
+    maximumVoices: 4
+    priority: 30
+  - cue: 10
+    clips:
+    - {fileID: 8300000, guid: 740a5a74797747cfa140ccb78e82ee81, type: 3}
+    - {fileID: 8300000, guid: 066dd900f0054d47a6aa69b030db7e38, type: 3}
+    volume: 1
+    pitch: {x: 0.88, y: 0.98}
+    minimumInterval: 0.075
+    maximumVoices: 4
+    priority: 28
+  - cue: 11
+    clips:
+    - {fileID: 8300000, guid: 93b1bc5c1def46b8bddff292937fab66, type: 3}
+    - {fileID: 8300000, guid: ce7ec55952784aeb9ebbf23ad00efce9, type: 3}
+    - {fileID: 8300000, guid: 0307272c29bf42abbc5e1dbfcd83d299, type: 3}
+    - {fileID: 8300000, guid: d3b3b2d4149c44a8bc66cc10966a93bc, type: 3}
+    volume: 0.88
+    pitch: {x: 0.94, y: 1.06}
+    minimumInterval: 0.022
+    maximumVoices: 8
+    priority: 110

@@ -68,7 +68,7 @@ public sealed class ZombieAudioController : MonoBehaviour
         if (config == null) config = Resources.Load<ZombieAudioConfig>("ZombieAudioConfig");
         if (config == null) { Debug.LogError("Missing Resources/ZombieAudioConfig."); enabled = false; return; }
         LoadVolumes();
-        sounds = new ZombieAudioConfig.Sound[(int)ZombieAudioCue.PlayerHit + 1];
+        sounds = new ZombieAudioConfig.Sound[System.Enum.GetValues(typeof(ZombieAudioCue)).Length];
         nextCueTime = new float[sounds.Length];
         lastVariant = new int[sounds.Length];
         for (int i = 0; i < lastVariant.Length; i++) lastVariant[i] = -1;
@@ -237,7 +237,9 @@ public sealed class ZombieAudioController : MonoBehaviour
                 voice.occupied = false;
             if (!voice.occupied) { if (free == null) free = voice; continue; }
             if (voice.cue == cue) sameCue++;
-            if (voice.priority > sound.priority && (replace == null || voice.priority > replace.priority)) replace = voice;
+            // Make room for an important cue by replacing the lowest-priority voice,
+            // never by cutting off a more important sound.
+            if (voice.priority < sound.priority && (replace == null || voice.priority < replace.priority)) replace = voice;
         }
         if (sameCue >= sound.maximumVoices || (free == null && replace == null)) { DroppedEffects++; return; }
         var selected = free ?? replace;

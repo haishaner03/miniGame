@@ -292,7 +292,12 @@ public sealed class SurvivorMeleeAttack : MonoBehaviour
     private void ApplyHit()
     {
         ZombieAudioCue attackCue = equipped != null && equipped.kind == SurvivorWeaponKind.Bow
-            ? ZombieAudioCue.BowShot : heavyWeapon ? ZombieAudioCue.HeavySwing : ZombieAudioCue.MeleeSwing;
+            ? ZombieAudioCue.BowShot
+            : equipped != null && equipped.kind == SurvivorWeaponKind.Hammer
+                ? ZombieAudioCue.HammerSwing
+                : equipped != null && equipped.kind == SurvivorWeaponKind.IronBar
+                    ? ZombieAudioCue.IronBarSwing
+                    : ZombieAudioCue.MeleeSwing;
         ZombieAudioController.Play(attackCue, transform.position);
         Vector2 origin = AttackOrigin;
         var filter = new ContactFilter2D();
