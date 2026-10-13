@@ -3,7 +3,5 @@
 #	int		string	int	int	bool	bool
 #	界面编号	策划备注	界面名字	界面组Id	资源Id	是否允许多个界面实例	是否暂停被其覆盖的界面
 	1002	设置	UIOptionsForm	1001	1002	FALSE	TRUE
-	1006	暂停界面	UIPausePanelForm	1004	1006	FALSE	TRUE
-	1007	游戏结束	UIGameOverForm	1005	1007	FALSE	TRUE
 	1008	UI遮罩	UIMask	1006	1008	FALSE	TRUE
 	1010	下载速度界面	UIDownloadForm	1008	1010	FALSE	FALSE

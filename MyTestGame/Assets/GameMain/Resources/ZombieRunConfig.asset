@@ -26,6 +26,9 @@ MonoBehaviour:
     type: 3}
   startingWeaponPickerPrefab: {fileID: 1652561852119335596, guid: e05648500b017a74c8dc51487233d001,
     type: 3}
+  sceneLoadingPrefab: {fileID: 4505208682783468971, guid: 4d63a6ef4137f3443880b440acdbdac2,
+    type: 3}
+  minimumLoadingSeconds: 1.5
   arrowProjectilePrefab: {fileID: 7634504482727007228, guid: 04e13e45145603f4cbf600195ca8b996,
     type: 3}
   hitImpactPrefab: {fileID: 762750138053860682, guid: 66708d57137d72f4e85b9498eac2e5c5,

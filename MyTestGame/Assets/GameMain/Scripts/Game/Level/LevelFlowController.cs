@@ -266,7 +266,9 @@ public sealed class LevelFlowController : MonoBehaviour
             yield break;
         }
 
-        SceneManager.LoadScene(buildIndex);
+        var config = Resources.Load<ZombieRunConfig>("ZombieRunConfig");
+        ZombieSceneLoadingScreen.Load(config.sceneLoadingPrefab, nextScenePath,
+            "闯关模式 · 前往下一街区", config.minimumLoadingSeconds, null);
     }
 
     private void OnPlayerDied(int deathCount)

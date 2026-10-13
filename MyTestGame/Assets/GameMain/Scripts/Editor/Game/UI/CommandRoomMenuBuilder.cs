@@ -107,7 +107,8 @@ public static class CommandRoomMenuBuilder
             "砍刀铁棍猎弓锤基础伤害攻击间隔秒迅连续更长强鼠标瞄准只大尚未解锁" +
             "幸存者成长方向键选择返回←→" +
             "出手迅速，适合连续近战攻击更长，击退更强鼠标瞄准，基础穿透 1 只" +
-            "大范围重击，强力击退尚未解锁幸存者成长解锁 · 120 点装备出发 →";
+            "大范围重击，强力击退尚未解锁幸存者成长解锁 · 120 点装备出发 →" +
+            "正在加载街区准备进入战斗完成失败请返回主菜单重试保持移动，留意退路。房间无尽模式生存挑战前往下一";
         asset.TryAddCharacters(characters, out string missing);
         if (!string.IsNullOrEmpty(missing)) Debug.LogWarning("Menu font missing glyphs: " + missing);
         foreach (var texture in asset.atlasTextures)

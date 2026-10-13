@@ -17,6 +17,10 @@ public sealed class ZombieRunConfig : ScriptableObject
     public Font uiFont;
     public GameObject battleUiPrefab;
     public GameObject startingWeaponPickerPrefab;
+    [Header("场景加载界面")]
+    public GameObject sceneLoadingPrefab;
+    [Tooltip("游戏场景进入并初始化后，覆盖其上的加载进度条播放时间。")]
+    [Min(0f)] public float minimumLoadingSeconds = 1.5f;
     public GameObject arrowProjectilePrefab;
     [Header("战斗命中特效")]
     public GameObject hitImpactPrefab;

@@ -100,14 +100,29 @@ public sealed partial class RunState : MonoBehaviour
 
     public static void StartNewRun(string firstRoom, int? seed, SurvivorWeaponKind weapon)
     {
+        if (ZombieSceneLoadingScreen.IsLoading) return;
         if (!SurvivorMetaProgress.IsWeaponUnlocked(weapon)) weapon = SurvivorWeaponKind.Machete;
         RunState run = Instance;
         if (run == null)
             run = new GameObject("ZombieRun").AddComponent<RunState>();
         run.Begin(firstRoom, seed);
         run.StartingWeapon = weapon;
-        run.Phase = RunPhase.Loading;
-        SceneManager.LoadScene(run.rooms[0]);
+        run.LoadBattleRoom(run.rooms[0]);
+    }
+
+    private void LoadBattleRoom(string scenePath)
+    {
+        Phase = RunPhase.Loading;
+        string destination = IsEndless ? "无尽模式 · 生存挑战" : "闯关模式 · 房间 " + RoomNumber + " / " + RoomCount;
+        ZombieSceneLoadingScreen.Load(Config.sceneLoadingPrefab, scenePath, destination,
+            Config.minimumLoadingSeconds, () =>
+            {
+                if (this == null) return;
+                if (player == null || flow == null || flow.gameObject.scene.path != scenePath)
+                    throw new InvalidOperationException("The destination room did not bind its player and level flow.");
+                Phase = RunPhase.Playing;
+                resumeTimeScale = 1f;
+            });
     }
 
     private void Awake()
@@ -242,7 +257,7 @@ public sealed partial class RunState : MonoBehaviour
         CurseAltarUsedThisRoom = false;
         shopOffered.Clear();
         offered.Clear();
-        Phase = RunPhase.Playing;
+        Phase = ZombieSceneLoadingScreen.IsLoading ? RunPhase.Loading : RunPhase.Playing;
         ui.HideModal();
         ui.EnsureEventSystem();
         CombatEffects.Clear();
@@ -570,9 +585,8 @@ public sealed partial class RunState : MonoBehaviour
             return true;
         }
         SyncHealth(player.CurrentHealth, player.MaxHealth);
-        Phase = RunPhase.Loading;
         RoomIndex++;
-        SceneManager.LoadScene(rooms[RoomIndex]);
+        LoadBattleRoom(rooms[RoomIndex]);
         return true;
     }
 
@@ -675,6 +689,7 @@ public sealed partial class RunState : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        if (ZombieSceneLoadingScreen.IsLoading) return;
         if (SceneUtility.GetBuildIndexByScenePath(Config.menuScenePath) < 0)
         {
             Debug.LogError("Run menu is not in build settings.");

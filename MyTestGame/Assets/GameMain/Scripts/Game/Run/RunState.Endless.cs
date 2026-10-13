@@ -12,11 +12,11 @@ public sealed partial class RunState
 
     public static void StartEndlessRun(SurvivorWeaponKind weapon = SurvivorWeaponKind.Machete, int? seed = null)
     {
+        if (ZombieSceneLoadingScreen.IsLoading) return;
         if (!SurvivorMetaProgress.IsWeaponUnlocked(weapon)) weapon = SurvivorWeaponKind.Machete;
         RunState run = Instance != null ? Instance : new GameObject("ZombieRun").AddComponent<RunState>();
         run.Begin(null, seed, GameMode.Endless);
         run.StartingWeapon = weapon;
-        run.Phase = RunPhase.Loading;
-        SceneManager.LoadScene(run.EndlessConfig.scenePath);
+        run.LoadBattleRoom(run.EndlessConfig.scenePath);
     }
 }

@@ -8,94 +8,43 @@
       <Resource Name="Localization/Dictionaries" Variant="en-us" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
       <Resource Name="Localization/Dictionaries" Variant="zh-cn" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="0" />
       <Resource Name="Localization/Dictionaries" Variant="zh-tw" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="0" />
-      <Resource Name="Res/Materials/UI/HealthBarGreen" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/HealthBarRed" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/HomeBaseTargetZone" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/PlacementArea" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/PlacementAreaFillled" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/RadiusVisualiser" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
-      <Resource Name="Res/Materials/UI/SinglePlacementTile" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,4,5" />
-      <Resource Name="Res/Materials/UI/SinglePlacementTileFilled" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,4,5" />
       <Resource Name="Scenes/Menu/Menu" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
       <Resource Name="Sound/GameMusic" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
       <Resource Name="Sound/MenuMusic" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
       <Resource Name="Sound/UIBase" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
-      <Resource Name="Sound/UISFX" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
       <Resource Name="Sprites" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0,1,2,3,4,5" />
       <Resource Name="UI/UIForms/UIDownloadForm" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
-      <Resource Name="UI/UIForms/UIGameOverForm" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
       <Resource Name="UI/UIForms/UIMask" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
       <Resource Name="UI/UIForms/UIOptionsForm" FileSystem="Base" LoadType="0" Packed="True" ResourceGroups="0" />
-      <Resource Name="UI/UIForms/UIPausePanelForm" FileSystem="Resource" LoadType="0" Packed="False" ResourceGroups="1,2,3,4,5" />
     </Resources>
     <Assets>
-      <Asset Guid="008790df986e3469285ea0c078de4b7f" ResourceName="Res/Materials/UI/HealthBarRed" />
-      <Asset Guid="02c80739782053b46a95a7fc5da4de3b" ResourceName="Sound/UISFX" />
       <Asset Guid="0409152adf7314e2195e11ac9ea2d7cc" ResourceName="Sprites" />
-      <Asset Guid="0d476ca4e633b4f8d9a46f3b25579fa8" ResourceName="Sprites" />
-      <Asset Guid="10f6c8d03930b4a449f543633892e711" ResourceName="Sprites" />
-      <Asset Guid="1361a7ad4c5a14db584c87ffddd81b29" ResourceName="Sprites" />
-      <Asset Guid="192535fb7c11042b7982f930f099f426" ResourceName="Sprites" />
-      <Asset Guid="19ee0cb90aa04476ab8f4bd83da46786" ResourceName="Sprites" />
-      <Asset Guid="1bfcbc6372f4d45f19690ea277e1019f" ResourceName="Res/Materials/UI/HealthBarGreen" />
       <Asset Guid="1e8f5015922b04dd1b862cf76c53775a" ResourceName="Sound/MenuMusic" />
       <Asset Guid="3397fc22ec76148f08f7b799db8a1a2c" ResourceName="Sprites" />
-      <Asset Guid="3568b996ada474c18bb75841d1116d7e" ResourceName="Sprites" />
-      <Asset Guid="3631244dc04164d079a3302a39dbc0c6" ResourceName="Sprites" />
       <Asset Guid="384b67841c5396a4db0b83b4a08fe735" ResourceName="Scenes/Menu/Menu" />
-      <Asset Guid="38c1bfd61d1d143019784cec5a19e6ad" ResourceName="Sprites" />
-      <Asset Guid="3a9d6407c0d384d03a9f2f93a0a437be" ResourceName="Sprites" />
-      <Asset Guid="446a72560c44e44d8acea2562be7901a" ResourceName="Res/Materials/UI/PlacementAreaFillled" />
       <Asset Guid="4a93fe8f69ec84f549c5b0c42c1deb5e" ResourceName="Sprites" />
       <Asset Guid="4f7608bbbc6b81346bcfde1e8a65c6ad" ResourceName="UI/UIForms/UIMask" />
       <Asset Guid="5035a572b6f50414c93745e0ca4e3a01" ResourceName="DataTable" />
-      <Asset Guid="5138d41854f774b01aaeecdef78d31fe" ResourceName="Sprites" />
-      <Asset Guid="513d334ef78544f129afabc1ad5af28b" ResourceName="Sprites" />
-      <Asset Guid="53652022b1d444a5c9e9630488e44e13" ResourceName="Sprites" />
       <Asset Guid="54f2752d08d923946bc84fe79ef27860" ResourceName="DataTable" />
       <Asset Guid="567f4800fefa8d843835478dc75616af" ResourceName="Sound/UIBase" />
       <Asset Guid="56fbb0c4526becf4c91c0e5e14ff492b" ResourceName="UI/UIForms/UIDownloadForm" />
-      <Asset Guid="5b9fbf6723e204fb3b3694feab6a2cf3" ResourceName="Sprites" />
       <Asset Guid="5dbdfd0a67d92474e974c3a4e7f5ce88" ResourceName="DataTable" />
       <Asset Guid="610dea3bfb715434483f0da8284fc96e" ResourceName="DataTable" />
-      <Asset Guid="6476fa37afe8f46a7825bf79a9e5d28d" ResourceName="Sprites" />
       <Asset Guid="6b0f6e2d35e637e4cb97cc619c129118" ResourceName="DataTable" />
       <Asset Guid="6ce6d7c4d4f6140f68d2c18955f02e8c" ResourceName="Sound/GameMusic" />
-      <Asset Guid="732c0de21fbcd4a2eaa23fe81f207c08" ResourceName="Res/Materials/UI/SinglePlacementTileFilled" />
-      <Asset Guid="7cea8ac03b57a40f8be2baa55f4f4146" ResourceName="Sprites" />
-      <Asset Guid="7eac4c2ebcb084f8b9968be4f7984306" ResourceName="Sprites" />
-      <Asset Guid="7ed09e549e5c94af5b7f16ddfb122f43" ResourceName="Sprites" />
-      <Asset Guid="855893e92f3cf4555aad85c898c241d0" ResourceName="Res/Materials/UI/RadiusVisualiser" />
       <Asset Guid="88d3ee3b94fdb764a9577770cbf88ae3" ResourceName="Sound/UIBase" />
-      <Asset Guid="8b55a8881f9db400eb8a844c0a7e0f77" ResourceName="Sprites" />
-      <Asset Guid="8de2b0ca8a36944a9b9dd75dff42644f" ResourceName="Sprites" />
-      <Asset Guid="8ed331977508048a49204cf83142545c" ResourceName="Res/Materials/UI/PlacementArea" />
-      <Asset Guid="91e0d08e16df6f7418b8769badf6468c" ResourceName="UI/UIForms/UIPausePanelForm" />
-      <Asset Guid="a0c0b78d3cfda4eb6acd5752a0eda707" ResourceName="Sprites" />
-      <Asset Guid="a40e18b36a1177c44945d4812b7c9d45" ResourceName="UI/UIForms/UIGameOverForm" />
-      <Asset Guid="a43023b0c4b884a1a8db3b57f1602440" ResourceName="Res/Materials/UI/SinglePlacementTile" />
       <Asset Guid="a4c612832912c4f7babb09fb717bb527" ResourceName="Sprites" />
-      <Asset Guid="a7d9664f855274f51b308ad4c6350871" ResourceName="Sprites" />
-      <Asset Guid="aa18303c92d9e490abfac36b6e0e8646" ResourceName="Sprites" />
       <Asset Guid="ab7fe05f924ed8346833726831cefc20" ResourceName="UI/UIForms/UIOptionsForm" />
       <Asset Guid="acf4716a8fa254a2589ba008c867a3bc" ResourceName="Fonts" />
-      <Asset Guid="b5794b1d89e5b4b5baf713e7eeab9c3f" ResourceName="Sprites" />
       <Asset Guid="bee7b15a9e66ce0419c4d7a7be10a5e1" ResourceName="Localization/Dictionaries" ResourceVariant="zh-tw" />
       <Asset Guid="c2d4e2ee7b56bf24e9d4b651be4950e7" ResourceName="Localization/Dictionaries" ResourceVariant="zh-cn" />
-      <Asset Guid="c5ce927c163e14f079dbc5f7a1d419a1" ResourceName="Sprites" />
       <Asset Guid="cc044ae1c50f8dd4aaa0aacec3101b3e" ResourceName="Configs/DefaultConfig" />
-      <Asset Guid="cf9a13f1c5163457eaad64d224ce1df6" ResourceName="Sprites" />
-      <Asset Guid="d1c3a235beb7046a69ab15a9d7be2d39" ResourceName="Res/Materials/UI/HomeBaseTargetZone" />
-      <Asset Guid="d6c11b9a43dfb413b86a3ff8908088db" ResourceName="Sprites" />
       <Asset Guid="da473c16b9ad5474cb0d410ba45f691a" ResourceName="DataTable" />
       <Asset Guid="dcbc668accbf94d9c9c29035688aafb2" ResourceName="Fonts" />
       <Asset Guid="e0d13eeff961a9f48aa1eca9722fcf23" ResourceName="DataTable" />
       <Asset Guid="e3de1acb1ed3a4656bb68c4db2123bab" ResourceName="Sprites" />
       <Asset Guid="e63c9c0622200794095d8095800730bf" ResourceName="Localization/Dictionaries" ResourceVariant="en-us" />
-      <Asset Guid="e7348375241624b91a5dde0b774294a3" ResourceName="Sprites" />
       <Asset Guid="f1faaa7f89244084f8723904918d06eb" ResourceName="DataTable" />
-      <Asset Guid="f6bad708ea84eb74e8b328d6e6fa98a4" ResourceName="Sound/UISFX" />
-      <Asset Guid="fa91237b5487541158165bfce6ebfa0c" ResourceName="Sprites" />
       <Asset Guid="fd0d4b91e29b5414da4fb6ac6296a55b" ResourceName="Sprites" />
     </Assets>
   </ResourceCollection>

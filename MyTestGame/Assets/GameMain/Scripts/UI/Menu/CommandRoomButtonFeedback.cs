@@ -11,11 +11,17 @@ public sealed class CommandRoomButtonFeedback : MonoBehaviour, IPointerEnterHand
     public Image highlight;
     [Range(1f, 1.05f)] public float hoverScale = 1.014f;
     private Button button;
+    private Vector3 baseScale;
     private bool hovered, focused, pressed;
     private float amount;
     private const float Response = 10f;
 
-    private void Awake() { button = GetComponent<Button>(); }
+    private void Awake()
+    {
+        button = GetComponent<Button>();
+        // Keep the authored size; feedback is relative to the prefab's scale.
+        baseScale = transform.localScale;
+    }
     private void OnEnable() { ResetVisuals(); }
     private void OnDisable() { ResetVisuals(); }
 
@@ -23,7 +29,7 @@ public sealed class CommandRoomButtonFeedback : MonoBehaviour, IPointerEnterHand
     {
         hovered = focused = pressed = false;
         amount = 0f;
-        transform.localScale = Vector3.one;
+        transform.localScale = baseScale;
         SetHighlight(0f);
     }
 
@@ -33,7 +39,7 @@ public sealed class CommandRoomButtonFeedback : MonoBehaviour, IPointerEnterHand
         float target = available && (hovered || focused) ? 1f : 0f;
         amount = Mathf.MoveTowards(amount, target, Time.unscaledDeltaTime * Response);
         float size = available && pressed ? .988f : Mathf.Lerp(1f, hoverScale, amount);
-        Vector3 scale = Vector3.one * size;
+        Vector3 scale = baseScale * size;
         if (transform.localScale != scale) transform.localScale = scale;
         SetHighlight(amount);
     }
