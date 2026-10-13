@@ -14,7 +14,7 @@ namespace Flower
         /// <summary>
         /// Prefab路径
         /// </summary>
-        private static readonly string PrefabRootPath = @"Assets/GameMain/UI/UIForms";
+        private static readonly string PrefabRootPath = @"Assets/GameMain/Prefabs/UI/Forms";
         private static readonly string GeneratePathFormat = Application.dataPath + "/GameMain/Localization/{0}/Dictionaries";
         private static readonly string GenerateLanguage = "English";
         private static readonly string GenerateFileName = "Default";

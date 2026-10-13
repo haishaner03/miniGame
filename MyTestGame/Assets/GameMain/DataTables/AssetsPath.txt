@@ -5,11 +5,11 @@
 	101	启动场景	Assets/GameMain/Scenes/GameStart/GameStart.unity	0
 	102	菜单场景	Assets/GameMain/Scenes/Menu/Menu.unity	0
 #UI				
-	1002	设置界面	Assets/GameMain/UI/UIForms/UIOptionsForm.prefab	0
-	1006	暂停界面	Assets/GameMain/UI/UIForms/UIPausePanelForm.prefab	1|2|3|4|5
-	1007	游戏结束	Assets/GameMain/UI/UIForms/UIGameOverForm.prefab	1|2|3|4|5
-	1008	UI遮罩	Assets/GameMain/UI/UIForms/UIMask.prefab	1|2|3|4|5
-	1010	下载速度界面	Assets/GameMain/UI/UIForms/UIDownloadForm.prefab	0
+	1002	设置界面	Assets/GameMain/Prefabs/UI/Forms/UIOptionsForm.prefab	0
+	1006	暂停界面	Assets/GameMain/Prefabs/UI/Forms/UIPausePanelForm.prefab	1|2|3|4|5
+	1007	游戏结束	Assets/GameMain/Prefabs/UI/Forms/UIGameOverForm.prefab	1|2|3|4|5
+	1008	UI遮罩	Assets/GameMain/Prefabs/UI/Forms/UIMask.prefab	1|2|3|4|5
+	1010	下载速度界面	Assets/GameMain/Prefabs/UI/Forms/UIDownloadForm.prefab	0
 #Item				
 #Entity				
 #Sound				

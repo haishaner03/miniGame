@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1efbe6273d34feb929655726b1c0a1f, type: 3}
+  m_Name: ZombieAudioConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAudioConfig
+  masterVolume: 0.8
+  musicVolume: 0.32
+  effectsVolume: 0.8
+  uiVolume: 0.65
+  effectVoiceCount: 16
+  audibleDistance: 16
+  musicFadeSeconds: 0.8
+  menuMusic: {fileID: 8300000, guid: a0c590de3c404ed1b7a9b1f5b6d34e4e, type: 3}
+  battleMusic: {fileID: 8300000, guid: f1f23a733e6047e0b7b898839aabb38c, type: 3}
+  bossMusic: {fileID: 8300000, guid: c2e10e7cba6d42a785f3690689605ed0, type: 3}
+  sounds:
+  - cue: 0
+    clips:
+    - {fileID: 8300000, guid: 5e92643c65fe4f67937b378384f24396, type: 3}
+    - {fileID: 8300000, guid: 6742e4d3746d4104a8323412b5898ab0, type: 3}
+    volume: 0.65
+    pitch: {x: 0.97, y: 1.03}
+    minimumInterval: 0.035
+    maximumVoices: 2
+    priority: 5
+  - cue: 1
+    clips:
+    - {fileID: 8300000, guid: 287e63ce08a846509d6da3d3ff18f085, type: 3}
+    - {fileID: 8300000, guid: 6a0c06eee29f4c438e849c1e366d9b3f, type: 3}
+    volume: 0.6
+    pitch: {x: 0.95, y: 1.08}
+    minimumInterval: 0.045
+    maximumVoices: 3
+    priority: 40
+  - cue: 2
+    clips:
+    - {fileID: 8300000, guid: e9030f0e7c724a0e9b0e8d62522c66c2, type: 3}
+    - {fileID: 8300000, guid: 801838f92b084824b0d8ca9c65585774, type: 3}
+    volume: 0.72
+    pitch: {x: 0.9, y: 1.04}
+    minimumInterval: 0.07
+    maximumVoices: 3
+    priority: 35
+  - cue: 3
+    clips:
+    - {fileID: 8300000, guid: cef95d43dc6043a68ef4cb410d4a2226, type: 3}
+    volume: 0.6
+    pitch: {x: 0.95, y: 1.05}
+    minimumInterval: 0.06
+    maximumVoices: 3
+    priority: 40
+  - cue: 4
+    clips:
+    - {fileID: 8300000, guid: 7e2c22694ad84303a3e2c935feb4c4d8, type: 3}
+    - {fileID: 8300000, guid: 8b3e3307588b4547a68feed166b93080, type: 3}
+    - {fileID: 8300000, guid: 43e620ecf3fb483a88a09534956635d3, type: 3}
+    volume: 0.55
+    pitch: {x: 0.9, y: 1.1}
+    minimumInterval: 0.055
+    maximumVoices: 4
+    priority: 120
+  - cue: 5
+    clips:
+    - {fileID: 8300000, guid: bd77e00b0b644ec5a771da77fa40f536, type: 3}
+    - {fileID: 8300000, guid: 00cae544859b43b8a77f0e311fb40125, type: 3}
+    volume: 0.64
+    pitch: {x: 0.9, y: 1.06}
+    minimumInterval: 0.08
+    maximumVoices: 3
+    priority: 90
+  - cue: 6
+    clips:
+    - {fileID: 8300000, guid: 01ce79c7f3914405a0f95905b4e523e1, type: 3}
+    - {fileID: 8300000, guid: 3894675c82854c03a5de869bdd1d7fd0, type: 3}
+    volume: 0.85
+    pitch: {x: 0.92, y: 1.02}
+    minimumInterval: 0.15
+    maximumVoices: 3
+    priority: 15
+  - cue: 7
+    clips:
+    - {fileID: 8300000, guid: caad980309324e7e8f668def82c5e382, type: 3}
+    volume: 0.95
+    pitch: {x: 0.95, y: 1.0}
+    minimumInterval: 0.12
+    maximumVoices: 2
+    priority: 10
+  - cue: 8
+    clips:
+    - {fileID: 8300000, guid: db34c60c635748e8b4107686df550dc9, type: 3}
+    - {fileID: 8300000, guid: 4c7d147ae48a487d895d064d1e115ff0, type: 3}
+    volume: 0.75
+    pitch: {x: 0.96, y: 1.02}
+    minimumInterval: 0.18
+    maximumVoices: 2
+    priority: 20

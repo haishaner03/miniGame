@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public sealed class StartingWeaponPicker : MonoBehaviour
 {
     [SerializeField] private Button machete, ironBar, bow, hammer, cancel;
+    [SerializeField] private StartingWeaponCardView[] cards;
     private string scenePath;
     private Action<SurvivorWeaponKind> confirm;
     private Action cancelled;
@@ -14,6 +15,8 @@ public sealed class StartingWeaponPicker : MonoBehaviour
     public bool ClosedThisFrame => closedFrame == Time.frameCount;
     private void Awake()
     {
+        UiButtonSound.Ensure(machete); UiButtonSound.Ensure(ironBar);
+        UiButtonSound.Ensure(bow); UiButtonSound.Ensure(hammer); UiButtonSound.Ensure(cancel);
         if (machete != null) machete.onClick.AddListener(() => Begin(SurvivorWeaponKind.Machete));
         if (ironBar != null) ironBar.onClick.AddListener(() => Begin(SurvivorWeaponKind.IronBar));
         if (bow != null) bow.onClick.AddListener(() => Begin(SurvivorWeaponKind.Bow));
@@ -25,7 +28,7 @@ public sealed class StartingWeaponPicker : MonoBehaviour
         scenePath = path; confirm = onConfirm; cancelled = onCancel; gameObject.SetActive(true);
         closedFrame = -1;
         RefreshLockedChoices();
-        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(machete.gameObject);
+        if (EventSystem.current != null && machete != null) EventSystem.current.SetSelectedGameObject(machete.gameObject);
     }
     public void Close()
     {
@@ -41,10 +44,47 @@ public sealed class StartingWeaponPicker : MonoBehaviour
     }
     private void RefreshLockedChoices()
     {
+        if (cards != null && cards.Length > 0)
+        {
+            foreach (var card in cards)
+                if (card != null) card.RefreshAvailability();
+            RefreshNavigation();
+            return;
+        }
         SetLocked(bow, SurvivorMetaProgress.BowUnlocked,
             "猎弓\n伤害 200 · 冷却 0.50 秒\n鼠标瞄准 · 基础穿透 1 只", SurvivorMetaProgress.BowCost);
         SetLocked(hammer, SurvivorMetaProgress.HammerUnlocked,
             "重锤\n伤害 145 · 冷却 0.65 秒\n大范围重击 · 强力击退", SurvivorMetaProgress.HammerCost);
+    }
+    public void ConfigureChoices(Button blade, Button bar, Button huntingBow, Button heavyHammer,
+        Button back, StartingWeaponCardView[] cardViews)
+    {
+        machete = blade; ironBar = bar; bow = huntingBow; hammer = heavyHammer;
+        cancel = back; cards = cardViews;
+    }
+    private void RefreshNavigation()
+    {
+        Button[] choices = { machete, ironBar, bow, hammer };
+        Button first = null, last = null;
+        foreach (var button in choices)
+        {
+            if (button == null || !button.interactable) continue;
+            if (first == null) first = button;
+            if (last != null)
+            {
+                var previous = last.navigation; previous.selectOnRight = button; last.navigation = previous;
+            }
+            button.navigation = new Navigation { mode = Navigation.Mode.Explicit,
+                selectOnLeft = last, selectOnDown = cancel };
+            last = button;
+        }
+        if (first != null && last != null)
+        {
+            var start = first.navigation; start.selectOnLeft = last; first.navigation = start;
+            var end = last.navigation; end.selectOnRight = first; last.navigation = end;
+        }
+        if (cancel != null) cancel.navigation = new Navigation { mode = Navigation.Mode.Explicit,
+            selectOnUp = first, selectOnDown = first };
     }
     private static void SetLocked(Button button, bool unlocked, string caption, int cost)
     {
@@ -72,6 +112,8 @@ public sealed class StartingWeaponPicker : MonoBehaviour
     }
     public void ExpandChoices(Font font, Sprite bowSprite, Sprite hammerSprite)
     {
+        // Legacy equipment setup can refresh a redesigned picker without rebuilding its layout.
+        if (cards != null && cards.Length > 0) { RefreshLockedChoices(); return; }
         var panel = machete.transform.parent as RectTransform;
         panel.sizeDelta = new Vector2(940f, 450f);
         (machete.transform as RectTransform).anchoredPosition = new Vector2(-330f, -10f);
@@ -102,6 +144,7 @@ public sealed class StartingWeaponPicker : MonoBehaviour
     {
         var r=Widget("Choice",parent,position,dimensions??new Vector2(280,235));var image=r.gameObject.AddComponent<Image>();image.color=new Color(.16f,.21f,.16f);
         var b=r.gameObject.AddComponent<Button>();b.targetGraphic=image;
+        UiButtonSound.Ensure(b);
         if(sprite!=null){var icon=Widget("Icon",r,new Vector2(0,55),new Vector2(70,100)).gameObject.AddComponent<Image>();icon.sprite=sprite;icon.preserveAspect=true;icon.raycastTarget=false;}
         Text(caption,r,font,18,sprite!=null?new Vector2(0,-55):Vector2.zero,sprite!=null?new Vector2(260,92):r.sizeDelta);
         return b;

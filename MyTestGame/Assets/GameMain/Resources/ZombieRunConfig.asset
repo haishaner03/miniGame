@@ -19,6 +19,7 @@ MonoBehaviour:
   - Assets/GameMain/Scenes/Level/ZombieLevel03/ZombieLevel03.unity
   - Assets/GameMain/Scenes/Level/ZombieLevel04/ZombieLevel04.unity
   menuScenePath: Assets/GameMain/Scenes/Menu/Menu.unity
+  endlessConfig: {fileID: 11400000, guid: 5004fad0d0834c14e858e4ed69670c47, type: 2}
   upgradeTable: {fileID: 4900000, guid: b03ccf913ca7f604b9475169a443f2a4, type: 3}
   uiFont: {fileID: 12800000, guid: e849ebae01e5777438c6c76d97918521, type: 3}
   battleUiPrefab: {fileID: 4579325712644561853, guid: d9077adb61581ca45b40a83ba7305c59,

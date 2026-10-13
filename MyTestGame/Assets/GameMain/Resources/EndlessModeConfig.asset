@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f3c4ed9bce0e847803ccdf07259e28, type: 3}
+  m_Name: EndlessModeConfig
+  m_EditorClassIdentifier: Assembly-CSharp::EndlessModeConfig
+  scenePath: Assets/GameMain/Scenes/Level/ZombieLevel99/ZombieLevel99.unity
+  initialWanderers: 16
+  startingPopulation: 32
+  populationPerMinute: 12
+  maximumPopulation: 220
+  livingLimit: 240
+  reinforcementInterval: {x: 3, y: 0.65}
+  intervalReductionPerMinute: 0.18
+  batchSize: {x: 4, y: 10}
+  hordeInterval: 40
+  hordeSize: {x: 8, y: 40}
+  hordeGrowthPerMinute: 2
+  baseHealth: 110
+  healthLinear: 0.12
+  healthQuadratic: 0.012
+  speedPerMinute: 0.025
+  maximumSpeedMultiplier: 1.35
+  damagePerMinute: 0.025
+  maximumDamageMultiplier: 2
+  initialEliteChance: 0.05
+  maximumEliteChance: 0.16
+  eliteChancePerMinute: 0.005
+  eliteHealthMultiplier: 2.5
+  initialVariantChance: 0.1
+  variantChancePerMinute: 0.02
+  livingStatsRefreshInterval: 30
+  firstBossSeconds: 300
+  bossWaveInterval: 120
+  extraBossEverySeconds: 300
+  maximumBossesPerWave: 4
+  maximumLivingBosses: 6
+  bossBaseHealth: 15000
+  bossHealthPerMinute: 0.06

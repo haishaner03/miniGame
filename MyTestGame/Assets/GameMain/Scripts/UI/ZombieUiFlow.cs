@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// 丧尸生存游戏的主菜单与章节选择面板控制器。
@@ -19,7 +20,12 @@ public sealed class ZombieUiFlow : MonoBehaviour
     public Button optionsButton;
     public Button quitButton;
     public Button growthButton;
+    public Button endlessButton;
+    public Button leaderboardButton;
+    public GameObject leaderboardPrefab;
+    private EndlessLeaderboardUI leaderboard;
     public Text survivorPoints;
+    public TMP_Text survivorPointsLabel;
     public GameObject growthShopPrefab;
     private SurvivorMetaShop growthShop;
 
@@ -59,6 +65,8 @@ public sealed class ZombieUiFlow : MonoBehaviour
         AddListener(optionsButton, OnOptionsClicked);
         AddListener(quitButton, QuitGame);
         AddListener(growthButton, ShowGrowth);
+        AddListener(endlessButton, StartEndless);
+        AddListener(leaderboardButton, ShowLeaderboard);
         AddListener(backButton, ShowMain);
 
         if (chapterButtons == null)
@@ -69,6 +77,7 @@ public sealed class ZombieUiFlow : MonoBehaviour
             int chapterIndex = i;
             if (chapterButtons[i] != null)
             {
+                UiButtonSound.Ensure(chapterButtons[i]);
                 chapterButtons[i].onClick.RemoveAllListeners();
                 chapterButtons[i].onClick.AddListener(() => LoadChapter(chapterIndex));
             }
@@ -80,6 +89,7 @@ public sealed class ZombieUiFlow : MonoBehaviour
         if (button == null)
             return;
 
+        UiButtonSound.Ensure(button);
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(callback);
     }
@@ -91,31 +101,63 @@ public sealed class ZombieUiFlow : MonoBehaviour
             mainPanel.SetActive(true);
         if (chapterPanel != null)
             chapterPanel.SetActive(false);
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.FocusDefault();
     }
 
     private void RefreshPoints()
     {
         if (survivorPoints != null) survivorPoints.text = "幸存者点数  " + SurvivorMetaProgress.Points;
+        if (survivorPointsLabel != null) survivorPointsLabel.SetText("幸存者点数  {0}", SurvivorMetaProgress.Points);
     }
 
     public void ShowGrowth()
     {
         if (growthShopPrefab == null) return;
         if (growthShop == null) growthShop = Instantiate(growthShopPrefab).GetComponent<SurvivorMetaShop>();
-        growthShop.Show(RefreshPoints);
+        BlockForModal();
+        growthShop.Show(() => { RefreshPoints(); RestoreAfterModal(growthButton); });
+        foreach (var button in growthShop.GetComponentsInChildren<Button>())
+            if (button.IsInteractable())
+            {
+                if (UnityEngine.EventSystems.EventSystem.current != null)
+                    UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(button.gameObject);
+                break;
+            }
     }
 
     public void ShowChapters()
     {
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.CloseDialogs();
         if (mainPanel != null)
             mainPanel.SetActive(false);
         if (chapterPanel != null)
             chapterPanel.SetActive(true);
+        if (backButton != null && UnityEngine.EventSystems.EventSystem.current != null)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(backButton.gameObject);
     }
 
     public void StartFirstChapter()
     {
         LoadChapter(0);
+    }
+
+    public void StartEndless()
+    {
+        var config = Resources.Load<ZombieRunConfig>("ZombieRunConfig");
+        if (config == null || config.endlessConfig == null) { Debug.LogError("Missing endless mode config."); return; }
+        if (SceneUtility.GetBuildIndexByScenePath(config.endlessConfig.scenePath) < 0) { Debug.LogError("Endless scene is not enabled in Build Settings."); return; }
+        if (weaponPickerPrefab == null) { RunState.StartEndlessRun(); return; }
+        if (weaponPicker == null) weaponPicker = Instantiate(weaponPickerPrefab).GetComponent<StartingWeaponPicker>();
+        BlockForModal();
+        weaponPicker.Show(config.endlessConfig.scenePath, weapon => RunState.StartEndlessRun(weapon), () => RestoreAfterModal(endlessButton));
+    }
+
+    public void ShowLeaderboard()
+    {
+        if (leaderboardPrefab == null) return;
+        if (leaderboard == null) leaderboard = Instantiate(leaderboardPrefab).GetComponent<EndlessLeaderboardUI>();
+        BlockForModal();
+        leaderboard.Show(() => RestoreAfterModal(leaderboardButton));
     }
 
     public void LoadChapter(int index)
@@ -138,24 +180,40 @@ public sealed class ZombieUiFlow : MonoBehaviour
         // This prefab owns a screen-space Canvas and its scaler; keep it a root
         // canvas rather than inheriting the menu's scale and sorting settings.
         if (weaponPicker == null) weaponPicker = Instantiate(weaponPickerPrefab).GetComponent<StartingWeaponPicker>();
-        weaponPicker.Show(scenePath);
+        Button returnButton = mainPanel != null && mainPanel.activeInHierarchy ? startButton :
+            chapterButtons != null && index < chapterButtons.Length ? chapterButtons[index] : backButton;
+        BlockForModal();
+        weaponPicker.Show(scenePath, null, () => RestoreAfterModal(returnButton));
+    }
+
+    private void BlockForModal()
+    {
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.BlockForExternalModal();
+    }
+
+    private void RestoreAfterModal(Button target)
+    {
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.RestoreAfterExternalModal(target);
+        else if (target != null && UnityEngine.EventSystems.EventSystem.current != null)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(target.gameObject);
     }
 
     private void OnDestroy()
     {
         if (weaponPicker != null) Destroy(weaponPicker.gameObject);
         if (growthShop != null) Destroy(growthShop.gameObject);
+        if (leaderboard != null) Destroy(leaderboard.gameObject);
     }
 
     private void OnOptionsClicked()
     {
-        Debug.Log("Options panel is reserved for the next UI pass.");
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.OpenSettings();
     }
 
     private void QuitGame()
     {
-        Debug.Log("Quit requested.");
-        Application.Quit();
+        if (TryGetComponent<CommandRoomMenuView>(out var view)) view.OpenQuit();
+        else Application.Quit();
     }
 }
 

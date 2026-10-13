@@ -11,6 +11,8 @@ public sealed class SurvivorMetaShop : MonoBehaviour
 
     private void Awake()
     {
+        UiButtonSound.Ensure(bow); UiButtonSound.Ensure(hammer);
+        UiButtonSound.Ensure(cards); UiButtonSound.Ensure(vitality); UiButtonSound.Ensure(close);
         bow.onClick.AddListener(() => Buy(SurvivorMetaProgress.TryUnlockBow, "猎弓已解锁，开局时可以选择。"));
         hammer.onClick.AddListener(() => Buy(SurvivorMetaProgress.TryUnlockHammer, "重锤已解锁，开局时可以选择。"));
         cards.onClick.AddListener(() => Buy(SurvivorMetaProgress.TryUnlockBowCards, "6 张进阶弓箭卡已加入弓箭卡池。"));
@@ -103,6 +105,7 @@ public sealed class SurvivorMetaShop : MonoBehaviour
         var rect = Widget(name, parent, position, size); var image = rect.gameObject.AddComponent<Image>();
         image.color = new Color(0.18f, 0.26f, 0.16f, 1f);
         var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
+        UiButtonSound.Ensure(button);
         Label("Label", caption, rect, font, 18, Vector2.zero, size); return button;
     }
 }
