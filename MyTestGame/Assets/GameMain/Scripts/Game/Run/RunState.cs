@@ -1,0 +1,760 @@
+using System;
+using System.Collections.Generic;
+using Flower;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+[DisallowMultipleComponent]
+public sealed partial class RunState : MonoBehaviour
+{
+    public const int UpgradeChoiceCount = 4;
+    public enum RunPhase { Playing, Paused, ChoosingUpgrade, RoomReward, Loading, Lost, Won }
+    public static RunState Instance { get; private set; }
+    public ZombieRunConfig Config { get; private set; }
+    public RunPhase Phase { get; private set; }
+    public int Seed { get; private set; }
+    public int RoomIndex { get; private set; }
+    public int RoomNumber => RoomIndex + 1;
+    public int RoomCount => rooms.Count;
+    public int CurrentHealth { get; private set; } = -1;
+    public int MaxHealth { get; private set; }
+    public int Kills { get; private set; }
+    public int RoomKills { get; private set; }
+    public int Level { get; private set; } = 1;
+    public int Experience { get; private set; }
+    public int ExperienceToNextLevel => Config.firstLevelExperience + (Level - 1) * Config.experienceGrowthPerLevel;
+    public int TotalExperience { get; private set; }
+    public int Scrap { get; private set; }
+    public int ScrapCollected { get; private set; }
+    public SurvivorWeaponKind StartingWeapon { get; private set; }
+    public bool UsesHeavyWeapon => StartingWeapon == SurvivorWeaponKind.IronBar || StartingWeapon == SurvivorWeaponKind.Hammer;
+    public bool UsesBow => StartingWeapon == SurvivorWeaponKind.Bow;
+    public string WeaponName => UsesBow ? "猎弓" : StartingWeapon == SurvivorWeaponKind.Hammer ? "重锤" : UsesHeavyWeapon ? "铁棍" : "砍刀";
+    public int ClearedRooms { get; private set; }
+    public int EarnedSurvivorPoints { get; private set; }
+    public float StartingHealthMultiplier { get; private set; } = 1f;
+    public bool IsChoosingStartingWeapon => restartWeaponPicker != null && restartWeaponPicker.isActiveAndEnabled;
+    public bool SuppressPauseInput => IsChoosingStartingWeapon || (restartWeaponPicker != null && restartWeaponPicker.ClosedThisFrame);
+    public int EliteKills { get; private set; }
+    public int DamageDealt { get; private set; }
+    public int DamageTaken { get; private set; }
+    public int HealingReceived { get; private set; }
+    public SurvivorHealth Player => player;
+    public LevelFlowController CurrentRoom => flow;
+    public int LifeStealHits { get; private set; }
+    public float ElapsedSeconds { get; private set; }
+    public bool RewardClaimed { get; private set; }
+    public IReadOnlyList<string> Rooms => rooms;
+    public IReadOnlyList<DRRunUpgrade> OfferedUpgrades => offered;
+    public IReadOnlyDictionary<int, int> UpgradeStacks => stacks;
+    public IReadOnlyList<DRRunUpgrade> Upgrades => upgrades;
+    public RunCombatEffects CombatEffects { get; private set; }
+    public RoomEncounterController Encounter { get; private set; }
+    public int ChampionKills { get; private set; }
+    public int BossKills { get; private set; }
+    public bool FreezeConvertedToBurn => EffectTotal("ConvertFreezeToBurn") > 0;
+    public bool HasDualElementBuild => !FreezeConvertedToBurn && EffectTotal("FreezeChance") > 0 && EffectTotal("BurnChance") > 0;
+    public RoomLayoutVariant RoomLayout { get; private set; }
+    public SurvivorArrowPool ArrowPool { get; private set; }
+    public IReadOnlyList<DRRunUpgrade> ShopOfferedUpgrades => shopOffered;
+    public bool CurseAltarUsedThisRoom { get; private set; }
+    public string ActiveCurseDescription { get; private set; }
+    public float CurseMaxHealthMultiplier { get; private set; } = 1f;
+    public float CurseMoveSpeedMultiplier { get; private set; } = 1f;
+    public float CurseDamageTakenMultiplier { get; private set; } = 1f;
+
+    private readonly List<string> rooms = new List<string>();
+    private readonly Dictionary<int, int> stacks = new Dictionary<int, int>();
+    private readonly List<DRRunUpgrade> offered = new List<DRRunUpgrade>();
+    private readonly List<DRRunUpgrade> shopOffered = new List<DRRunUpgrade>();
+    private DRRunUpgrade[] upgrades;
+    private System.Random rewardRandom;
+    private SurvivorHealth player;
+    private PlayerRunStats stats;
+    private LevelFlowController flow;
+    private ZombieRunUI ui;
+    private float resumeTimeScale = 1f;
+    private int pendingLevelRewards;
+    private ExperiencePickupPool pickupPool;
+    private HealthPickupPool healthPool;
+    private ScrapPickupPool scrapPool;
+    private StartingWeaponPicker restartWeaponPicker;
+    private string settlementId;
+    private bool settlementComplete;
+
+    public static RunState EnsureForRoom(string scenePath)
+    {
+        if (Instance == null)
+        {
+            var root = new GameObject("ZombieRun");
+            root.AddComponent<RunState>();
+            Instance.Begin(scenePath, null, scenePath == Instance.EndlessConfig.scenePath ? GameMode.Endless : GameMode.Adventure);
+        }
+        return Instance;
+    }
+
+    public static void StartNewRun(string firstRoom = null, int? seed = null, bool heavyWeapon = false)
+    {
+        StartNewRun(firstRoom, seed, heavyWeapon ? SurvivorWeaponKind.IronBar : SurvivorWeaponKind.Machete);
+    }
+
+    public static void StartNewRun(string firstRoom, int? seed, SurvivorWeaponKind weapon)
+    {
+        if (!SurvivorMetaProgress.IsWeaponUnlocked(weapon)) weapon = SurvivorWeaponKind.Machete;
+        RunState run = Instance;
+        if (run == null)
+            run = new GameObject("ZombieRun").AddComponent<RunState>();
+        run.Begin(firstRoom, seed);
+        run.StartingWeapon = weapon;
+        run.Phase = RunPhase.Loading;
+        SceneManager.LoadScene(run.rooms[0]);
+    }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        Config = Resources.Load<ZombieRunConfig>("ZombieRunConfig");
+        if (Config == null)
+            throw new InvalidOperationException("Missing Resources/ZombieRunConfig asset.");
+        upgrades = Config.LoadUpgrades();
+        ui = Config.battleUiPrefab != null
+            ? Instantiate(Config.battleUiPrefab, transform).GetComponent<ZombieRunUI>()
+            : gameObject.AddComponent<ZombieRunUI>();
+        ui.Initialize(this);
+        pickupPool = gameObject.AddComponent<ExperiencePickupPool>();
+        pickupPool.Initialize(this);
+        if (Config.healthPickupPrefab != null)
+        {
+            healthPool = gameObject.AddComponent<HealthPickupPool>();
+            healthPool.Initialize(this);
+        }
+        scrapPool = gameObject.AddComponent<ScrapPickupPool>();
+        scrapPool.Initialize(this);
+        CombatEffects = gameObject.AddComponent<RunCombatEffects>();
+        CombatEffects.Initialize(this);
+        ArrowPool = gameObject.AddComponent<SurvivorArrowPool>();
+        ArrowPool.Initialize(Config.arrowProjectilePrefab);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Begin(string firstRoom, int? seed, GameMode mode = GameMode.Adventure)
+    {
+        if (restartWeaponPicker != null) restartWeaponPicker.Close();
+        UnbindPlayer();
+        stacks.Clear();
+        offered.Clear();
+        shopOffered.Clear();
+        rooms.Clear();
+        Mode = mode;
+        Endless = null;
+        EndlessRank = 0;
+        Seed = seed ?? Guid.NewGuid().GetHashCode();
+        rewardRandom = new System.Random(unchecked(Seed ^ 0x51A7BEEF));
+        if (IsEndless)
+        {
+            string path = EndlessConfig.scenePath;
+            if (SceneUtility.GetBuildIndexByScenePath(path) < 0)
+                throw new InvalidOperationException("Endless scene not enabled in build settings: " + path);
+            rooms.Add(path);
+        }
+        else
+        {
+            var pool = new List<string>();
+            foreach (string path in Config.roomScenePaths)
+            {
+                if (SceneUtility.GetBuildIndexByScenePath(path) < 0)
+                    throw new InvalidOperationException("Run room not enabled in build settings: " + path);
+                if (!pool.Contains(path)) pool.Add(path);
+            }
+            if (pool.Count < 2 || Config.roomCount < 2)
+                throw new InvalidOperationException("A run needs two room templates and at least two rooms.");
+            if (firstRoom != null && !pool.Contains(firstRoom))
+                throw new InvalidOperationException("Unknown starting room: " + firstRoom);
+            RunRoomPlanner.BuildRoute(pool, Config.roomCount, firstRoom, Seed, rooms);
+        }
+        RoomLayout = null;
+        RoomIndex = 0;
+        CurrentHealth = -1;
+        MaxHealth = 0;
+        Kills = 0;
+        RoomKills = 0;
+        Level = 1;
+        Experience = TotalExperience = pendingLevelRewards = 0;
+        Scrap = ScrapCollected = 0;
+        pickupPool.ClearDrops();
+        ArrowPool.Clear();
+        if (healthPool != null) healthPool.Clear();
+        EliteKills = DamageDealt = DamageTaken = HealingReceived = 0;
+        LifeStealHits = 0;
+        ChampionKills = BossKills = 0;
+        CurseAltarUsedThisRoom = false;
+        ActiveCurseDescription = string.Empty;
+        CurseMaxHealthMultiplier = CurseMoveSpeedMultiplier = CurseDamageTakenMultiplier = 1f;
+        StartingWeapon = SurvivorWeaponKind.Machete;
+        StartingHealthMultiplier = SurvivorMetaProgress.StartingHealthMultiplier;
+        ClearedRooms = EarnedSurvivorPoints = 0;
+        settlementId = Guid.NewGuid().ToString("N");
+        settlementComplete = false;
+        if (CombatEffects != null) CombatEffects.Clear();
+        ElapsedSeconds = 0f;
+        RewardClaimed = false;
+        Phase = RunPhase.Playing;
+        Time.timeScale = 1f;
+        ui.HideModal();
+        Debug.Log("Zombie run started. Seed=" + Seed + "; rooms=" + string.Join(",", rooms));
+    }
+
+    public void BindRoom(LevelFlowController controller, SurvivorHealth health, ZombieSpawner spawner)
+    {
+        ArrowPool.Clear();
+        UnbindPlayer();
+        if (rooms[RoomIndex] != controller.gameObject.scene.path)
+            throw new InvalidOperationException("Loaded room does not match run route.");
+        flow = controller;
+        if (healthPool != null) healthPool.Clear();
+        if (scrapPool != null) scrapPool.ClearDrops();
+        RoomKills = 0;
+        player = health;
+        stats = player.GetComponent<PlayerRunStats>();
+        if (stats == null) stats = player.gameObject.AddComponent<PlayerRunStats>();
+        stats.Apply(this, CurrentHealth);
+        SyncHealth(player.CurrentHealth, player.MaxHealth);
+        player.HealthChanged += SyncHealth;
+        player.GameOver += OnPlayerGameOver;
+        RoomLayout = controller.GetComponent<RoomLayoutVariant>();
+        if (RoomLayout != null)
+        {
+            int layoutSeed = RunRoomPlanner.LayoutSeed(Seed, rooms[RoomIndex], RoomIndex);
+            int variant = RunRoomPlanner.VariantIndex(Seed, rooms, RoomIndex, RoomLayout.VariantCount);
+            if (!RoomLayout.Apply(layoutSeed, variant, controller, spawner,
+                FindFirstObjectByType<ZombieGridPathfinder>()))
+                throw new InvalidOperationException("Run room has no playable exit route.");
+        }
+        UnityEngine.Random.InitState(unchecked(Seed + RoomIndex * 7919));
+        if (spawner != null) spawner.ConfigureForRun(this);
+        RewardClaimed = false;
+        CurseAltarUsedThisRoom = false;
+        shopOffered.Clear();
+        offered.Clear();
+        Phase = RunPhase.Playing;
+        ui.HideModal();
+        ui.EnsureEventSystem();
+        CombatEffects.Clear();
+        if (IsEndless)
+        {
+            Encounter = null;
+            Endless = controller.GetComponent<EndlessModeController>();
+            if (Endless == null) Endless = controller.gameObject.AddComponent<EndlessModeController>();
+            Endless.Initialize(this, spawner);
+            return;
+        }
+        Encounter = controller.GetComponent<RoomEncounterController>();
+        if (Encounter == null) Encounter = controller.gameObject.AddComponent<RoomEncounterController>();
+        Encounter.Initialize(this, spawner);
+        SpawnRoomCurseAltar();
+    }
+
+    public void RewardEncounter(bool boss, Vector3 position)
+    {
+        if (Phase != RunPhase.Playing || player == null || player.IsDead) return;
+        ChampionKills++;
+        if (boss)
+        {
+            BossKills++;
+            if (CombatEffects != null) CombatEffects.OnEliteKill();
+        }
+        // ZombieChaser also drops its normal elite XP after its Died event.
+        int total = boss ? Config.bossEncounterExperience : Config.eliteEncounterExperience;
+        pickupPool.Drop(position, Mathf.Max(0, total - Config.eliteExperience));
+        if (healthPool != null) healthPool.Drop(position);
+    }
+
+    private void Update()
+    {
+        if (Phase == RunPhase.Playing && player != null && !player.IsDead)
+            ElapsedSeconds += Time.deltaTime;
+    }
+
+    public float EffectTotal(string effect)
+    {
+        float value = 0f;
+        foreach (DRRunUpgrade upgrade in upgrades)
+            if (upgrade.Effect == effect && stacks.TryGetValue(upgrade.Id, out int count))
+                value += upgrade.Value * count;
+        return value;
+    }
+
+    public DRRunUpgrade GetUpgrade(int id)
+    {
+        return Array.Find(upgrades, upgrade => upgrade.Id == id);
+    }
+
+    public int StackCount(int id)
+    {
+        return stacks.TryGetValue(id, out int count) ? count : 0;
+    }
+
+    public void RoomCleared()
+    {
+        if (IsEndless || Phase != RunPhase.Playing || RewardClaimed || player == null || player.IsDead)
+            return;
+        RewardClaimed = true;
+        ClearedRooms++;
+        flow.ReleaseRunReward();
+        Phase = RunPhase.RoomReward;
+        Pause();
+        ui.ShowRoomRewardShop();
+    }
+
+    public void DropScrap(Vector3 position, int amount)
+    {
+        if (amount <= 0 || Phase != RunPhase.Playing || player == null || player.IsDead) return;
+        if (scrapPool != null) scrapPool.Drop(position, amount);
+    }
+
+    public void GainScrap(int amount)
+    {
+        if (amount <= 0) return;
+        Scrap += amount;
+        ScrapCollected += amount;
+    }
+
+    public bool SpendScrap(int amount)
+    {
+        if (amount <= 0 || Scrap < amount) return false;
+        Scrap -= amount;
+        return true;
+    }
+
+    public void CloseRoomRewardShop()
+    {
+        if (Phase != RunPhase.RoomReward) return;
+        shopOffered.Clear();
+        Phase = RunPhase.Playing;
+        ui.HideModal();
+        Time.timeScale = resumeTimeScale;
+    }
+
+    public bool BuyRoomHeal()
+    {
+        if (Phase != RunPhase.RoomReward || player == null || player.CurrentHealth >= player.MaxHealth || !SpendScrap(4)) return false;
+        player.Heal(35);
+        ui.ShowRoomRewardShop("已使用残骸治疗 +35");
+        return true;
+    }
+
+    public bool BuyRoomBuff()
+    {
+        if (Phase != RunPhase.RoomReward || !SpendScrap(5)) return false;
+        CombatEffects.ActivateScrapBuff(30f, .25f);
+        ui.ShowRoomRewardShop("临时强化已生效：30 秒伤害 +25%");
+        return true;
+    }
+
+    public bool BuyRoomCard()
+    {
+        if (Phase != RunPhase.RoomReward || !SpendScrap(6)) return false;
+        RefreshShopOffers(false);
+        if (shopOffered.Count == 0) { Scrap += 6; return false; }
+        ui.ShowRoomShopCardChoices();
+        return true;
+    }
+
+    public bool ChooseRoomShopCard(int id)
+    {
+        if (Phase != RunPhase.RoomReward || player == null) return false;
+        var upgrade = shopOffered.Find(choice => choice.Id == id);
+        if (upgrade == null) return false;
+        if (!IsUpgradeEligible(upgrade))
+        {
+            RefreshShopOffers(false);
+            if (shopOffered.Count > 0) ui.ShowRoomShopCardChoices();
+            else
+            {
+                Scrap += 6;
+                ui.ShowRoomRewardShop("没有可选升级，已退回 6 残骸");
+            }
+            return false;
+        }
+        stacks[id] = StackCount(id) + 1;
+        int health = CurrentHealth + (upgrade.Effect == "MaxHealth" ? Mathf.RoundToInt(upgrade.Value) : 0);
+        stats.Apply(this, health);
+        if (upgrade.Effect == "Heal") player.Heal(Mathf.RoundToInt(upgrade.Value));
+        shopOffered.Clear();
+        ui.ShowRoomRewardShop("额外卡牌已加入本局升级");
+        return true;
+    }
+
+    public bool UseCurseAltar()
+    {
+        if (Phase != RunPhase.Playing || CurseAltarUsedThisRoom || player == null || player.IsDead) return false;
+        var rare = RareEligibleUpgrades();
+        if (rare.Count == 0) return false;
+        CurseAltarUsedThisRoom = true;
+        int curse = rewardRandom.Next(3);
+        if (curse == 0) { CurseMaxHealthMultiplier = .8f; ActiveCurseDescription = "诅咒：最大生命 -20%"; }
+        else if (curse == 1) { CurseMoveSpeedMultiplier = .88f; ActiveCurseDescription = "诅咒：移动速度 -12%"; }
+        else { CurseDamageTakenMultiplier = 1.25f; ActiveCurseDescription = "诅咒：受到伤害 +25%"; }
+        stats.Apply(this, Mathf.Min(CurrentHealth, player.MaxHealth));
+        FillShopOffers(rare);
+        Phase = RunPhase.RoomReward;
+        Pause();
+        ui.ShowCurseCardChoices(ActiveCurseDescription);
+        return true;
+    }
+
+    public bool ChooseCurseCard(int id)
+    {
+        if (Phase != RunPhase.RoomReward || player == null) return false;
+        var upgrade = shopOffered.Find(choice => choice.Id == id);
+        if (upgrade == null) return false;
+        if (!IsUpgradeEligible(upgrade))
+        {
+            RefreshShopOffers(true);
+            if (shopOffered.Count > 0) ui.ShowCurseCardChoices(ActiveCurseDescription);
+            else ui.ShowRoomRewardShop("没有可选稀有升级，可以继续战斗");
+            return false;
+        }
+        stacks[id] = StackCount(id) + 1;
+        int health = CurrentHealth + (upgrade.Effect == "MaxHealth" ? Mathf.RoundToInt(upgrade.Value) : 0);
+        stats.Apply(this, health);
+        if (upgrade.Effect == "Heal") player.Heal(Mathf.RoundToInt(upgrade.Value));
+        shopOffered.Clear();
+        ui.ShowRoomRewardShop("稀有卡牌已获得，诅咒仍在生效");
+        return true;
+    }
+
+    private List<DRRunUpgrade> RareEligibleUpgrades()
+    {
+        var rare = new List<DRRunUpgrade>();
+        foreach (var upgrade in upgrades)
+            if (IsUpgradeEligible(upgrade) && (upgrade.Branch != "Common" || !string.IsNullOrEmpty(upgrade.RequiredEffect))) rare.Add(upgrade);
+        return rare;
+    }
+
+    private void RefreshShopOffers(bool rareOnly)
+    {
+        var eligible = rareOnly ? RareEligibleUpgrades() : new List<DRRunUpgrade>();
+        if (!rareOnly)
+            foreach (var upgrade in upgrades)
+                if (IsUpgradeEligible(upgrade)) eligible.Add(upgrade);
+        FillShopOffers(eligible);
+    }
+
+    private void FillShopOffers(List<DRRunUpgrade> eligible)
+    {
+        shopOffered.Clear();
+        while (shopOffered.Count < UpgradeChoiceCount && eligible.Count > 0)
+        {
+            int index = rewardRandom.Next(eligible.Count);
+            shopOffered.Add(eligible[index]);
+            eligible.RemoveAt(index);
+        }
+    }
+
+    public void DropExperience(Vector3 position, bool elite, int bonusExperience = 0)
+    {
+        if (Phase != RunPhase.Playing || player == null || player.IsDead) return;
+        pickupPool.Drop(position, (elite ? Config.eliteExperience : Config.normalExperience) + Mathf.Max(0, bonusExperience));
+        if (healthPool != null && UnityEngine.Random.value < Config.healthDropChance) healthPool.Drop(position);
+    }
+
+    public void GainExperience(int amount)
+    {
+        if (amount <= 0 || Phase != RunPhase.Playing || player == null || player.IsDead) return;
+        Experience += amount;
+        TotalExperience += amount;
+        while (Experience >= ExperienceToNextLevel)
+        {
+            Experience -= ExperienceToNextLevel;
+            Level++;
+            pendingLevelRewards++;
+        }
+        if (pendingLevelRewards > 0) OfferLevelReward();
+    }
+
+    private void OfferLevelReward()
+    {
+        var eligible = new List<DRRunUpgrade>();
+        foreach (DRRunUpgrade upgrade in upgrades)
+            if (IsUpgradeEligible(upgrade)) eligible.Add(upgrade);
+        offered.Clear();
+        if (stacks.Count == 0)
+        {
+            foreach (string effect in UsesBow ? new[] { "BowDrawSpeed", "BowPierce", "BowDamage" } : new[] { "AttackSpeed", "FreezeChance", "BurnChance" })
+            {
+                var entry = eligible.Find(u => u.Effect == effect);
+                if (entry != null) { offered.Add(entry); eligible.Remove(entry); }
+            }
+        }
+        else
+        {
+            var focused = eligible.FindAll(u => u.Branch != "Common" && BranchStacks(u.Branch) > 0);
+            if (focused.Count > 0)
+            {
+                var chosen = focused[rewardRandom.Next(focused.Count)];
+                offered.Add(chosen); eligible.Remove(chosen);
+            }
+        }
+        while (offered.Count < UpgradeChoiceCount && eligible.Count > 0)
+        {
+            double total = 0;
+            foreach (var candidate in eligible) total += CandidateWeight(candidate);
+            double pick = rewardRandom.NextDouble() * total;
+            int index = 0;
+            while (index < eligible.Count - 1 && (pick -= CandidateWeight(eligible[index])) >= 0) index++;
+            offered.Add(eligible[index]);
+            eligible.RemoveAt(index);
+        }
+        if (offered.Count == 0)
+        {
+            pendingLevelRewards = 0;
+            if (Phase == RunPhase.ChoosingUpgrade)
+            {
+                Phase = RunPhase.Playing;
+                ui.HideModal();
+                Time.timeScale = resumeTimeScale;
+            }
+            return;
+        }
+        Phase = RunPhase.ChoosingUpgrade;
+        Pause();
+        ui.ShowChoices();
+    }
+
+    public bool ChooseUpgrade(int id)
+    {
+        if (Phase != RunPhase.ChoosingUpgrade || player == null || player.IsDead)
+            return false;
+        DRRunUpgrade upgrade = offered.Find(choice => choice.Id == id);
+        if (upgrade == null) return false;
+        if (!IsUpgradeEligible(upgrade))
+        {
+            // Refresh a stale offer without consuming its pending level reward.
+            OfferLevelReward();
+            return false;
+        }
+        stacks[id] = StackCount(id) + 1;
+        int health = CurrentHealth + (upgrade.Effect == "MaxHealth" ? Mathf.RoundToInt(upgrade.Value) : 0);
+        stats.Apply(this, health);
+        if (upgrade.Effect == "Heal") player.Heal(Mathf.RoundToInt(upgrade.Value));
+        offered.Clear();
+        pendingLevelRewards = Mathf.Max(0, pendingLevelRewards - 1);
+        Phase = RunPhase.Playing;
+        ui.HideModal();
+        Time.timeScale = resumeTimeScale;
+        if (pendingLevelRewards > 0) OfferLevelReward();
+        return true;
+    }
+
+    public bool AdvanceRoom()
+    {
+        if (IsEndless || Phase != RunPhase.Playing || !RewardClaimed || player == null || player.IsDead)
+            return false;
+        // Bank uncollected ground XP before leaving; overflow rewards are chosen first.
+        pickupPool.CollectAll();
+        if (scrapPool != null) scrapPool.CollectAll();
+        if (Phase != RunPhase.Playing) return false;
+        if (RoomNumber == RoomCount)
+        {
+            Phase = RunPhase.Won;
+            SettleRun(true);
+            Pause();
+            ui.ShowResult(true);
+            return true;
+        }
+        SyncHealth(player.CurrentHealth, player.MaxHealth);
+        Phase = RunPhase.Loading;
+        RoomIndex++;
+        SceneManager.LoadScene(rooms[RoomIndex]);
+        return true;
+    }
+
+    public void RecordKill(bool elite = false)
+    {
+        if (Phase != RunPhase.Playing) return;
+        Kills++;
+        RoomKills++;
+        if (elite)
+        {
+            EliteKills++;
+            // 通知战斗效果系统精英击杀
+            if (CombatEffects != null)
+                CombatEffects.OnEliteKill();
+        }
+    }
+
+    public void RecordDamageDealt(int amount)
+    {
+        if (Phase == RunPhase.Playing) DamageDealt += Mathf.Max(0, amount);
+    }
+
+    public void RecordDamageTaken(int amount)
+    {
+        if (Phase == RunPhase.Playing) DamageTaken += Mathf.Max(0, amount);
+    }
+
+    public void RecordHealing(int amount)
+    {
+        if (Phase == RunPhase.Playing || Phase == RunPhase.ChoosingUpgrade)
+            HealingReceived += Mathf.Max(0, amount);
+    }
+
+    public void TogglePause()
+    {
+        if (IsChoosingStartingWeapon) return;
+        if (Phase == RunPhase.Playing)
+        {
+            Phase = RunPhase.Paused;
+            Pause();
+            ui.ShowPause();
+        }
+        else if (Phase == RunPhase.Paused)
+        {
+            Phase = RunPhase.Playing;
+            Time.timeScale = resumeTimeScale;
+            ui.HideModal();
+        }
+        else if (Phase == RunPhase.RoomReward)
+        {
+            CloseRoomRewardShop();
+        }
+    }
+
+    public void RecordMeleeHit()
+    {
+        LifeStealHits++;
+    }
+
+    public bool IsUpgradeEligible(DRRunUpgrade upgrade) => upgrade != null &&
+        (upgrade.Branch != "Bow" || UsesBow) &&
+        (!UsesBow || upgrade.Branch == "Bow" || upgrade.Branch == "Common" &&
+            upgrade.Effect != "Range" && upgrade.Effect != "SpeedRange") &&
+        (upgrade.RequiredUnlock != "BowCards" || SurvivorMetaProgress.BowCardsUnlocked) &&
+        (!RequiresUnconvertedDualElements(upgrade.Effect) || HasDualElementBuild) &&
+        StackCount(upgrade.Id) < upgrade.MaxStacks &&
+        (string.IsNullOrEmpty(upgrade.RequiredEffect) || EffectTotal(upgrade.RequiredEffect) > 0);
+
+    private static bool RequiresUnconvertedDualElements(string effect) =>
+        effect == "FrostfireBurn" || effect == "FrostfireBurst" || effect == "ThermalShock" || effect == "DualElement";
+    public int BranchStacks(string branch)
+    {
+        int total = 0;
+        foreach (var upgrade in upgrades) if (upgrade.Branch == branch) total += StackCount(upgrade.Id);
+        return total;
+    }
+    private double CandidateWeight(DRRunUpgrade upgrade) =>
+        (BranchStacks(upgrade.Branch) > 0 && upgrade.Branch != "Common" ? 2.0 : 1.0) *
+        (StackCount(upgrade.Id) == 0 ? 1.2 : .9);
+
+    public void RestartRun()
+    {
+        if (Phase == RunPhase.Loading || Phase == RunPhase.ChoosingUpgrade || IsChoosingStartingWeapon) return;
+        if (Config.startingWeaponPickerPrefab == null)
+        {
+            Debug.LogError("Run config is missing the starting weapon picker prefab.");
+            return;
+        }
+        bool resumeOnCancel = Phase == RunPhase.Playing;
+        if (resumeOnCancel) TogglePause();
+        ui.EnsureEventSystem();
+        if (restartWeaponPicker == null)
+            restartWeaponPicker = Instantiate(Config.startingWeaponPickerPrefab, transform).GetComponent<StartingWeaponPicker>();
+        bool endless = IsEndless;
+        string firstRoom = endless ? EndlessConfig.scenePath : Config.roomScenePaths[0];
+        restartWeaponPicker.Show(firstRoom,
+            weapon => { if (endless) { SettleRun(false); StartEndlessRun(weapon); } else StartNewRun(firstRoom, null, weapon); },
+            () => { if (resumeOnCancel) TogglePause(); });
+    }
+
+    public void ReturnToMenu()
+    {
+        if (SceneUtility.GetBuildIndexByScenePath(Config.menuScenePath) < 0)
+        {
+            Debug.LogError("Run menu is not in build settings.");
+            return;
+        }
+        Time.timeScale = 1f;
+        if (IsEndless) SettleRun(false);
+        if (restartWeaponPicker != null) restartWeaponPicker.Close();
+        ui.DisableOwnedEventSystem();
+        SceneManager.LoadScene(Config.menuScenePath);
+    }
+
+    private void SyncHealth(int current, int maximum)
+    {
+        CurrentHealth = current;
+        MaxHealth = maximum;
+    }
+
+    private void OnPlayerGameOver()
+    {
+        if (Phase == RunPhase.Lost || Phase == RunPhase.Won) return;
+        Phase = RunPhase.Lost;
+        SettleRun(false);
+        offered.Clear();
+        Pause();
+        ui.ShowResult(false);
+    }
+
+    private void SettleRun(bool victory)
+    {
+        if (settlementComplete) return;
+        settlementComplete = true;
+        ArrowPool.Clear();
+        if (IsEndless) EndlessRank = EndlessLeaderboard.Submit(settlementId, StartingWeapon, ElapsedSeconds, Kills, BossKills, Seed);
+        EarnedSurvivorPoints = SurvivorMetaProgress.SettleRun(settlementId, ClearedRooms, Kills, victory);
+    }
+
+    private void Pause()
+    {
+        resumeTimeScale = Time.timeScale > 0f ? Time.timeScale : 1f;
+        Time.timeScale = 0f;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (mode == LoadSceneMode.Single && Config != null &&
+            Array.IndexOf(Config.roomScenePaths, scene.path) < 0 && (!IsEndless || scene.path != EndlessConfig.scenePath))
+            Destroy(gameObject);
+    }
+
+    private void UnbindPlayer()
+    {
+        if (player != null)
+        {
+            player.HealthChanged -= SyncHealth;
+            player.GameOver -= OnPlayerGameOver;
+        }
+        player = null;
+        stats = null;
+        flow = null;
+        Encounter = null;
+        RoomLayout = null;
+        Endless = null;
+    }
+
+    private void SpawnRoomCurseAltar()
+    {
+        if (Config.curseAltarPrefab == null || FindFirstObjectByType<CurseAltar>() != null) return;
+        Vector3 position = player != null ? player.transform.position + Vector3.right * 2f : Vector3.zero;
+        if (flow != null && flow.ExitDoor != null) position = flow.ExitDoor.transform.position + Vector3.left * 1.5f + Vector3.up * .65f;
+        var altar = Instantiate(Config.curseAltarPrefab, position, Quaternion.identity);
+        altar.GetComponent<CurseAltar>()?.Initialize(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance != this) return;
+        UnbindPlayer();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Time.timeScale = 1f;
+        Instance = null;
+    }
+}

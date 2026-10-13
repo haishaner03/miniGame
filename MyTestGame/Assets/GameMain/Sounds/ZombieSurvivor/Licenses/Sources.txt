@@ -1,0 +1,291 @@
+All audio imported for ZombieSurvivor is CC0 (commercial use and editing allowed).
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Kenney / Kenney Vleugels:
+https://kenney.nl/assets/interface-sounds
+https://kenney.nl/assets/impact-sounds
+https://kenney.nl/assets/rpg-audio
+Original license files included alongside this file.
+
+Ogrebane / Monster Sound Pack Volume 1 (download archive named volume-2):
+https://opengameart.org/content/monster-sound-pack-volume-1
+The source page explicitly lists CC0. Download:
+https://opengameart.org/sites/default/files/monster-sounds-volume-2.zip
+
+Juhani Junkala / 5 Chiptunes (Action):
+https://opengameart.org/content/5-chiptunes-action
+Title Screen = menu, Level 2 = battle, Level 3 = boss.
+Author's original CC0 release statement is included.
+
+Asset-to-source mappings and processing:
+[
+  {
+    "file": "SFX/UI/Button_01.wav",
+    "sources": [
+      [
+        "interface",
+        "click_001.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.1
+  },
+  {
+    "file": "SFX/UI/Button_02.wav",
+    "sources": [
+      [
+        "interface",
+        "click_002.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.01
+  },
+  {
+    "file": "SFX/Combat/BladeSwing_01.wav",
+    "sources": [
+      [
+        "rpg",
+        "knifeSlice.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.388
+  },
+  {
+    "file": "SFX/Combat/BladeSwing_02.wav",
+    "sources": [
+      [
+        "rpg",
+        "knifeSlice2.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.473
+  },
+  {
+    "file": "SFX/Combat/HeavySwing_01.wav",
+    "sources": [
+      [
+        "rpg",
+        "knifeSlice.ogg",
+        1
+      ]
+    ],
+    "speed": 0.78,
+    "seconds": 0.493
+  },
+  {
+    "file": "SFX/Combat/HeavySwing_02.wav",
+    "sources": [
+      [
+        "rpg",
+        "knifeSlice2.ogg",
+        1
+      ]
+    ],
+    "speed": 0.78,
+    "seconds": 0.602
+  },
+  {
+    "file": "SFX/Combat/BowRelease.wav",
+    "sources": [
+      [
+        "rpg",
+        "knifeSlice2.ogg",
+        0.65
+      ],
+      [
+        "rpg",
+        "handleSmallLeather2.ogg",
+        0.6
+      ]
+    ],
+    "speed": 1.2,
+    "seconds": 0.382
+  },
+  {
+    "file": "SFX/Enemies/ZombieHit_01.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_medium_000.ogg",
+        1
+      ],
+      [
+        "monsters",
+        "Monster-4.wav",
+        0.32
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.322
+  },
+  {
+    "file": "SFX/Enemies/ZombieHit_02.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_medium_001.ogg",
+        1
+      ],
+      [
+        "monsters",
+        "Monster-5.wav",
+        0.32
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.448
+  },
+  {
+    "file": "SFX/Enemies/ZombieHit_03.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_medium_002.ogg",
+        1
+      ],
+      [
+        "monsters",
+        "Monster-6.wav",
+        0.32
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.464
+  },
+  {
+    "file": "SFX/Enemies/ChampionHit_01.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_heavy_000.ogg",
+        1
+      ],
+      [
+        "monsters",
+        "Monster-3.wav",
+        0.35
+      ]
+    ],
+    "speed": 0.88,
+    "seconds": 0.781
+  },
+  {
+    "file": "SFX/Enemies/ChampionHit_02.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_heavy_001.ogg",
+        1
+      ],
+      [
+        "monsters",
+        "monster-14.wav",
+        0.35
+      ]
+    ],
+    "speed": 0.88,
+    "seconds": 0.653
+  },
+  {
+    "file": "SFX/Enemies/EliteDeath_01.wav",
+    "sources": [
+      [
+        "monsters",
+        "Monster-1.wav",
+        1
+      ],
+      [
+        "impact",
+        "impactSoft_heavy_000.ogg",
+        0.6
+      ]
+    ],
+    "speed": 0.68,
+    "seconds": 0.977
+  },
+  {
+    "file": "SFX/Enemies/EliteDeath_02.wav",
+    "sources": [
+      [
+        "monsters",
+        "Monster-2.wav",
+        1
+      ],
+      [
+        "impact",
+        "impactSoft_heavy_000.ogg",
+        0.6
+      ]
+    ],
+    "speed": 0.68,
+    "seconds": 1.287
+  },
+  {
+    "file": "SFX/Enemies/BossDeath.wav",
+    "sources": [
+      [
+        "monsters",
+        "Monster-1.wav",
+        1
+      ],
+      [
+        "monsters",
+        "Monster-2.wav",
+        0.65
+      ],
+      [
+        "impact",
+        "impactSoft_heavy_002.ogg",
+        0.6
+      ]
+    ],
+    "speed": 0.5,
+    "seconds": 1.75
+  },
+  {
+    "file": "SFX/Player/PlayerHit_01.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_heavy_000.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.534
+  },
+  {
+    "file": "SFX/Player/PlayerHit_02.wav",
+    "sources": [
+      [
+        "impact",
+        "impactPunch_heavy_001.ogg",
+        1
+      ]
+    ],
+    "speed": 1.0,
+    "seconds": 0.449
+  },
+  {
+    "file": "Music/Menu_Chiptune.ogg",
+    "source": "Juhani Junkala [Retro Game Music Pack] Title Screen.wav",
+    "transform": "Vorbis q5, gain 0.65, original loop duration retained"
+  },
+  {
+    "file": "Music/Battle_Chiptune.ogg",
+    "source": "Juhani Junkala [Retro Game Music Pack] Level 2.wav",
+    "transform": "Vorbis q5, gain 0.65, original loop duration retained"
+  },
+  {
+    "file": "Music/Boss_Chiptune.ogg",
+    "source": "Juhani Junkala [Retro Game Music Pack] Level 3.wav",
+    "transform": "Vorbis q5, gain 0.65, original loop duration retained"
+  }
+]
